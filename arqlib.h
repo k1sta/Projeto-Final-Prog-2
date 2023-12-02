@@ -54,7 +54,7 @@ bool inputProdutoArquivo(char* nome, int n, tProduto* prod){
 }
 
 //essa funcao atualiza o numero de produtos em produtos.dat em +n
-void atualizarNumProd(FILE *arq, int n){
+void atualizarNumProd(int n, FILE *arq){
     int aux;
     fread(&n, sizeof(int), 1, arq);
     aux += n;
@@ -270,7 +270,7 @@ int registroProdutos(FILE *arq){
         cadastrarProduto(&produtos[i], 0, arq);
     }
     
-    atualizarNumProd(arq, n);
+    atualizarNumProd(n, arq);
     
     return 0;
 }
