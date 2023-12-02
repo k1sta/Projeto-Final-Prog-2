@@ -16,7 +16,7 @@ typedef struct
 
 typedef struct
 {
-    int id;
+    tProduto *produtos;
 } REGISTRO;
 
 typedef struct aux
