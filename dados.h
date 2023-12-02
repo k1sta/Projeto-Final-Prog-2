@@ -11,7 +11,6 @@ typedef struct
     int qnt_estoque;
     float preco;
     int id_prod;
-    int cod_barras;
     int peso;
 } tProduto;
 
