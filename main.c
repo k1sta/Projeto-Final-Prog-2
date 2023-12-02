@@ -6,7 +6,9 @@
 #include "arqlib.h"
 
 int main (void){
-    tProduto produto = inputProdutoArquivo("arroz.txt");
+    tProduto produto;
+    
+    inputProdutoArquivo("arroz.txt", 0, &produto);
 
     criarArquivoProdutos();
 

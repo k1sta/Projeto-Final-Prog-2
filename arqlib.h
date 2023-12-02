@@ -3,6 +3,9 @@
 #include <string.h>
 #include <stdbool.h>
 
+
+//essa funcao cria o arquivo produtos.dat, que armazena os produtos cadastrados
+//vale ressaltar que o arquivo eh criado com um inteiro que armazena o numero de produtos cadastrados no inicio
 bool criarArquivoProdutos(){
     FILE *arq;
     int n = 0;
@@ -17,6 +20,7 @@ bool criarArquivoProdutos(){
     return true;
 }
 
+//essa funcao retorna o numero de produtos cadastrados no arquivo produtos.dat
 int numProd(){
     FILE *arq;
     int n = 0;
@@ -30,52 +34,61 @@ int numProd(){
     return n;
 }
 
+//essa funcao recebe um produto e o retorna
 tProduto inputProdutoTeclado(){
     tProduto prod;
-    printf("Nome do produto: ");
+    printf("%s", "Nome do produto: ");
     scanf(" %[^\n]", prod.nome_prod);
-    printf("Categoria: ");
+    printf("%s", "Categoria: ");
     scanf(" %[^\n]", prod.categoria);
-    printf("Nome do fornecedor: ");
+    printf("%s", "Nome do fornecedor: ");
     scanf(" %[^\n]", prod.nome_fornec);
-    printf("Quantidade em estoque: ");
+    printf("%s", "Quantidade em estoque: ");
     scanf("%d", &prod.qnt_estoque);
-    printf("Preco: ");
+    printf("%s", "Preco: ");
     scanf("%f", &prod.preco);
-    printf("ID: ");
+    printf("%s", "ID: ");
     scanf("%d", &prod.id_prod);
-    printf("Peso: ");
+    printf("%s", "Peso: ");
     scanf("%d", &prod.peso);
     return prod;
 }
 
-tProduto inputProdutoArquivo(char* nome){
-    tProduto prod;
+//essa funcao recebe o nome de um arquivo que contem n produtos
+//PRECISA DE REVISAO. NAO FUNCIONA ADEQUADAMENTE.
+bool inputProdutoArquivo(char* nome, int n, tProduto* prod){
     FILE *arq = fopen(nome, "r");
     if(arq == NULL){
         puts("Erro ao abrir o arquivo!");
-        return prod;
+        return false;
     }
-    fgets(prod.nome_prod, sizeof(prod.nome_prod), arq);
-    fgets(prod.categoria, sizeof(prod.categoria), arq);
-    fgets(prod.nome_fornec, sizeof(prod.nome_fornec), arq);
-    fscanf(arq, "%d", &prod.qnt_estoque);
-    fscanf(arq, "%f", &prod.preco);
-    fscanf(arq, "%d", &prod.id_prod);
-    fscanf(arq, "%d", &prod.peso);
+    for(int i = 0; i < n; i++){
+        fgets(prod->nome_prod, sizeof(prod->nome_prod), arq);
+        fgets(prod->categoria, sizeof(prod->categoria), arq);
+        fgets(prod->nome_fornec, sizeof(prod->nome_fornec), arq);
+        fscanf(arq, "%d", &prod->qnt_estoque);
+        fscanf(arq, "%f", &prod->preco);
+        fscanf(arq, "%d", &prod->id_prod);
+        fscanf(arq, "%d", &prod->peso);
+    }
+
+
     fclose(arq);
-    return prod;
+    return true;
 }
 
-void atualizarNumProd(FILE *arq){
-    int n;
+//essa funcao atualiza o numero de produtos em produtos.dat em +n
+void atualizarNumProd(FILE *arq, int n){
+    int aux;
     fread(&n, sizeof(int), 1, arq);
-    n++;
+    aux += n;
     fseek(arq, 0, SEEK_SET);
-    fwrite(&n, sizeof(int), 1, arq);
+    fwrite(&aux, sizeof(int), 1, arq);
     fflush(arq);
 }
 
+//essa funcao recebe um produto e o cadastra no arquivo produtos.dat
+//existe um parametro flag que, se for 1, imprime uma mensagem de erro caso o arquivo nao seja aberto
 bool cadastrarProduto(tProduto *produto, int flag){
     FILE *arq;
     arq = fopen("produtos.dat", "rb+");
@@ -85,11 +98,14 @@ bool cadastrarProduto(tProduto *produto, int flag){
     }
     fseek(arq, 0, SEEK_END);
     fwrite(produto, sizeof(tProduto), 1, arq);
-    atualizarNumProd(arq);
+    atualizarNumProd(arq, 1);
     fclose(arq);
+    puts("Produto cadastrado com sucesso!");
     return true;
 }
 
+//essa funcao recebe uma pilha de produtos para serem removidos
+//PRECISA DE REVISAO. FUNCIONA, MAS PODE NAO SER A MELHOR SOLUCAO
 bool removerProdutos(PILHA *p, int flag){   
     FILE *arq;
     FILE *arq2;
@@ -137,6 +153,8 @@ bool removerProdutos(PILHA *p, int flag){
     return true;
 }
 
+//essa funcao recebe um id e imprime as informacoes do produto com esse id, alem de retornar a posicao dele no arquivo
+//esse algoritmo foi feito a partir do algoritmo de busca binaria
 int buscarProduto(int id, int flag){
     FILE *arq;
     tProduto produto;
@@ -180,6 +198,7 @@ int buscarProduto(int id, int flag){
     
 }
 
+//essa funcao recebe o id de um produto + o produto modificado e o modifica no arquivo produtos.dat
 bool modificarProduto(int id, tProduto *produto, int flag){
     FILE *arq;
     int pos;
@@ -198,4 +217,58 @@ bool modificarProduto(int id, tProduto *produto, int flag){
     fclose(arq);
     if (flag) puts("Produto modificado com sucesso!");
     return true;
+}
+
+//essaa funcao ainda nao foi testada, mas eh a funcao de compra de produtos para o estoque
+//vale ressaltar que ela considera que o estoque eh infinito e que todos os produto estao registrados
+int compraProdutos(int flag){
+    int id, n;
+
+    do{
+        puts("Digite o ID do produto comprado (-1 para sair): ");
+        scanf("%d", &id);
+
+        puts("Digite a quantidade comprada: ");
+        scanf("%d", &n);
+
+        if(id != -1){
+            tProduto produto;
+            int pos = buscarProduto(id, 0);
+            if(pos == -1){
+                if (flag) puts("Erro ao abrir o arquivo!");
+                return -1;
+            }
+            else if(pos == -2){
+                if (flag) puts("Produto não encontrado!");
+                return -2;
+            }
+            FILE *arq = fopen("produtos.dat", "r+b");
+            if(arq == NULL){
+                if (flag) puts("Erro ao abrir o arquivo!");
+                return -3;
+            }
+            fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+            fread(&produto, sizeof(tProduto), 1, arq);
+            produto.qnt_estoque += n;
+            fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+            fwrite(&produto, sizeof(tProduto), 1, arq);
+            fclose(arq);
+            puts("Compra realizada com sucesso!");
+        }
+    }while(id != -1);
+
+    return true;
+}
+
+int registroProdutos(){
+    int aux;
+
+    do{
+        puts("Registro escrito ou via arquivo (1 / 2 / -1 para sair)?");
+
+        if(aux == 1){
+            
+        }
+
+    }while(aux == 1 || aux == 2);
 }
