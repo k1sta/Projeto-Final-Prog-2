@@ -134,7 +134,10 @@ bool removerProdutos(int *id, int n, int flag, FILE *arq){
         }
     }
     free(id);
-    fclose(arq2);
+    FILE* aux = arq;
+    arq = arq2;
+    free(arq2);
+    fclose(aux);
     remove("produtos.dat");
     rename("produtos2.dat", "produtos.dat");
     return true;
