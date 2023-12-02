@@ -89,6 +89,7 @@ void atualizarNumProd(FILE *arq, int n){
 
 //essa funcao recebe um produto e o cadastra no arquivo produtos.dat
 //existe um parametro flag que, se for 1, imprime uma mensagem de erro caso o arquivo nao seja aberto
+//PROBLEMA: essa funcao quebra a ordenacao dos id's. reimplementar com insercao inteligente.
 bool cadastrarProduto(tProduto *produto, int flag){
     FILE *arq;
 
