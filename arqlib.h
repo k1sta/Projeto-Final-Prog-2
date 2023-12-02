@@ -3,34 +3,10 @@
 #include <string.h>
 #include <stdbool.h>
 
-
-//essa funcao cria o arquivo produtos.dat, que armazena os produtos cadastrados
-//vale ressaltar que o arquivo eh criado com um inteiro que armazena o numero de produtos cadastrados no inicio
-bool criarArquivoProdutos(){
-    FILE *arq;
-    int n = 0;
-    arq = fopen("produtos.dat", "ab");
-    if(arq == NULL){
-        puts("Erro ao criar o arquivo!");
-        return false;
-    }
-    fwrite(&n, sizeof(int), 1, arq);
-    fclose(arq);
-    puts("Arquivo criado com sucesso!");
-    return true;
-}
-
 //essa funcao retorna o numero de produtos cadastrados no arquivo produtos.dat
-int numProd(){
-    FILE *arq;
+int numProd(FILE *arq){
     int n = 0;
-    arq = fopen("produtos.dat", "rb");
-    if(arq == NULL){
-        puts("Erro ao abrir o arquivo!");
-        return -1;
-    }
     fread(&n, sizeof(int), 1, arq);
-    fclose(arq);
     return n;
 }
 
@@ -91,42 +67,51 @@ void atualizarNumProd(FILE *arq, int n){
 //existe um parametro flag que, se for 1, imprime uma mensagem de erro caso o arquivo nao seja aberto
 //PROBLEMA: essa funcao quebra a ordenacao dos id's. reimplementar com insercao inteligente.
 //PROBLEMA: essa funcao chama atualizarNumProd() a cada vez que for chamada.
-bool cadastrarProduto(tProduto *produto, int flag){
-    FILE *arq;
-
-    arq = fopen("produtos.dat", "rb+");
-    if(arq == NULL){
-        if (flag) puts("Erro ao abrir o arquivo!");
-        return false;
+bool cadastrarProduto(tProduto *produto, int flag, FILE *arq){
+    tProduto anterior;
+    int baixo = 0, alto = numProd(arq) - 1, meio, pos;
+    while (baixo <= alto) {
+        meio = (baixo + alto) / 2;
+        fseek(arq, sizeof(int) + meio * sizeof(tProduto), SEEK_SET);
+        fread(&anterior, sizeof(tProduto), 1, arq);
+        if (produto->id_prod == anterior.id_prod) {
+            puts("Erro: ID duplicado!");
+            fclose(arq);
+            return false;
+        } else if (produto->id_prod < anterior.id_prod) {
+            baixo = meio - 1;
+        } else {
+            baixo = meio + 1;
+        }
     }
-    fseek(arq, 0, SEEK_END);
+
+    pos = baixo;
+    fseek(arq, sizeof(int) + pos * sizeof(tProduto), SEEK_SET);
+    fread(&anterior, sizeof(tProduto), 1, arq);
+
+    for (int i = numProd(arq); i > pos; i--) {
+        fseek(arq, sizeof(int) + (i - 1) * sizeof(tProduto), SEEK_SET);
+        fread(&anterior, sizeof(tProduto), 1, arq);
+        fseek(arq, sizeof(int) + i * sizeof(tProduto), SEEK_SET);
+        fwrite(&anterior, sizeof(tProduto), 1, arq);
+    }
+    
+    fseek(arq, sizeof(int) + pos * sizeof(tProduto), SEEK_SET);
     fwrite(produto, sizeof(tProduto), 1, arq);
-    atualizarNumProd(arq, 1);
-    fclose(arq);
     puts("Produto cadastrado com sucesso!");
     return true;
 }
 
+
+
 //essa funcao recebe uma pilha de id`s para serem removidos
 //PRECISA DE REVISAO. FUNCIONA, MAS PODE NAO SER A MELHOR SOLUCAO USAR PILHA
-bool removerProdutos(PILHA *p, int flag){   
-    FILE *arq;
+bool removerProdutos(int *id, int n, int flag, FILE *arq){   
     FILE *arq2;
     tProduto produto;
-    int n = tamanhoPilha(p), *id = (int *) malloc(sizeof(int) * n), i;
+    int i;
 
-    for(int i = 0; i < n; i++){
-        ELEMENTO temp;
-        popPilha(p, &temp.reg);
-        id[i] = temp.reg.id;
-    }
-
-    arq = fopen("produtos.dat", "rb");
     arq2 = fopen("produtos2.dat", "wb");
-    if(arq == NULL){
-        if (flag) puts("Erro ao abrir 'produtos.dat'!");
-        return false;
-    }
     if(arq2 == NULL){
         if (flag) puts("Erro ao abrir o arquivo temporário!");
         return false;
@@ -149,7 +134,6 @@ bool removerProdutos(PILHA *p, int flag){
         }
     }
     free(id);
-    fclose(arq);
     fclose(arq2);
     remove("produtos.dat");
     rename("produtos2.dat", "produtos.dat");
@@ -158,15 +142,9 @@ bool removerProdutos(PILHA *p, int flag){
 
 //essa funcao recebe um id e imprime as informacoes do produto com esse id, alem de retornar a posicao dele no arquivo
 //esse algoritmo foi feito a partir do algoritmo de busca binaria
-int buscarProduto(int id, int flag){
-    FILE *arq;
+int buscarProduto(int id, int flag, FILE *arq){
     tProduto produto;
     int esq = 0, dir, meio;
-    arq = fopen("produtos.dat", "rb");
-    if(arq == NULL){
-        if (flag) puts("Erro ao abrir o arquivo!");
-        return -1;
-    }
 
     fread(&dir, sizeof(int), 1, arq);
     meio = dir / 2;
@@ -203,22 +181,14 @@ int buscarProduto(int id, int flag){
 
 //essa funcao recebe o id de um produto + o produto modificado e o modifica no arquivo produtos.dat
 //PRECISA DE REVISAO. FUNCIONA, MAS PODE NAO SER A MELHOR SOLUCAO PASSAR UM tProduto COMO PARAMETRO
-bool modificarProduto(int id, tProduto *produto, int flag){
-    FILE *arq;
+bool modificarProduto(int id, tProduto *produto, int flag, FILE *arq){
     int pos;
-    arq = fopen("produtos.dat", "r+b");
-    if(arq == NULL){
-        if(flag) puts("Erro ao abrir o arquivo!");
-        return false;
-    }
-    pos = buscarProduto(id, flag);
+    pos = buscarProduto(id, flag, arq);
     if(pos == -1){
-        fclose(arq);
         return false;
     }
     fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
     fwrite(produto, sizeof(tProduto), 1, arq);
-    fclose(arq);
     if (flag) puts("Produto modificado com sucesso!");
     return true;
 }
@@ -232,7 +202,7 @@ A partir daqui, sao funcoes que serao chamadas pelo menu da main, diretamente
 
 //essaa funcao ainda nao foi testada, mas eh a funcao de compra de produtos para o estoque
 //vale ressaltar que ela considera que o estoque eh infinito e que todos os produto estao registrados
-int compraProdutos(int flag){
+int compraProdutos(int flag, FILE *arq){
     int id, n;
 
     do{
@@ -244,7 +214,7 @@ int compraProdutos(int flag){
 
         if(id != -1){
             tProduto produto;
-            int pos = buscarProduto(id, 0);
+            int pos = buscarProduto(id, 0, arq);
             if(pos == -1){
                 if (flag) puts("Erro ao abrir o arquivo!");
                 return -1;
@@ -271,7 +241,7 @@ int compraProdutos(int flag){
     return true;
 }
 
-int registroProdutos(){
+int registroProdutos(FILE *arq){
     int aux, n;
     tProduto *produtos;
 
@@ -285,22 +255,22 @@ int registroProdutos(){
             for(int i = 0; i < n; i++){
                 produtos[i] = inputProdutoTeclado();
             }
-            for(int i = 0; i < n; i++){
-                cadastrarProduto(&produtos[i], 0);
-            }
             break;        
         case 2:
             char nome[50];
             printf("%s", "Nome do arquivo: ");
             scanf(" %[^\n]", nome);
             inputProdutoArquivo(nome, n, produtos);
-            for(int i = 0; i < n; i++){
-                cadastrarProduto(&produtos[i], 0);
-            }
             break;
         default:
             return -1;
     }
+
+    for(int i = 0; i < n; i++){
+        cadastrarProduto(&produtos[i], 0, arq);
+    }
+    
+    atualizarNumProd(arq, n);
     
     return 0;
 }
