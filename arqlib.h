@@ -91,6 +91,7 @@ void atualizarNumProd(FILE *arq, int n){
 //existe um parametro flag que, se for 1, imprime uma mensagem de erro caso o arquivo nao seja aberto
 bool cadastrarProduto(tProduto *produto, int flag){
     FILE *arq;
+
     arq = fopen("produtos.dat", "rb+");
     if(arq == NULL){
         if (flag) puts("Erro ao abrir o arquivo!");
@@ -104,8 +105,8 @@ bool cadastrarProduto(tProduto *produto, int flag){
     return true;
 }
 
-//essa funcao recebe uma pilha de produtos para serem removidos
-//PRECISA DE REVISAO. FUNCIONA, MAS PODE NAO SER A MELHOR SOLUCAO
+//essa funcao recebe uma pilha de id`s para serem removidos
+//PRECISA DE REVISAO. FUNCIONA, MAS PODE NAO SER A MELHOR SOLUCAO USAR PILHA
 bool removerProdutos(PILHA *p, int flag){   
     FILE *arq;
     FILE *arq2;
@@ -199,6 +200,7 @@ int buscarProduto(int id, int flag){
 }
 
 //essa funcao recebe o id de um produto + o produto modificado e o modifica no arquivo produtos.dat
+//PRECISA DE REVISAO. FUNCIONA, MAS PODE NAO SER A MELHOR SOLUCAO PASSAR UM tProduto COMO PARAMETRO
 bool modificarProduto(int id, tProduto *produto, int flag){
     FILE *arq;
     int pos;
@@ -218,6 +220,13 @@ bool modificarProduto(int id, tProduto *produto, int flag){
     if (flag) puts("Produto modificado com sucesso!");
     return true;
 }
+
+
+/*
+A partir daqui, sao funcoes que serao chamadas pelo menu da main, diretamente
+*/
+
+
 
 //essaa funcao ainda nao foi testada, mas eh a funcao de compra de produtos para o estoque
 //vale ressaltar que ela considera que o estoque eh infinito e que todos os produto estao registrados
@@ -261,14 +270,35 @@ int compraProdutos(int flag){
 }
 
 int registroProdutos(){
-    int aux;
+    int aux, n;
+    tProduto *produtos;
 
-    do{
-        puts("Registro escrito ou via arquivo (1 / 2 / -1 para sair)?");
+    puts("Registro escrito ou via arquivo (1 / 2 / -1 para sair)?");
+    scanf("%d", &aux);
+    puts("Quantos produtos deseja registrar? ");
+    scanf("%d", &n);
 
-        if(aux == 1){
-            
-        }
-
-    }while(aux == 1 || aux == 2);
+    switch(aux){
+        case 1:
+            for(int i = 0; i < n; i++){
+                produtos[i] = inputProdutoTeclado();
+            }
+            for(int i = 0; i < n; i++){
+                cadastrarProduto(&produtos[i], 0);
+            }
+            break;        
+        case 2:
+            char nome[50];
+            printf("%s", "Nome do arquivo: ");
+            scanf(" %[^\n]", nome);
+            inputProdutoArquivo(nome, n, produtos);
+            for(int i = 0; i < n; i++){
+                cadastrarProduto(&produtos[i], 0);
+            }
+            break;
+        default:
+            return -1;
+    }
+    
+    return 0;
 }
