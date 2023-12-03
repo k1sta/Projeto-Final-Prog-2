@@ -245,6 +245,7 @@ int compraProdutos(int flag, FILE *arq){
 int registroProdutos(FILE *arq){
     int aux, n;
     tProduto *produtos;
+    char nome[50];
 
     puts("Registro escrito ou via arquivo (1 / 2 / -1 para sair)?");
     scanf("%d", &aux);
@@ -258,7 +259,6 @@ int registroProdutos(FILE *arq){
             }
             break;        
         case 2:
-            char nome[50];
             printf("%s", "Nome do arquivo: ");
             scanf(" %[^\n]", nome);
             inputProdutoArquivo(nome, n, produtos);
