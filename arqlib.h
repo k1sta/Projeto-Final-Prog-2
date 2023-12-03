@@ -308,7 +308,6 @@ bool criar_csv(FILE* arq){
     return true;
 }
 
-
 //funcao de caixa registradora
 void caixaRegistradora(FILE *arq){
     int id, n, pos;
