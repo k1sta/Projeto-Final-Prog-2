@@ -197,9 +197,28 @@ bool modificarProduto(int id, tProduto *produto, int flag, FILE *arq){
 }
 
 
+//essa funcao recebe um id e retorna o tProduto com esse id
+tProduto catchProduto(int id, FILE *arq) {
+    tProduto produto;
+    int pos = buscarProduto(id, 0, arq);
+    if (pos == -1) {
+        // Produto não encontrado
+        produto.id_prod = -1; // Assuming -1 indicates not found
+    } else {
+        fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+        fread(&produto, sizeof(tProduto), 1, arq);
+    }
+    return produto;
+}
+
+
+
 /*
+=============================================================================
 A partir daqui, sao funcoes que serao chamadas pelo menu da main, diretamente
+=============================================================================
 */
+
 
 //essaa funcao ainda nao foi testada, mas eh a funcao de compra de produtos para o estoque
 //vale ressaltar que ela considera que o estoque eh infinito e que todos os produto estao registrados
@@ -247,11 +266,15 @@ int compraProdutos(int flag, FILE *arq){
 int registroProdutos(FILE *arq){
     int aux, n;
     tProduto *produtos;
+    char nome[50];
 
-    puts("Registro escrito ou via arquivo (1 / 2 / -1 para sair)?");
+    printf("\e[1;1H\e[2J"); // Limpa o console
+    puts("Quer adicionar por teclado ou arquivo?");
+    puts("1. Teclado");
+    puts("2. Arquivo");
+    puts("Para SAIR, digite qualquer outro numero");
+    printf("Input: ");
     scanf("%d", &aux);
-    puts("Quantos produtos deseja registrar? ");
-    scanf("%d", &n);
 
     switch(aux){
         case 1:
@@ -260,7 +283,8 @@ int registroProdutos(FILE *arq){
             }
             break;        
         case 2:
-            char nome[50];
+            puts("Quantos produtos deseja registrar? ");
+            scanf("%d", &n);
             printf("%s", "Nome do arquivo: ");
             scanf(" %[^\n]", nome);
             inputProdutoArquivo(nome, n, produtos);
