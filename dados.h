@@ -27,7 +27,7 @@ typedef struct
     No *fim;
 } FILA;
 
-void inicializarPilha(FILA *f)
+void inicializarFila(FILA *f)
 {
     f->inicio = NULL;
     f->fim = NULL;
