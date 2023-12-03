@@ -14,56 +14,46 @@ typedef struct
     int peso;
 } tProduto;
 
-typedef struct
-{
-    tProduto *produtos;
-} REGISTRO;
-
 typedef struct aux
 {
-    REGISTRO reg;
+    int quantidade;
+    tProduto produto;
     struct aux *prox;
-} ELEMENTO;
+} No;
 
 typedef struct
 {
-    ELEMENTO* topo;
-} PILHA;
+    No *inicio;
+    No *fim;
+} FILA;
 
-
-void inicializarPilha(PILHA* p)
+void inicializarPilha(FILA *f)
 {
-    p->topo = NULL;
+    f->inicio = NULL;
+    f->fim = NULL;
 }
 
-int tamanhoPilha(PILHA *p)
+void exibirCarrinho(FILA *f)
 {
-    ELEMENTO *end = p->topo;
-    int tam = 0;
+    No *end = f->inicio;
+    puts("ID | Nome do produto | Preco unitario | Peso | Quantidade | Valor total");
     while (end != NULL)
     {
-        tam++;
+        printf("%d %s %.2f %d", end->produto.id_prod, end->produto.nome_prod, end->produto.preco, end->produto.peso, end->quantidade, end->quantidade * end->produto.preco);
         end = end->prox;
     }
-    return tam;
+    printf("\"\n");
 }
 
-bool popPilha(PILHA *p, REGISTRO *reg)
+bool inserirNaFila(FILA *f, tProduto prod)
 {
-    if (p->topo == NULL)
-        return false;
-    *reg = p->topo->reg;
-    ELEMENTO *apagar = p->topo;
-    p->topo = p->topo->prox;
-    free(apagar);
-    return true;
-}
-
-bool pushPilha(PILHA *p, REGISTRO reg)
-{
-    ELEMENTO* novo = (ELEMENTO* ) malloc(sizeof(ELEMENTO));
-    novo->reg = reg;
-    novo->prox = p->topo;
-    p->topo = novo;
+    No* novo = (No*)malloc(sizeof(No));
+    novo->produto = prod;
+    novo->prox = NULL;
+    if (f->inicio == NULL)
+        f->inicio = novo;
+    else
+        f->fim->prox = novo;
+    f->fim = novo;
     return true;
 }
