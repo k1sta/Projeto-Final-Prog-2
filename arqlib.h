@@ -32,7 +32,7 @@ tProduto inputProdutoTeclado(){
 }
 
 //essa funcao recebe o nome de um arquivo que contem n produtos
-//PRECISA DE REVISAO. NAO FUNCIONA ADEQUADAMENTE.
+//testada e funciona -gabriel
 bool inputProdutoArquivo(char* nome, int n, tProduto* prod){
     FILE *arq = fopen(nome, "r");
     if(arq == NULL){
@@ -144,6 +144,7 @@ bool removerProdutos(int *id, int n, int flag, FILE *arq){
 
 //essa funcao recebe um id e imprime as informacoes do produto com esse id, alem de retornar a posicao dele no arquivo
 //esse algoritmo foi feito a partir do algoritmo de busca binaria
+//testada e funciona -gabriel
 int buscarProduto(int id, int flag, FILE *arq){
     tProduto produto;
     int esq = 0, dir, meio;
@@ -205,6 +206,7 @@ A partir daqui, sao funcoes que serao chamadas pelo menu da main, diretamente
 
 //essaa funcao ainda nao foi testada, mas eh a funcao de compra de produtos para o estoque
 //vale ressaltar que ela considera que o estoque eh infinito e que todos os produto estao registrados
+//testada e funciona -gabriel
 int compraProdutos(int flag, FILE *arq){
     int id, n;
 
