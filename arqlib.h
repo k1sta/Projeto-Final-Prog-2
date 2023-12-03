@@ -277,3 +277,36 @@ int registroProdutos(FILE *arq){
     
     return 0;
 }
+
+
+//testar funcao ainda!!
+bool criar_csv(FILE* arq){
+
+    FILE *csv;
+    tProduto produto;
+
+    csv = fopen("estoque.csv", "w+");
+    if(csv==NULL){
+        printf("Erro na criação do arquivo csv. \n");
+        return false;
+    }
+
+    fprintf(csv, "nome,categoria,fornecedor,qntd,preco,peso,id");
+
+    fseek(arq, 0, SEEK_SET); //ponteiro do produtos.dat no inicio
+
+    int aux;
+    fread(&aux, sizeof(aux), 1, arq); //pegar a qntd de elementos no inicio do dat
+
+    while(!feof(arq)){
+        fread(&produto, sizeof(tProduto), 1, arq);  //pegar um produto em si
+
+        fprintf(csv,"\n%s,%s,%s,%d,%f,%d,%f,%d", 
+            produto.nome_prod, produto.categoria, produto.nome_fornec, 
+            produto.qnt_estoque, produto.preco, produto.peso, produto.id_prod
+        );
+
+    }
+
+    return true;
+}
