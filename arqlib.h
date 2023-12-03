@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include "dados.h"
 
 //essa funcao retorna o numero de produtos cadastrados no arquivo produtos.dat
 int numProd(FILE *arq){
@@ -38,16 +39,17 @@ bool inputProdutoArquivo(char* nome, int n, tProduto* prod){
         puts("Erro ao abrir o arquivo!");
         return false;
     }
-    for(int i = 0; i < n; i++){
-        fgets(prod->nome_prod, sizeof(prod->nome_prod), arq);
-        fgets(prod->categoria, sizeof(prod->categoria), arq);
-        fgets(prod->nome_fornec, sizeof(prod->nome_fornec), arq);
-        fscanf(arq, "%d", &prod->qnt_estoque);
-        fscanf(arq, "%f", &prod->preco);
-        fscanf(arq, "%d", &prod->id_prod);
-        fscanf(arq, "%d", &prod->peso);
-    }
 
+    for(int i = 0; i < n; i++, prod++){
+        fscanf(arq, "%[^\n]\n", prod->nome_prod);
+        fscanf(arq, "%[^\n]\n", prod->categoria);
+        fscanf(arq, "%[^\n]\n", prod->nome_fornec);
+        fscanf(arq, "%d\n", &prod->qnt_estoque);
+        fscanf(arq, "%f\n", &prod->preco);
+        fscanf(arq, "%d\n", &prod->id_prod);
+        fscanf(arq, "%d\n", &prod->peso);
+
+    }
 
     fclose(arq);
     return true;
@@ -146,6 +148,7 @@ bool removerProdutos(int *id, int n, int flag, FILE *arq){
 int buscarProduto(int id, int flag, FILE *arq){
     tProduto produto;
     int esq = 0, dir, meio;
+    rewind(arq);
 
     fread(&dir, sizeof(int), 1, arq);
     meio = dir / 2;
@@ -154,7 +157,6 @@ int buscarProduto(int id, int flag, FILE *arq){
         fseek(arq, sizeof(int) + (meio * sizeof(tProduto)), SEEK_SET);
         fread(&produto, sizeof(tProduto), 1, arq);
         if(produto.id_prod == id){
-            fclose(arq);
             if(flag){
                 printf("%s | ", produto.nome_prod);
                 printf("Categoria: %s | ", produto.categoria);
@@ -199,8 +201,6 @@ bool modificarProduto(int id, tProduto *produto, int flag, FILE *arq){
 A partir daqui, sao funcoes que serao chamadas pelo menu da main, diretamente
 */
 
-
-
 //essaa funcao ainda nao foi testada, mas eh a funcao de compra de produtos para o estoque
 //vale ressaltar que ela considera que o estoque eh infinito e que todos os produto estao registrados
 int compraProdutos(int flag, FILE *arq){
@@ -209,10 +209,12 @@ int compraProdutos(int flag, FILE *arq){
     do{
         puts("Digite o ID do produto comprado (-1 para sair): ");
         scanf("%d", &id);
+        
 
         puts("Digite a quantidade comprada: ");
         scanf("%d", &n);
 
+        printf("%d", id);
         if(id != -1){
             tProduto produto;
             int pos = buscarProduto(id, 0, arq);
@@ -221,7 +223,7 @@ int compraProdutos(int flag, FILE *arq){
                 return -1;
             }
             else if(pos == -2){
-                if (flag) puts("Produto não encontrado!");
+                if (flag) puts("Produto nao encontrado!");
                 return -2;
             }
             FILE *arq = fopen("produtos.dat", "r+b");
@@ -245,7 +247,6 @@ int compraProdutos(int flag, FILE *arq){
 int registroProdutos(FILE *arq){
     int aux, n;
     tProduto *produtos;
-    char nome[50];
 
     puts("Registro escrito ou via arquivo (1 / 2 / -1 para sair)?");
     scanf("%d", &aux);
@@ -259,6 +260,7 @@ int registroProdutos(FILE *arq){
             }
             break;        
         case 2:
+            char nome[50];
             printf("%s", "Nome do arquivo: ");
             scanf(" %[^\n]", nome);
             inputProdutoArquivo(nome, n, produtos);
