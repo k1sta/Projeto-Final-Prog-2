@@ -104,8 +104,7 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq){
 
 
 
-//essa funcao recebe uma pilha de id`s para serem removidos
-//PRECISA DE REVISAO. FUNCIONA, MAS PODE NAO SER A MELHOR SOLUCAO USAR PILHA
+//essa funcao recebe um array de id`s para serem removidos
 bool removerProdutos(int *id, int n, int flag, FILE *arq){   
     FILE *arq2;
     tProduto produto;
@@ -178,7 +177,7 @@ int buscarProduto(int id, int flag, FILE *arq){
     }
     if(flag) puts("Produto não encontrado!");
     fclose(arq);
-    return -2;
+    return -1;
     
 }
 
@@ -195,22 +194,6 @@ bool modificarProduto(int id, tProduto *produto, int flag, FILE *arq){
     if (flag) puts("Produto modificado com sucesso!");
     return true;
 }
-
-
-//essa funcao recebe um id e retorna o tProduto com esse id
-tProduto catchProduto(int id, FILE *arq) {
-    tProduto produto;
-    int pos = buscarProduto(id, 0, arq);
-    if (pos == -1) {
-        // Produto não encontrado
-        produto.id_prod = -1; // Assuming -1 indicates not found
-    } else {
-        fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
-        fread(&produto, sizeof(tProduto), 1, arq);
-    }
-    return produto;
-}
-
 
 
 /*
@@ -238,24 +221,14 @@ int compraProdutos(int flag, FILE *arq){
             tProduto produto;
             int pos = buscarProduto(id, 0, arq);
             if(pos == -1){
-                if (flag) puts("Erro ao abrir o arquivo!");
-                return -1;
-            }
-            else if(pos == -2){
                 if (flag) puts("Produto nao encontrado!");
                 return -2;
-            }
-            FILE *arq = fopen("produtos.dat", "r+b");
-            if(arq == NULL){
-                if (flag) puts("Erro ao abrir o arquivo!");
-                return -3;
             }
             fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
             fread(&produto, sizeof(tProduto), 1, arq);
             produto.qnt_estoque += n;
             fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
             fwrite(&produto, sizeof(tProduto), 1, arq);
-            fclose(arq);
             puts("Compra realizada com sucesso!");
         }
     }while(id != -1);
@@ -300,4 +273,82 @@ int registroProdutos(FILE *arq){
     atualizarNumProd(n, arq);
     
     return 0;
+}
+
+
+//testar funcao ainda!!
+bool criar_csv(FILE* arq){
+
+    FILE *csv;
+    tProduto produto;
+
+    csv = fopen("estoque.csv", "w+");
+    if(csv==NULL){
+        printf("Erro na criação do arquivo csv. \n");
+        return false;
+    }
+
+    fprintf(csv, "nome,categoria,fornecedor,qntd,preco,peso,id");
+
+    fseek(arq, 0, SEEK_SET); //ponteiro do produtos.dat no inicio
+
+    int aux;
+    fread(&aux, sizeof(aux), 1, arq); //pegar a qntd de elementos no inicio do dat
+
+    while(!feof(arq)){
+        fread(&produto, sizeof(tProduto), 1, arq);  //pegar um produto em si
+
+        fprintf(csv,"\n%s,%s,%s,%d,%f,%d,%f,%d", 
+            produto.nome_prod, produto.categoria, produto.nome_fornec, 
+            produto.qnt_estoque, produto.preco, produto.peso, produto.id_prod
+        );
+
+    }
+
+    return true;
+}
+
+
+//funcao de caixa registradora
+void caixaRegistradora(FILE *arq){
+    int id, n, pos;
+    FILA *carrinho;
+    float total = 0;
+
+    inicializarPilha(carrinho);
+    while(id != -1){
+        printf("\e[1;1H\e[2J"); // Limpa o console
+        exibirCarrinho(carrinho);
+        puts(" ");
+        printf("Total: R$%.2f\n", total);
+        puts(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+        puts(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+        puts("Digite o ID do produto ou -1 para fechar a compra\n");
+        printf("Input: ");
+        scanf("%d", &id);
+
+        if(id == -1){
+            printf("\e[1;1H\e[2J"); // Limpa o console
+            printf("Valor a pagar: R$%.2f\n", total);
+            puts("Compra finalizada!");
+            return;
+        }
+
+        pos = buscarProduto(id, 0, arq);
+        if(pos == -1){
+            puts("Produto nao encontrado!");
+        } else{
+            tProduto produto;
+            fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+            fread(&produto, sizeof(tProduto), 1, arq);
+            produto.qnt_estoque--;
+            fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+            fwrite(&produto, sizeof(tProduto), 1, arq);
+            inserirNaFila(carrinho, produto);
+            total += produto.preco * n;
+            
+        }
+    }
+
+
 }

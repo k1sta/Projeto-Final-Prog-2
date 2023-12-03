@@ -8,7 +8,6 @@
 void menu(char *produtos)
 {
     tProduto produto;
-    PILHA pilha;
     int id;
 
     puts("");
