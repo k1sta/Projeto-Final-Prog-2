@@ -310,3 +310,47 @@ bool criar_csv(FILE* arq){
 
     return true;
 }
+
+//funcao de caixa registradora
+void caixaRegistradora(FILE *arq){
+    int id, n, pos;
+    FILA *carrinho;
+    float total = 0;
+
+    inicializarPilha(carrinho);
+    while(id != -1){
+        printf("\e[1;1H\e[2J"); // Limpa o console
+        exibirCarrinho(carrinho);
+        puts(" ");
+        printf("Total: R$%.2f\n", total);
+        puts(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+        puts(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+        puts("Digite o ID do produto ou -1 para fechar a compra\n");
+        printf("Input: ");
+        scanf("%d", &id);
+
+        if(id == -1){
+            printf("\e[1;1H\e[2J"); // Limpa o console
+            printf("Valor a pagar: R$%.2f\n", total);
+            puts("Compra finalizada!");
+            return;
+        }
+
+        pos = buscarProduto(id, 0, arq);
+        if(pos == -1){
+            puts("Produto nao encontrado!");
+        } else{
+            tProduto produto;
+            fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+            fread(&produto, sizeof(tProduto), 1, arq);
+            produto.qnt_estoque--;
+            fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+            fwrite(&produto, sizeof(tProduto), 1, arq);
+            inserirNaFila(carrinho, produto);
+            total += produto.preco * n;
+            
+        }
+    }
+
+
+}
