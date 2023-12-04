@@ -39,7 +39,7 @@ void exibirCarrinho(FILA *f)
     puts("ID | Nome do produto | Preco unitario | Peso | Quantidade | Valor total");
     while (end != NULL)
     {
-        printf("%d %s %.2f %d", end->produto.id_prod, end->produto.nome_prod, end->produto.preco, end->produto.peso, end->quantidade, end->quantidade * end->produto.preco);
+        printf("%d %s %.2f %d %d %.2f", end->produto.id_prod, end->produto.nome_prod, end->produto.preco, end->produto.peso, end->quantidade, end->quantidade * end->produto.preco);
         end = end->prox;
     }
     printf("\"\n");

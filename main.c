@@ -5,9 +5,18 @@
 #include "dados.h"
 #include "arqlib.h"
 
-void menu(char *produtos)
-{
-    tProduto produto;
+void menu(char *arqDB)
+{   
+    FILE *estoque = fopen(arqDB, "rb+");
+    if (estoque == NULL)
+    {
+        puts("Erro ao abrir o arquivo\n");
+        exit(1);
+    }
+    
+    //int inicializarArquivo(FILE *arq);
+
+    //tProduto produto;
     int id;
 
     puts("");
@@ -30,33 +39,20 @@ void menu(char *produtos)
         switch (resposta)
         {
         case 1:
-            printf("\e[1;1H\e[2J"); // Limpa o console
-            puts("Quer adicionar por teclado ou arquivo?");
-            puts("1. Teclado");
-            puts("2. Arquivo");
-            puts("Para SAIR, digite qualquer outro numero");
-            printf("Input: ");
-            scanf("%d", &resposta);
-            switch (resposta)
-            {
-            case 1:
-                produto = inputProdutoTeclado();
-                break;
-            case 2:
-                inputProdutoArquivo("arroz.txt", 0, &produto);
-                break;
-            default:
-                return;
-            }
-            FILE *estoque = fopen(produtos, "r+");
-            cadastrarProduto(&produto, 1, estoque);
+            registroProdutos(estoque);
             break;
         case 2:
+            /*
+            A função modificarProduto deve ter uma comunicação com o usuário para o entendimento de quais campos ele quer modificar de um produto específico.
+            O que acho que pode ser feito é que o usuário digite o ID do produto que ele quer modificar e depois o programa mostre os campos que podem ser modificados.
+            */
+            puts("NÃO FUNCIONA DIREITO AINDA");
             printf("ID do produto: ");
             scanf("%d", &id);
-            modificarProduto(id, &produto, 1, estoque);
+            //modificarProduto(id, &produto, 1, estoque);
             break;
         case 3:
+            puts("NÃO FUNCIONA DIREITO AINDA");
             //removerProdutos();
             break;
         case 4:
@@ -65,13 +61,22 @@ void menu(char *produtos)
             buscarProduto(id, 1, estoque);
             break;
         case 5:
-
+            puts("NÃO FUNCIONA DIREITO AINDA");
+            //visualizarEstoque();
+            puts("\nDeseja criar um CSV? (1/0)");
+            int resposta;
+            scanf("%d", &resposta);
+            if (resposta == 1)
+            {
+                criar_csv(estoque);
+            }
             break;
         default:
-            return;
+            exit(0);
             break;
         }
-        printf("\e[1;1H\e[2J"); // Limpa o console
+
+        //printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
     }
 }
 

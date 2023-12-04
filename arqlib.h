@@ -2,7 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "dados.h"
+
+
+//FUNÇÃO PARA DEBUG.
+/*
+int inicializarArquivo(FILE *arq){
+    int n = 0;
+    fwrite(&n, sizeof(int), 1, arq);
+    return n;
+}
+*/
 
 //essa funcao retorna o numero de produtos cadastrados no arquivo produtos.dat
 int numProd(FILE *arq){
@@ -26,7 +35,7 @@ tProduto inputProdutoTeclado(){
     scanf("%f", &prod.preco);
     printf("%s", "ID: ");
     scanf("%d", &prod.id_prod);
-    printf("%s", "Peso: ");
+    printf("%s", "Peso (em gramas): ");
     scanf("%d", &prod.peso);
     return prod;
 }
@@ -76,7 +85,6 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq){
         fread(&anterior, sizeof(tProduto), 1, arq);
         if (produto->id_prod == anterior.id_prod) {
             puts("Erro: ID duplicado!");
-            fclose(arq);
             return false;
         } else if (produto->id_prod < anterior.id_prod) {
             baixo = meio - 1;
@@ -177,7 +185,6 @@ int buscarProduto(int id, int flag, FILE *arq){
         meio = (esq + dir) / 2;
     }
     if(flag) puts("Produto não encontrado!");
-    fclose(arq);
     return -1;
     
 }
@@ -238,49 +245,71 @@ int compraProdutos(int flag, FILE *arq){
     return true;
 }
 
+
+//ERRO. Executa para sempre quando tenta inputar 2 produtos seguidos pelo teclado.
 int registroProdutos(FILE *arq){
-    int aux, n;
+    int aux = 1, n, aux_ant = 0;
     tProduto *produtos;
     char nome[50];
 
-    printf("\e[1;1H\e[2J"); // Limpa o console
-    puts("Quer adicionar por teclado ou arquivo?");
-    puts("1. Teclado");
-    puts("2. Arquivo");
-    puts("Para SAIR, digite qualquer outro numero");
-    printf("Input: ");
-    scanf("%d", &aux);
+    while(aux == 1 || aux == 2){
+        n = 1;
 
-    switch(aux){
-        case 1:
-            for(int i = 0; i < n; i++){
-                produtos[i] = inputProdutoTeclado();
-            }
-            break;        
-        case 2:
-            puts("Quantos produtos deseja registrar? ");
-            scanf("%d", &n);
-            printf("%s", "Nome do arquivo: ");
-            scanf(" %[^\n]", nome);
-            inputProdutoArquivo(nome, n, produtos);
-            break;
-        default:
-            return -1;
+        printf("\e[1;1H\e[2J"); // Limpa o console
+        puts("Quer adicionar por teclado ou arquivo?");
+        puts("1. Teclado");
+        puts("2. Arquivo");
+        puts("Para SAIR, digite qualquer outro numero");
+        printf("Input: ");
+        scanf("%d", &aux);
+
+        switch(aux){
+            case 1:
+                if(aux_ant == 2){
+                    free(produtos);
+                }
+                produtos = (tProduto*)malloc(sizeof(tProduto));
+                if(!produtos){
+                    puts("Erro ao alocar memoria!");
+                    return -1;
+                }
+                *produtos = inputProdutoTeclado();
+                break;        
+            case 2:
+                puts("Quantos produtos deseja registrar? ");
+                scanf("%d", &n);
+                if(aux_ant == 1 || aux_ant == 2){
+                    free(produtos);
+                }
+                produtos = (tProduto*)malloc(n * sizeof(tProduto));
+                if(!produtos){
+                    puts("Erro ao alocar memoria!");
+                    return -1;
+                }
+                printf("%s", "Nome do arquivo: ");
+                scanf(" %[^\n]", nome);
+                inputProdutoArquivo(nome, n, produtos);
+                break;
+            default:
+                return 0;
+                break;
+
+        }
+
+        for(int i = 0; i < n; i++){
+            cadastrarProduto(&produtos[i], 0, arq);
+        }
+
+        atualizarNumProd(n, arq);
+        aux_ant = aux;
     }
 
-    for(int i = 0; i < n; i++){
-        cadastrarProduto(&produtos[i], 0, arq);
-    }
-    
-    atualizarNumProd(n, arq);
-    
-    return 0;
+    return -2;
 }
 
 
 //testar funcao ainda!!
 bool criar_csv(FILE* arq){
-
     FILE *csv;
     tProduto produto;
 
@@ -297,26 +326,32 @@ bool criar_csv(FILE* arq){
     int aux;
     fread(&aux, sizeof(aux), 1, arq); //pegar a qntd de elementos no inicio do dat
 
-    while(!feof(arq)){
-        fread(&produto, sizeof(tProduto), 1, arq);  //pegar um produto em si
+    while(fread(&produto, sizeof(tProduto), 1, arq) == 1){
 
-        fprintf(csv,"\n%s,%s,%s,%d,%f,%d,%f,%d", 
+        fprintf(csv,"\n%s,%s,%s,%d,%f,%d,%d", 
             produto.nome_prod, produto.categoria, produto.nome_fornec, 
             produto.qnt_estoque, produto.preco, produto.peso, produto.id_prod
         );
 
     }
-
+    
+    fclose(csv);
     return true;
 }
 
 //funcao de caixa registradora
 void caixaRegistradora(FILE *arq){
-    int id, n, pos;
-    FILA *carrinho;
+    int id, pos;
+    FILA *carrinho = (FILA*)malloc(sizeof(FILA));
     float total = 0;
+    tProduto produto;
 
-    inicializarPilha(carrinho);
+    if(!carrinho){
+        puts("Erro ao alocar memoria!");
+        return;
+    }
+    inicializarFila(carrinho);
+
     while(id != -1){
         printf("\e[1;1H\e[2J"); // Limpa o console
         exibirCarrinho(carrinho);
@@ -339,14 +374,25 @@ void caixaRegistradora(FILE *arq){
         if(pos == -1){
             puts("Produto nao encontrado!");
         } else{
-            tProduto produto;
             fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
             fread(&produto, sizeof(tProduto), 1, arq);
             produto.qnt_estoque--;
             fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
             fwrite(&produto, sizeof(tProduto), 1, arq);
-            inserirNaFila(carrinho, produto);
-            total += produto.preco * n;
+
+            No* aux;
+            while(aux != NULL){
+                if(aux->produto.id_prod == id){
+                    aux->quantidade++;
+                    break;
+                }
+                aux = aux->prox;
+            }
+
+            if(!aux){
+                inserirNaFila(carrinho, produto);
+                total += produto.preco;
+            }
             
         }
     }
