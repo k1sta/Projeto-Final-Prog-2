@@ -66,6 +66,26 @@ bool inputProdutoArquivo(char* nome, int n, tProduto* prod){
     return true;
 }
 
+void lerCSV(char* nome, tProduto* prod) {
+    FILE *csv = fopen(nome, "r");
+    if(csv == NULL){
+        puts("Erro ao abrir o arquivo!");
+        return;
+    }
+    char linha[256]; 
+    fgets(linha, sizeof(linha), csv); 
+    printf("%s", linha);
+
+
+    while(!feof(csv)){
+        fscanf(csv, "%[^,],%[^,],%[^,],%d,%f,%d,%d", prod->nome_prod, prod->categoria, prod->nome_fornec, &prod->qnt_estoque, &prod->preco, &prod->id_prod, &prod->peso);
+        prod++;
+    }
+
+    fclose(csv);
+    return;
+}
+
 //essa funcao atualiza o numero de produtos em produtos.dat em +n
 void atualizarNumProd(int n, FILE *arq){
     rewind(arq);
