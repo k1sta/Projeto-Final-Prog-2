@@ -213,7 +213,7 @@ A partir daqui, sao funcoes que serao chamadas pelo menu da main, diretamente
 =============================================================================
 */
 
-//essaa funcao ainda nao foi testada, mas eh a funcao de compra de produtos para o estoque
+
 //vale ressaltar que ela considera que o estoque eh infinito e que todos os produto estao registrados
 //testada e funciona -gabriel
 int compraProdutos(int flag, FILE *arq){
@@ -342,8 +342,9 @@ bool criar_csv(FILE* arq){
 }
 
 //funcao de caixa registradora
+// testada e funcional -gabriel
 void caixaRegistradora(FILE *arq){
-    int id, pos;
+    int id = 0, pos;
     FILA *carrinho = (FILA*)malloc(sizeof(FILA));
     float total = 0;
     tProduto produto;
@@ -382,7 +383,7 @@ void caixaRegistradora(FILE *arq){
             fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
             fwrite(&produto, sizeof(tProduto), 1, arq);
 
-            No* aux;
+            No* aux = carrinho->inicio;
             while(aux != NULL){
                 if(aux->produto.id_prod == id){
                     aux->quantidade++;
@@ -393,8 +394,9 @@ void caixaRegistradora(FILE *arq){
 
             if(!aux){
                 inserirNaFila(carrinho, produto);
-                total += produto.preco;
+                
             }
+            total += produto.preco;
             
         }
     }
@@ -420,4 +422,3 @@ void printarEstoque (FILE *arq) {
     }
     fclose(arq);
 }
-
