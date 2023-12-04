@@ -82,7 +82,7 @@ void atualizarNumProd(int n, FILE *arq){
 bool cadastrarProduto(tProduto *produto, int flag, FILE *arq){
     tProduto anterior;
     int baixo = 0, alto = numProd(arq) - 1, meio, pos;
-    while (baixo <= alto) {
+    while (baixo <= alto && baixo >= 0) {
         meio = (baixo + alto) / 2;
         fseek(arq, sizeof(int) + meio * sizeof(tProduto), SEEK_SET);
         fread(&anterior, sizeof(tProduto), 1, arq);
@@ -90,7 +90,7 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq){
             puts("Erro: ID duplicado!");
             return false;
         } else if (produto->id_prod < anterior.id_prod) {
-            baixo = meio - 1;
+            alto = meio - 1;
         } else {
             baixo = meio + 1;
         }
@@ -100,7 +100,6 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq){
     fseek(arq, sizeof(int) + pos * sizeof(tProduto), SEEK_SET);
     fread(&anterior, sizeof(tProduto), 1, arq);
 
-    //erro aqui.
     for (int i = numProd(arq); i > pos; i--) {
         fseek(arq, sizeof(int) + (i - 1) * sizeof(tProduto), SEEK_SET);
         fread(&anterior, sizeof(tProduto), 1, arq);
@@ -254,11 +253,11 @@ int compraProdutos(int flag, FILE *arq){
 
 //ERRO. Executa para sempre quando tenta inputar 2 produtos seguidos pelo teclado.
 int registroProdutos(FILE *arq){
-    int aux = 1, n, aux_ant = 0;
+    int escolha = 1, n, escolhaAnt = 0, aux;
     tProduto *produtos;
     char nome[50];
 
-    while(aux == 1 || aux == 2){
+    while(escolha == 1 || escolha == 2){
         n = 1;
 
         printf("\e[1;1H\e[2J"); // Limpa o console
@@ -271,7 +270,7 @@ int registroProdutos(FILE *arq){
 
         switch(aux){
             case 1:
-                if(aux_ant == 2){
+                if(escolhaAnt == 2){
                     free(produtos);
                 }
                 produtos = (tProduto*)malloc(sizeof(tProduto));
@@ -284,7 +283,7 @@ int registroProdutos(FILE *arq){
             case 2:
                 puts("Quantos produtos deseja registrar? ");
                 scanf("%d", &n);
-                if(aux_ant == 1 || aux_ant == 2){
+                if(escolhaAnt == 1 || escolhaAnt == 2){
                     free(produtos);
                 }
                 produtos = (tProduto*)malloc(n * sizeof(tProduto));
@@ -303,11 +302,15 @@ int registroProdutos(FILE *arq){
         }
 
         for(int i = 0; i < n; i++){
-            cadastrarProduto(&produtos[i], 0, arq);
+            aux = cadastrarProduto(&produtos[i], 0, arq);
+            if(!aux){
+                puts("ID Duplicado!");
+                break;
+            }
         }
 
-        atualizarNumProd(n, arq);
-        aux_ant = aux;
+        if(aux) atualizarNumProd(n, arq);
+        escolhaAnt = escolha;
         //printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
 
     }

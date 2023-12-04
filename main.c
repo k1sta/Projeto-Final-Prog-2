@@ -71,9 +71,9 @@ void menu(char *arqDB)
             buscarProduto(id, 1, estoque);
             break;
         case 5:
-            puts("NÃO FUNCIONA DIREITO AINDA");
+            puts("talvez funciona?");
             printarEstoque(estoque);
-            printf("numProd: %d\n", numProd(estoque));
+            //printf("numProd: %d\n", numProd(estoque)); //debug
             char simnao;
             puts("\nDeseja criar um CSV? (S/N)");
             scanf("%c", &simnao);
