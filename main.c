@@ -14,7 +14,7 @@ void menu(char *arqDB)
         exit(1);
     }
 
-    // tProduto produto;
+    inicializarArquivo(estoque);
 
     int id;
     int qtd = 0;
@@ -73,6 +73,7 @@ void menu(char *arqDB)
         case 5:
             puts("NÃO FUNCIONA DIREITO AINDA");
             printarEstoque(estoque);
+            printf("numProd: %d\n", numProd(estoque));
             char simnao;
             puts("\nDeseja criar um CSV? (S/N)");
             scanf("%c", &simnao);

@@ -70,7 +70,7 @@ bool inputProdutoArquivo(char* nome, int n, tProduto* prod){
 void atualizarNumProd(int n, FILE *arq){
     rewind(arq);
     int aux;
-    fread(&n, sizeof(int), 1, arq);
+    fread(&aux, sizeof(int), 1, arq);
     aux += n;
     fseek(arq, 0, SEEK_SET);
     fwrite(&aux, sizeof(int), 1, arq);
