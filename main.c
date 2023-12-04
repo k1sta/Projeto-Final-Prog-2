@@ -6,18 +6,18 @@
 #include "arqlib.h"
 
 void menu(char *arqDB)
-{   
+{
     FILE *estoque = fopen(arqDB, "wb+");
     if (estoque == NULL)
     {
         puts("Erro ao abrir o arquivo\n");
         exit(1);
     }
-    
-    int inicializarArquivo(FILE *arq);
 
-    //tProduto produto;
+    // tProduto produto;
+
     int id;
+    int qtd = 0;
 
     puts("");
     printf(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
@@ -32,7 +32,8 @@ void menu(char *arqDB)
         puts("2. EDITAR produto");
         puts("3. REMOVER produto");
         puts("4. BUSCAR produto");
-        puts("5. VIZUALIZAR estoque");
+        puts("5. VISUALIZAR estoque");
+        puts("6. CAIXA REGISTRADORA");
         puts("Para SAIR, digite qualquer outro numero");
         printf("\nInput: ");
         scanf("%d", &resposta);
@@ -49,11 +50,20 @@ void menu(char *arqDB)
             puts("NÃO FUNCIONA DIREITO AINDA");
             printf("ID do produto: ");
             scanf("%d", &id);
-            //modificarProduto(id, &produto, 1, estoque);
+            // modificarProduto(id, &produto, 1, estoque);
             break;
         case 3:
-            puts("NÃO FUNCIONA DIREITO AINDA");
-            //removerProdutos();
+            printf("Quantos produtos deseja remover? ");
+            scanf("%d", &qtd);
+            int *apagar = (int *)malloc(sizeof(int) * qtd);
+            puts("");
+            for (int i = 0; i < qtd; i++)
+            {
+                printf("ID %d:", i + 1);
+                scanf("%d", &id);
+                apagar[i] = id;
+            }
+            removerProdutos(apagar, qtd, 0, estoque);
             break;
         case 4:
             printf("ID do produto: ");
@@ -62,12 +72,12 @@ void menu(char *arqDB)
             break;
         case 5:
             puts("NÃO FUNCIONA DIREITO AINDA");
-            //printarEstoque(estoque);
-            printf("NumProd: %d", numProd(estoque));
-            puts("\nDeseja criar um CSV? (1/0)");
-            int resposta;
-            scanf("%d", &resposta);
-            if (resposta == 1)
+            printarEstoque(estoque);
+            char simnao;
+            puts("\nDeseja criar um CSV? (S/N)");
+            scanf("%c", &simnao);
+            getchar();
+            if (simnao == 's' || simnao - 32 == 's')
             {
                 criar_csv(estoque);
             }
@@ -76,8 +86,8 @@ void menu(char *arqDB)
             exit(0);
             break;
         }
-
-        //printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
+        puts("");
+        // printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
     }
 }
 
