@@ -5,16 +5,18 @@
 
 
 //FUNÇÃO PARA DEBUG.
-/*
+
 int inicializarArquivo(FILE *arq){
+    rewind(arq); //ponteiro do produtos.dat no inicio
     int n = 0;
     fwrite(&n, sizeof(int), 1, arq);
     return n;
 }
-*/
+
 
 //essa funcao retorna o numero de produtos cadastrados no arquivo produtos.dat
 int numProd(FILE *arq){
+    rewind(arq);
     int n = 0;
     fread(&n, sizeof(int), 1, arq);
     return n;
@@ -66,6 +68,7 @@ bool inputProdutoArquivo(char* nome, int n, tProduto* prod){
 
 //essa funcao atualiza o numero de produtos em produtos.dat em +n
 void atualizarNumProd(int n, FILE *arq){
+    rewind(arq);
     int aux;
     fread(&n, sizeof(int), 1, arq);
     aux += n;
@@ -97,6 +100,7 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq){
     fseek(arq, sizeof(int) + pos * sizeof(tProduto), SEEK_SET);
     fread(&anterior, sizeof(tProduto), 1, arq);
 
+    //erro aqui.
     for (int i = numProd(arq); i > pos; i--) {
         fseek(arq, sizeof(int) + (i - 1) * sizeof(tProduto), SEEK_SET);
         fread(&anterior, sizeof(tProduto), 1, arq);
@@ -304,6 +308,8 @@ int registroProdutos(FILE *arq){
 
         atualizarNumProd(n, arq);
         aux_ant = aux;
+        //printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
+
     }
 
     return -2;
@@ -420,5 +426,4 @@ void printarEstoque (FILE *arq) {
         printf("ID do Produto: %d\n", produto.id_prod);
         printf("Peso: %d\n", produto.peso);
     }
-    fclose(arq);
 }

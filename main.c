@@ -7,14 +7,14 @@
 
 void menu(char *arqDB)
 {   
-    FILE *estoque = fopen(arqDB, "rb+");
+    FILE *estoque = fopen(arqDB, "wb+");
     if (estoque == NULL)
     {
         puts("Erro ao abrir o arquivo\n");
         exit(1);
     }
     
-    //int inicializarArquivo(FILE *arq);
+    int inicializarArquivo(FILE *arq);
 
     //tProduto produto;
     int id;
@@ -62,7 +62,8 @@ void menu(char *arqDB)
             break;
         case 5:
             puts("NÃO FUNCIONA DIREITO AINDA");
-            //visualizarEstoque();
+            //printarEstoque(estoque);
+            printf("NumProd: %d", numProd(estoque));
             puts("\nDeseja criar um CSV? (1/0)");
             int resposta;
             scanf("%d", &resposta);
