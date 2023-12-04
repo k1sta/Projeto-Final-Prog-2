@@ -183,11 +183,14 @@ int buscarProduto(int id, int flag, FILE *arq){
 }
 
 //essa funcao recebe o id de um produto + o produto modificado e o modifica no arquivo produtos.dat
-//PRECISA DE REVISAO. FUNCIONA, MAS PODE NAO SER A MELHOR SOLUCAO PASSAR UM tProduto COMO PARAMETRO
+// talvez nao seja a melhor solucao enviando um tProduto como parâmetro
+// testada e funcional -gabriel
 bool modificarProduto(int id, tProduto *produto, int flag, FILE *arq){
     int pos;
+    rewind(arq);
+    int n = numProd(arq);
     pos = buscarProduto(id, flag, arq);
-    if(pos == -1){
+    if(pos == -2){
         return false;
     }
     fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
@@ -202,7 +205,6 @@ bool modificarProduto(int id, tProduto *produto, int flag, FILE *arq){
 A partir daqui, sao funcoes que serao chamadas pelo menu da main, diretamente
 =============================================================================
 */
-
 
 //essaa funcao ainda nao foi testada, mas eh a funcao de compra de produtos para o estoque
 //vale ressaltar que ela considera que o estoque eh infinito e que todos os produto estao registrados
@@ -353,3 +355,23 @@ void caixaRegistradora(FILE *arq){
 
 
 }
+
+// funcao para printar o estoque em um arq bin (entrando com o arquivo ja aberto)
+// testada e funcional -gabriel
+void printarEstoque (FILE *arq) {
+    rewind(arq);
+    int n = numProd(arq); tProduto produto;
+
+    for (int i = 0 ; i < n ; i++) {
+        fread(&produto, sizeof(tProduto), 1, arq);
+        printf("Nome do Produto: %s\n", produto.nome_prod);
+        printf("Categoria: %s\n", produto.categoria);
+        printf("Nome do Fornecedor: %s\n", produto.nome_fornec);
+        printf("Quantidade em Estoque: %d\n", produto.qnt_estoque);
+        printf("Preço: %.2f\n", produto.preco);
+        printf("ID do Produto: %d\n", produto.id_prod);
+        printf("Peso: %d\n", produto.peso);
+    }
+    fclose(arq);
+}
+
