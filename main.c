@@ -47,12 +47,12 @@ void menu()
     {
         int resposta = 0;
         puts("O que gostaria de fazer? Escolha sua resposta de acordo com as instrucoes a seguir:");
-        puts("1. CADASTRAR produto");
-        puts("2. EDITAR produto");
-        puts("3. REMOVER produto");
-        puts("4. BUSCAR produto");
-        puts("5. VISUALIZAR estoque");
-        puts("6. CAIXA REGISTRADORA");
+        puts("[1] CADASTRAR produto");
+        puts("[2] EDITAR produto");
+        puts("[3] REMOVER produto");
+        puts("[4] BUSCAR produto");
+        puts("[5] VISUALIZAR estoque");
+        puts("[6] CAIXA REGISTRADORA");
         puts("Para SAIR, digite qualquer outro numero");
         printf("\nInput: ");
         scanf("%d", &resposta);

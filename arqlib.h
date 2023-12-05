@@ -332,7 +332,7 @@ int registroProdutos(FILE *arq){
         puts("1. Teclado");
         puts("2. Arquivo texto");
         puts("3. Arquivo csv");
-        puts("Para SAIR, digite qualquer outro numero");
+        puts("Para VOLTAR, digite qualquer outro numero");
         printf("Input: ");
         scanf("%d", &aux);
 
