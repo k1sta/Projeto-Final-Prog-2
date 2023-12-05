@@ -27,8 +27,8 @@ int main(void)
 
 void menu()
 {
-    char arqDB[20] = "produtos2.dat";
-    FILE *estoque = fopen(arqDB, "wb+");
+    char arqDB[20] = "produtos.dat";
+    FILE *estoque = fopen(arqDB, "rb+");
     if (estoque == NULL)
     {
         puts("Erro ao abrir o arquivo\n");
