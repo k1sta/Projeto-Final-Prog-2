@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include "dados.h"
 
 
 //FUNÇÃO PARA DEBUG.
@@ -84,6 +85,26 @@ void lerCSV(char* nome, tProduto* prod) {
 
     fclose(csv);
     return;
+}
+
+int qntd_produtos_csv(char* nome){
+    int prod = 0;
+    FILE *csv = fopen(nome, "r");
+    if(csv == NULL){
+        puts("Erro ao abrir o arquivo!");
+        return 0;
+    }
+    char linha[256]; 
+    fgets(linha, sizeof(linha), csv); 
+
+    while(!feof(csv)){
+        fgets(linha, sizeof(linha), csv);
+        prod++;
+    }
+
+    fclose(csv);
+    return prod;
+
 }
 
 //essa funcao atualiza o numero de produtos em produtos.dat em +n
@@ -229,6 +250,30 @@ bool modificarProduto(int id, tProduto *produto, int flag, FILE *arq){
     return true;
 }
 
+tProduto catchProduto(int id, FILE *arq) {
+    tProduto produto;
+    int pos = buscarProduto(id, 0, arq);
+    if (pos == -1) {
+        // Produto não encontrado
+        produto.id_prod = -1;
+    } else {
+        fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+        fread(&produto, sizeof(tProduto), 1, arq);
+    }
+    return produto;
+}
+
+void printProduto(tProduto produto){
+
+    printf("\nProduto de ID %d: %s\n", produto.id_prod, produto.nome_prod);
+    printf("Categoria: %s\n", produto.categoria);
+    printf("Preço: %f\n", produto.preco);
+    printf("Quantidade: %d\n", produto.qnt_estoque);
+    printf("Peso: %d\n", produto.peso);
+    printf("Fornecedor: %f\n", produto.nome_fornec);
+
+}
+
 
 /*
 =============================================================================
@@ -277,13 +322,14 @@ int registroProdutos(FILE *arq){
     tProduto *produtos;
     char nome[50];
 
-    while(escolha == 1 || escolha == 2){
+    while(escolha == 1 || escolha == 2 || escolha == 3){
         n = 1;
 
         printf("\e[1;1H\e[2J"); // Limpa o console
         puts("Quer adicionar por teclado ou arquivo?");
         puts("1. Teclado");
-        puts("2. Arquivo");
+        puts("2. Arquivo texto");
+        puts("3. Arquivo csv");
         puts("Para SAIR, digite qualquer outro numero");
         printf("Input: ");
         scanf("%d", &aux);
@@ -315,6 +361,17 @@ int registroProdutos(FILE *arq){
                 scanf(" %[^\n]", nome);
                 inputProdutoArquivo(nome, n, produtos);
                 break;
+            case 3:
+                n = qntd_produtos_csv("exemplo.txt");
+                produtos = (tProduto*)malloc(n*sizeof(tProduto));
+                if(!produtos){
+                    puts("Erro ao alocar memoria!");
+                    return -1;
+                }
+                lerCSV("exemplo.csv", produtos);
+
+                break;
+
             default:
                 return 0;
                 break;
@@ -361,7 +418,7 @@ bool criar_csv(FILE* arq){
 
         fprintf(csv,"\n%s,%s,%s,%d,%f,%d,%d", 
             produto.nome_prod, produto.categoria, produto.nome_fornec, 
-            produto.qnt_estoque, produto.preco, produto.peso, produto.id_prod
+            produto.qnt_estoque, produto.preco, produto.id_prod, produto.peso
         );
 
     }
