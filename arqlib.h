@@ -2,11 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "dados.h"
 
-
-//FUNÇÃO PARA DEBUG.
-
+// FUNCIONA
 int inicializarArquivo(FILE *arq){
     rewind(arq); //ponteiro do produtos.dat no inicio
     int n = 0;
@@ -16,6 +13,7 @@ int inicializarArquivo(FILE *arq){
 
 
 //essa funcao retorna o numero de produtos cadastrados no arquivo produtos.dat
+// FUNCIONA
 int numProd(FILE *arq){
     rewind(arq);
     int n = 0;
@@ -24,6 +22,7 @@ int numProd(FILE *arq){
 }
 
 //essa funcao recebe um produto e o retorna
+// FUNCIONA
 tProduto inputProdutoTeclado(){
     tProduto prod;
     printf("%s", "Nome do produto: ");
@@ -44,7 +43,7 @@ tProduto inputProdutoTeclado(){
 }
 
 //essa funcao recebe o nome de um arquivo que contem n produtos
-//testada e funciona -gabriel
+// FUNCIONA
 bool inputProdutoArquivo(char* nome, int n, tProduto* prod){
     FILE *arq = fopen(nome, "r");
     if(arq == NULL){
@@ -67,6 +66,7 @@ bool inputProdutoArquivo(char* nome, int n, tProduto* prod){
     return true;
 }
 
+// FUNCIONA
 void lerCSV(char* nome, tProduto* prod) {
     FILE *csv = fopen(nome, "r");
     if(csv == NULL){
@@ -87,6 +87,7 @@ void lerCSV(char* nome, tProduto* prod) {
     return;
 }
 
+// FUNCIONA
 int qntd_produtos_csv(char* nome){
     int prod = 0;
     FILE *csv = fopen(nome, "r");
@@ -108,6 +109,7 @@ int qntd_produtos_csv(char* nome){
 }
 
 //essa funcao atualiza o numero de produtos em produtos.dat em +n
+// NAO SEI SE FUNCIONA
 void atualizarNumProd(int n, FILE *arq){
     rewind(arq);
     int aux;
@@ -196,7 +198,7 @@ bool removerProdutos(int *id, int n, int flag, FILE *arq){
 
 //essa funcao recebe um id e imprime as informacoes do produto com esse id, alem de retornar a posicao dele no arquivo
 //esse algoritmo foi feito a partir do algoritmo de busca binaria
-//testada e funciona -gabriel
+// FUNCIONA
 int buscarProduto(int id, int flag, FILE *arq){
     tProduto produto;
     int esq = 0, dir, meio;
@@ -235,7 +237,7 @@ int buscarProduto(int id, int flag, FILE *arq){
 
 //essa funcao recebe o id de um produto + o produto modificado e o modifica no arquivo produtos.dat
 // talvez nao seja a melhor solucao enviando um tProduto como parâmetro
-// testada e funcional -gabriel
+// FUNCIONA
 bool modificarProduto(int id, tProduto *produto, int flag, FILE *arq){
     int pos;
     rewind(arq);
@@ -250,6 +252,7 @@ bool modificarProduto(int id, tProduto *produto, int flag, FILE *arq){
     return true;
 }
 
+
 tProduto catchProduto(int id, FILE *arq) {
     tProduto produto;
     int pos = buscarProduto(id, 0, arq);
@@ -263,14 +266,12 @@ tProduto catchProduto(int id, FILE *arq) {
     return produto;
 }
 
+// FUNCIONA
 void printProduto(tProduto produto){
 
-    printf("\nProduto de ID %d: %s\n", produto.id_prod, produto.nome_prod);
-    printf("Categoria: %s\n", produto.categoria);
-    printf("Preço: %f\n", produto.preco);
-    printf("Quantidade: %d\n", produto.qnt_estoque);
-    printf("Peso: %d\n", produto.peso);
-    printf("Fornecedor: %f\n", produto.nome_fornec);
+    printf("%-4s | %-15s | %-15s | %-15s | %-15s | %-15s | %-10s\n", "ID", "Nome do produto", "Categoria", "Fornecedor","Qtd Estoque","Preco unitario", "Peso");
+    printf("-----|-----------------|-----------------|-----------------|-----------------|-----------------|------------\n");
+    printf("%-4d | %-15s | %-15s | %-15s | %-15d | %-15f | %-10d \n", produto.id_prod, produto.nome_prod, produto.categoria, produto.nome_fornec, produto.qnt_estoque, produto.preco, produto.peso);
 
 }
 
@@ -283,7 +284,7 @@ A partir daqui, sao funcoes que serao chamadas pelo menu da main, diretamente
 
 
 //vale ressaltar que ela considera que o estoque eh infinito e que todos os produto estao registrados
-//testada e funciona -gabriel
+// FUNCIONA
 int compraProdutos(int flag, FILE *arq){
     int id, n;
 
@@ -317,6 +318,7 @@ int compraProdutos(int flag, FILE *arq){
 
 
 //ERRO. Executa para sempre quando tenta inputar 2 produtos seguidos pelo teclado.
+// NAO SEI SE FUNCIONA ????
 int registroProdutos(FILE *arq){
     int escolha = 1, n, escolhaAnt = 0, aux;
     tProduto *produtos;
@@ -336,8 +338,8 @@ int registroProdutos(FILE *arq){
 
         switch(aux){
             case 1:
-                if(escolhaAnt == 2){
-                    free(produtos);
+                if(escolhaAnt == 2 && escolhaAnt == 3){ // escolhaAnt != 0 ???
+                    free(produtos); 
                 }
                 produtos = (tProduto*)malloc(sizeof(tProduto));
                 if(!produtos){
@@ -349,7 +351,7 @@ int registroProdutos(FILE *arq){
             case 2:
                 puts("Quantos produtos deseja registrar? ");
                 scanf("%d", &n);
-                if(escolhaAnt == 1 || escolhaAnt == 2){
+                if(escolhaAnt == 1 || escolhaAnt == 2){ // escolhaAnt != 0 ???
                     free(produtos);
                 }
                 produtos = (tProduto*)malloc(n * sizeof(tProduto));
@@ -362,13 +364,15 @@ int registroProdutos(FILE *arq){
                 inputProdutoArquivo(nome, n, produtos);
                 break;
             case 3:
-                n = qntd_produtos_csv("exemplo.txt");
+                printf("%s", "Nome do arquivo: ");
+                scanf(" %[^\n]", nome);
+                n = qntd_produtos_csv(nome);
                 produtos = (tProduto*)malloc(n*sizeof(tProduto));
                 if(!produtos){
                     puts("Erro ao alocar memoria!");
                     return -1;
                 }
-                lerCSV("exemplo.csv", produtos);
+                lerCSV(nome, produtos);
 
                 break;
 
@@ -396,7 +400,7 @@ int registroProdutos(FILE *arq){
 }
 
 
-//testar funcao ainda!!
+// FUNCIONA
 bool criar_csv(FILE* arq){
     FILE *csv;
     tProduto produto;
@@ -428,7 +432,7 @@ bool criar_csv(FILE* arq){
 }
 
 //funcao de caixa registradora
-// testada e funcional -gabriel
+// FUNCIONA
 void caixaRegistradora(FILE *arq){
     int id = 0, pos;
     FILA *carrinho = (FILA*)malloc(sizeof(FILA));
@@ -491,19 +495,18 @@ void caixaRegistradora(FILE *arq){
 }
 
 // funcao para printar o estoque em um arq bin (entrando com o arquivo ja aberto)
-// testada e funcional -gabriel
+// FUNCIONA
 void printarEstoque (FILE *arq) {
     rewind(arq);
     int n = numProd(arq); tProduto produto;
 
+    printf("%-4s | %-15s | %-15s | %-15s | %-15s | %-15s | %-10s\n", "ID", "Nome do produto", "Categoria", "Fornecedor","Qtd Estoque","Preco unitario", "Peso");
+    printf("-----|-----------------|-----------------|-----------------|-----------------|-----------------|------------\n");
+   
+
     for (int i = 0 ; i < n ; i++) {
         fread(&produto, sizeof(tProduto), 1, arq);
-        printf("Nome do Produto: %s\n", produto.nome_prod);
-        printf("Categoria: %s\n", produto.categoria);
-        printf("Nome do Fornecedor: %s\n", produto.nome_fornec);
-        printf("Quantidade em Estoque: %d\n", produto.qnt_estoque);
-        printf("Preço: %.2f\n", produto.preco);
-        printf("ID do Produto: %d\n", produto.id_prod);
-        printf("Peso: %d\n", produto.peso);
+        printf("%-4d | %-15s | %-15s | %-15s | %-15d | %-15f | %-10d \n", produto.id_prod, produto.nome_prod, produto.categoria, produto.nome_fornec, produto.qnt_estoque, produto.preco, produto.peso);
+        
     }
 }

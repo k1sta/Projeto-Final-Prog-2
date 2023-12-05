@@ -5,8 +5,9 @@
 #include "dados.h"
 #include "arqlib.h"
 
-void menu(char *arqDB)
+void menu()
 {
+    char arqDB[20] = "produtos2.dat";
     FILE *estoque = fopen(arqDB, "wb+");
     if (estoque == NULL)
     {
@@ -171,6 +172,7 @@ int main(void)
     printf("%d\n", numProd());
     buscarProduto(10, 1);
     */
+
 
     return 0;
 }
