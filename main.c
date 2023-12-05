@@ -5,6 +5,26 @@
 #include "dados.h"
 #include "arqlib.h"
 
+void menu();
+void printInicio();
+
+int main(void)
+{
+    menu("produtos.dat");
+    /*
+    tProduto produto;
+    inputProdutoArquivo("arroz.txt", 0, &produto);
+    criarArquivoProdutos();
+    printf("%d\n", numProd());
+    cadastrarProduto(&produto, 1);
+    printf("%d\n", numProd());
+    buscarProduto(10, 1);
+    */
+
+
+    return 0;
+}   
+
 void menu()
 {
     char arqDB[20] = "produtos2.dat";
@@ -21,9 +41,7 @@ void menu()
     int qtd = 0;
 
     puts("");
-    printf(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
-    printf("::::::::::::::::: Seja bem-vindo ao sistema de gerencia de loja! ::::::::::::::::::::::\n");
-    printf(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
+    printInicio();
     puts("");
     while (1)
     {
@@ -63,12 +81,12 @@ void menu()
 
                 printf("\nQual das informações deseja alterar?\n");
 
-                puts("1. Nome do produto");
-                puts("2. Categoria");
-                puts("3. Preço");
-                puts("4. Quantidade");
-                puts("5. Peso");
-                puts("6. Fornecedor");
+                puts("[1] Nome do produto");
+                puts("[2] Categoria");
+                puts("[3] Preço");
+                puts("[4] Quantidade");
+                puts("[5] Peso");
+                puts("[6] Fornecedor");
                 puts("Para SAIR, digite qualquer outro numero");
                 printf("\nInput: ");
 
@@ -88,17 +106,17 @@ void menu()
 
                 case 3:
                     printf("\nDigite o novo preço do produto: ");
-                    scanf("%f", produto.preco);
+                    scanf("%f", &produto.preco);
                     break;
 
                 case 4:
                     printf("\nDigite a nova quantidade do produto: ");
-                    scanf("%d", produto.qnt_estoque);
+                    scanf("%d", &produto.qnt_estoque);
                     break;
 
                 case 5:
                     printf("\nDigite o novo peso do produto: ");
-                    scanf("%d", produto.peso);
+                    scanf("%d", &produto.peso);
                     break;
 
                 case 6:
@@ -160,19 +178,14 @@ void menu()
     }
 }
 
-int main(void)
-{
-    menu("produtos.dat");
-    /*
-    tProduto produto;
-    inputProdutoArquivo("arroz.txt", 0, &produto);
-    criarArquivoProdutos();
-    printf("%d\n", numProd());
-    cadastrarProduto(&produto, 1);
-    printf("%d\n", numProd());
-    buscarProduto(10, 1);
-    */
-
-
-    return 0;
+void printInicio(){
+puts("===============================================================================================");
+puts(" ");
+puts(" _____ _____ ____  _____  ____  ____    ____  _____   _____ ____  _____  ____  ____  _     _____");
+puts("/  __//  __// ___\\/__ __\\/  _ \\/  _ \\  /  _ \\/  __/  /  __// ___\\/__ __\\/  _ \\/  _ \\/ \\ /\\/  __/");
+puts("| |  _|  \\  |    \\  / \\  | / \\|| / \\|  | | \\||  \\    |  \\  |    \\  / \\  | / \\|| / \\|| | |||  \\  ");
+puts("| |_//|  /_ \\___ |  | |  | |-||| \\_/|  | |_/||  /_   |  /_ \\___ |  | |  | \\_/|| \\_\\|| \\_/||  /_ ");
+puts("\\____\\____\\____/  \\_/  \\_/ \\|\\____/  \\____/\\____\\  \\____\\____/  \\_/  \\____/\\____\\____/\\____\\ ");                                                                                 
+puts(" ");
+puts("===============================================================================================");
 }
