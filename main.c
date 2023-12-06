@@ -105,7 +105,7 @@ void menu()
             break;
         }
         puts("");
-        delay(1000);
+        delay(10000); ///// ALTERAR ALTERAR
         printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
     }
 }

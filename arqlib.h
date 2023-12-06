@@ -72,6 +72,7 @@ tProduto inputProdutoArquivo(char* nome, int n){
         fscanf(arq, "%f\n", &prod->preco);
         fscanf(arq, "%d\n", &prod->id_prod);
         fscanf(arq, "%d\n", &prod->peso);
+        printf("%s, %s, %s, %d, %f, %d, %d", prod->nome_prod, prod->categoria, prod->nome_fornec,prod->qnt_estoque, prod->preco, prod->id_prod, prod->peso);
 
     }
 
@@ -166,6 +167,7 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq){
     fseek(arq, sizeof(int) + pos * sizeof(tProduto), SEEK_SET);
     fwrite(produto, sizeof(tProduto), 1, arq);
     puts("Produto cadastrado com sucesso!");
+    delay(1000);
     return true;
 }
 
@@ -322,13 +324,13 @@ int compraProdutos(int flag, FILE *arq){
             fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
             fwrite(&produto, sizeof(tProduto), 1, arq);
             puts("Compra realizada com sucesso!");
+
         
         }
     }while(id != -1);
 
     return true;
 }
-
 
 
 //ERRO. Executa para sempre quando tenta inputar 2 produtos seguidos pelo teclado.
