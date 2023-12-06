@@ -20,14 +20,14 @@ int main(void)
 void menu()
 {
 
-    FILE *estoque = fopen("produtos.dat", "wb+");
+    FILE *estoque = fopen("produtos.dat", "rb+");
     if (estoque == NULL)
     {
         puts("Erro ao abrir o arquivo\n");
         exit(1);
     }
 
-    inicializarArquivo(estoque);
+    // inicializarArquivo(estoque);
 
     int id;
     int qtd = 0;
@@ -46,7 +46,9 @@ void menu()
         printf("%s[5]%s ADIOCIONAR quantidade\n", BCYN, SEMCOR);
         printf("%s[6]%s VISUALIZAR estoque\n", BCYN, SEMCOR);
         printf("%s[7]%s CAIXA REGISTRADORA\n", BCYN, SEMCOR);
+        printf("%s[8]%s ORDENAR o estoque\n", BCYN, SEMCOR);
         printf("%sPara SAIR, digite qualquer outro numero%s\n", BWHT, SEMCOR);
+
         printf("\nInput: ");
         scanf("%d", &resposta);
         switch (resposta)
@@ -93,12 +95,16 @@ void menu()
         case 7:
             caixaRegistradora(estoque);
             break;
+        case 8:
+            bubbleSort(estoque);
+            printf("Estoque ordenado! ");
+            break;
         default:
             exit(0);
             break;
         }
         puts("");
-        delay(1000);            ///// ALTERAR ALTERAR
+        delay(1000);
         printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
     }
 }
