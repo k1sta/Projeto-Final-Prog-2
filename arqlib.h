@@ -304,12 +304,12 @@ int compraProdutos(int flag, FILE *arq){
         puts("Digite o ID do produto comprado (-1 para sair): ");
         scanf("%d", &id);
         
+        if (id != -1) {
+            puts("Digite a quantidade comprada: ");
+            scanf("%d", &n);
 
-        puts("Digite a quantidade comprada: ");
-        scanf("%d", &n);
+            printf("%d", id);
 
-        printf("%d", id);
-        if(id != -1){
             tProduto produto;
             int pos = buscarProduto(id, 0, arq);
             if(pos == -1){
@@ -322,11 +322,13 @@ int compraProdutos(int flag, FILE *arq){
             fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
             fwrite(&produto, sizeof(tProduto), 1, arq);
             puts("Compra realizada com sucesso!");
+        
         }
     }while(id != -1);
 
     return true;
 }
+
 
 
 //ERRO. Executa para sempre quando tenta inputar 2 produtos seguidos pelo teclado.
