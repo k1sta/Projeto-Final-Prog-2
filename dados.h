@@ -3,6 +3,10 @@
 #include <string.h>
 #include <stdbool.h>
 
+#define BCYN "\e[1;36m"
+#define BWHT "\e[1;37m"
+#define SEMCOR "\e[0m"
+
 typedef struct
 {
     char nome_prod[50];
@@ -36,7 +40,7 @@ void inicializarFila(FILA *f)
 void exibirCarrinho(FILA *f)
 {
     No *end = f->inicio;
-    printf("%-4s | %-15s | %-15s | %-5s | %-10s | %-10s\n", "ID", "Nome do produto", "Preco unitario", "Peso", "Quantidade", "Valor total");
+    printf("%s%-4s | %-15s | %-15s | %-5s | %-10s | %-10s %s\n", BWHT,"ID", "Nome do produto", "Preco unitario", "Peso", "Quantidade", "Valor total", SEMCOR);
     while (end != NULL) {
         printf("%-4d | %-15s | %-15.2f | %-5d | %-10d | %-10.2f\n", end->produto.id_prod, end->produto.nome_prod, end->produto.preco, end->produto.peso, end->quantidade, end->quantidade * end->produto.preco);
         end = end->prox;
