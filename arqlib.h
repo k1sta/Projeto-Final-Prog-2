@@ -343,9 +343,6 @@ int registroProdutos(FILE *arq){
 
         switch(aux){
             case 1:
-                if(escolhaAnt == 2 && escolhaAnt == 3){ // escolhaAnt != 0 ???
-                    free(produtos); 
-                }
                 produtos = (tProduto*)malloc(sizeof(tProduto));
                 if(!produtos){
                     puts("Erro ao alocar memoria!");
@@ -356,9 +353,6 @@ int registroProdutos(FILE *arq){
             case 2:
                 puts("Quantos produtos deseja registrar? ");
                 scanf("%d", &n);
-                if(escolhaAnt == 1 || escolhaAnt == 2){ // escolhaAnt != 0 ???
-                    free(produtos);
-                }
                 produtos = (tProduto*)malloc(n * sizeof(tProduto));
                 if(!produtos){
                     puts("Erro ao alocar memoria!");

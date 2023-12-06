@@ -86,11 +86,11 @@ void menu()
             break;
         case 5:
             printarEstoque(estoque);
-            char simnao;
-            puts("\nDeseja criar um CSV? (S/N)");
-            scanf("%c", &simnao);
-            getchar();
-            if (simnao == 's' || simnao - 32 == 's')
+            puts("\nDeseja criar um CSV?");
+            puts("Digite 1 para ACEITAR ou qualquer outro numero para RECUSAR");
+            printf("\nInput: ");
+            scanf("%d", &resposta);
+            if (resposta)
             {
                 criar_csv(estoque);
             }
