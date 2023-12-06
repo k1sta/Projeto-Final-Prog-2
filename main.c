@@ -4,13 +4,14 @@
 #include <stdbool.h>
 #include "dados.h"
 #include "arqlib.h"
+#include <time.h>
 
 void menu();
 void printInicio();
 
 int main(void)
 {
-    menu("produtos.dat");
+    menu();
     /*
     tProduto produto;
     inputProdutoArquivo("arroz.txt", 0, &produto);
@@ -28,17 +29,18 @@ int main(void)
 void menu()
 {
     
-    FILE *estoque = fopen("produtos.dat", "wb+");
+    FILE *estoque = fopen("produtos.dat", "rb+");
     if (estoque == NULL)
     {
         puts("Erro ao abrir o arquivo\n");
         exit(1);
     }
 
-    inicializarArquivo(estoque);
+    // inicializarArquivo(estoque);
 
     int id;
     int qtd = 0;
+    int simnao;
 
     puts("");
     printInicio();
@@ -51,8 +53,9 @@ void menu()
         puts("[2] EDITAR produto");
         puts("[3] REMOVER produto");
         puts("[4] BUSCAR produto");
-        puts("[5] VISUALIZAR estoque");
-        puts("[6] CAIXA REGISTRADORA");
+        puts("[5] ADICIONAR quantidade");
+        puts("[6] VISUALIZAR estoque");
+        puts("[7] CAIXA REGISTRADORA");
         puts("Para SAIR, digite qualquer outro numero");
         printf("\nInput: ");
         scanf("%d", &resposta);
@@ -62,9 +65,7 @@ void menu()
             registroProdutos(estoque);
             break;
         case 2:
-            
-            void editarProduto(FILE *arq);
-            
+            editarProduto(estoque);
             break;
         case 3:
             printf("Quantos produtos deseja remover? ");
@@ -85,22 +86,27 @@ void menu()
             buscarProduto(id, 1, estoque);
             break;
         case 5:
+            compraProdutos(0, estoque);
+            break;
+        case 6:
             printarEstoque(estoque);
-            char simnao;
-            puts("\nDeseja criar um CSV? (S/N)");
-            scanf("%c", &simnao);
-            getchar();
-            if (simnao == 's' || simnao - 32 == 's')
+            puts("\nDeseja criar um CSV? (Digite 1 para aceitar)");
+            scanf("%d", &simnao);
+            if (simnao == 1)
             {
                 criar_csv(estoque);
             }
+            break;
+        case 7:
+            caixaRegistradora(estoque);
             break;
         default:
             exit(0);
             break;
         }
         puts("");
-        // printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
+        delay(1000);
+        printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
     }
 }
 
