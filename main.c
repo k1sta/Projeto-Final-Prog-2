@@ -1,9 +1,12 @@
+//gcc dados.c busca_prod.c caixa_reg.c compra_prod.c edit_prod.c func_secundarias.c print_estoque.c register_prod.c remove_prod.c main.c -o main.exe
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "dados.h"
-#include "arqlib.h"
+#include "universal.h"
+//#include "arqlib.h"
+
 
 void menu();
 void printInicio();
@@ -17,14 +20,14 @@ int main(void)
 void menu()
 {
 
-    FILE *estoque = fopen("produtos.dat", "rb+");
+    FILE *estoque = fopen("produtos.dat", "wb+");
     if (estoque == NULL)
     {
         puts("Erro ao abrir o arquivo\n");
         exit(1);
     }
 
-    // inicializarArquivo(estoque);
+    inicializarArquivo(estoque);
 
     int id;
     int qtd = 0;
