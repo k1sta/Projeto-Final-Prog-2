@@ -2,6 +2,20 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
+
+//adiciona um tempo em ms antes de rodar a linha
+//testada e funcional - Marcelo
+void delay(int milliseconds)
+{
+    long pause;
+    clock_t now,then;
+
+    pause = milliseconds*(CLOCKS_PER_SEC/1000);
+    now = then = clock();
+    while( (now-then) < pause )
+        now = clock();
+}
 
 // FUNCIONA
 int inicializarArquivo(FILE *arq){
@@ -391,8 +405,8 @@ int registroProdutos(FILE *arq){
 
         if(aux) atualizarNumProd(n, arq);
         escolhaAnt = escolha;
-        //printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
-
+        delay(1000);
+        printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
     }
 
     return -2;
