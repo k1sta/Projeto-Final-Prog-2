@@ -83,18 +83,18 @@ bool inputProdutoArquivo(char* nome, int n, tProduto* prod){
 // FUNCIONA
 void lerCSV(char* nome, tProduto* prod) {
     FILE *csv = fopen(nome, "r");
+    int n = 0;
+
     if(csv == NULL){
         puts("Erro ao abrir o arquivo!");
         return;
     }
     char linha[256]; 
-    fgets(linha, sizeof(linha), csv); 
-    printf("%s", linha);
-
+    fgets(linha, sizeof(linha), csv);
 
     while(!feof(csv)){
-        fscanf(csv, "%[^,],%[^,],%[^,],%d,%f,%d,%d", prod->nome_prod, prod->categoria, prod->nome_fornec, &prod->qnt_estoque, &prod->preco, &prod->id_prod, &prod->peso);
-        prod++;
+        fscanf(csv, "%[^,],%[^,],%[^,],%d,%f,%d,%d\n", prod[n].nome_prod, prod[n].categoria, prod[n].nome_fornec, &prod[n].qnt_estoque, &prod[n].preco, &prod[n].id_prod, &prod[n].peso);
+        n++;
     }
 
     fclose(csv);
@@ -120,18 +120,6 @@ int qntd_produtos_csv(char* nome){
     fclose(csv);
     return prod;
 
-}
-
-//essa funcao atualiza o numero de produtos em produtos.dat em +n
-// NAO SEI SE FUNCIONA
-void atualizarNumProd(int n, FILE *arq){
-    rewind(arq);
-    int aux;
-    fread(&aux, sizeof(int), 1, arq);
-    aux += n;
-    fseek(arq, 0, SEEK_SET);
-    fwrite(&aux, sizeof(int), 1, arq);
-    fflush(arq);
 }
 
 //essa funcao recebe um produto e o cadastra no arquivo produtos.dat
@@ -380,7 +368,7 @@ int registroProdutos(FILE *arq){
                 printf("%s", "Nome do arquivo: ");
                 scanf(" %[^\n]", nome);
                 n = qntd_produtos_csv(nome);
-                produtos = (tProduto*)malloc(n*sizeof(tProduto));
+                produtos = (tProduto*)calloc(n, sizeof(tProduto));
                 if(!produtos){
                     puts("Erro ao alocar memoria!");
                     return -1;
@@ -401,9 +389,14 @@ int registroProdutos(FILE *arq){
                 puts("ID Duplicado!");
                 break;
             }
+            int aux2 = numProd(arq);
+            aux2++;
+            fseek(arq, 0, SEEK_SET);
+            fwrite(&aux2, sizeof(int), 1, arq);
         }
 
-        if(aux) atualizarNumProd(n, arq);
+        free(produtos);
+
         escolhaAnt = escolha;
         delay(1000);
         printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
