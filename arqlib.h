@@ -188,10 +188,10 @@ bool removerProdutos(int *id, int n, int flag, FILE *arq)
     tProduto produto;
     int i;
 
-    arq2 = fopen(arq, "rb");
+    arq2 = fopen("produtos2.dat", "wb");
     if (arq2 == NULL)
     {
-        if (flag)
+        if (flag) 
             puts("Erro ao abrir o arquivo temporário!");
         return false;
     }
@@ -397,6 +397,7 @@ int registroProdutos(FILE *arq)
             }
             printf("%s", "Nome do arquivo: ");
             scanf(" %[^\n]", nome);
+            getchar();
             inputProdutoArquivo(nome, n, produtos);
             break;
         case 3:

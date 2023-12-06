@@ -17,7 +17,7 @@ int main(void)
 void menu()
 {
 
-    FILE *estoque = fopen("produtos2.dat", "rb+");
+    FILE *estoque = fopen("produtos.dat", "rb+");
     if (estoque == NULL)
     {
         puts("Erro ao abrir o arquivo\n");
@@ -55,14 +55,17 @@ void menu()
             editarProduto(estoque);
             break;
         case 3:
+            // getchar();
             printf("Quantos produtos deseja remover? ");
             scanf("%d", &qtd);
+            getchar();
             int *apagar = (int *)malloc(sizeof(int) * qtd);
             puts("");
             for (int i = 0; i < qtd; i++)
             {
-                printf("ID %d:", i + 1);
+                printf("ID %d: ", i + 1);
                 scanf("%d", &id);
+                getchar();
                 apagar[i] = id;
             }
             removerProdutos(apagar, qtd, 0, estoque);
@@ -81,7 +84,8 @@ void menu()
             puts("Digite 1 para ACEITAR ou qualquer outro numero para RECUSAR");
             printf("\nInput: ");
             scanf("%d", &resposta);
-            if (resposta)
+            getchar();
+            if (resposta == 1)
             {
                 criar_csv(estoque);
             }
