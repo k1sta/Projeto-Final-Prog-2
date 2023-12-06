@@ -63,7 +63,7 @@ void menu()
             break;
         case 2:
             
-            void editarProduto(FILE *arq);
+            editarProduto(estoque);
             
             break;
         case 3:
