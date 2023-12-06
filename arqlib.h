@@ -73,6 +73,7 @@ bool inputProdutoArquivo(char* nome, int n, tProduto* prod){
         fscanf(arq, "%f\n", &prod->preco);
         fscanf(arq, "%d\n", &prod->id_prod);
         fscanf(arq, "%d\n", &prod->peso);
+        printf("%s, %s, %s, %d, %f, %d, %d", prod->nome_prod, prod->categoria, prod->nome_fornec,prod->qnt_estoque, prod->preco, prod->id_prod, prod->peso);
 
     }
 
@@ -155,6 +156,7 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq){
     fseek(arq, sizeof(int) + pos * sizeof(tProduto), SEEK_SET);
     fwrite(produto, sizeof(tProduto), 1, arq);
     puts("Produto cadastrado com sucesso!");
+    delay(1000);
     return true;
 }
 
@@ -311,6 +313,8 @@ int compraProdutos(int flag, FILE *arq){
             fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
             fwrite(&produto, sizeof(tProduto), 1, arq);
             puts("Compra realizada com sucesso!");
+
+        
         }
     }while(id != -1);
 
@@ -515,87 +519,5 @@ void printarEstoque (FILE *arq) {
         fread(&produto, sizeof(tProduto), 1, arq);
         printf("%-4d | %-15s | %-15s | %-15s | %-15d | %-15f | %-10d \n", produto.id_prod, produto.nome_prod, produto.categoria, produto.nome_fornec, produto.qnt_estoque, produto.preco, produto.peso);
         
-    }
-}
-
-void editarProduto(FILE *arq)
-{   
-    int id;
-    tProduto produto;
-
-    printf("Insira o ID do produto: ");
-    scanf("%d", &id);
-
-    produto = catchProduto(id, arq);
-
-    if (produto.id_prod == -1)
-    {
-        printf("ID inválido. \n");
-        return;
-    }
-
-    printProduto(produto);
-
-    int opcao = 1, continua = 1;
-    while (continua == 1)
-    {
-        continua = 0;
-
-        printf("\nQual das informações deseja alterar?\n");
-
-        puts("[1] Nome do produto");
-        puts("[2] Categoria");
-        puts("[3] Preço");
-        puts("[4] Quantidade");
-        puts("[5] Peso");
-        puts("[6] Fornecedor");
-        puts("Para SAIR, digite qualquer outro numero");
-        printf("\nInput: ");
-
-        scanf("%d", &opcao);
-
-        switch (opcao)
-        {
-        case 1:
-            printf("\nDigite o novo nome do produto: ");
-            scanf("%s", produto.nome_prod);
-            break;
-
-        case 2:
-            printf("\nDigite a nova categoria do produto: ");
-            scanf("%s", produto.categoria);
-            break;
-
-        case 3:
-            printf("\nDigite o novo preço do produto: ");
-            scanf("%f", &produto.preco);
-            break;
-
-        case 4:
-            printf("\nDigite a nova quantidade do produto: ");
-            scanf("%d", &produto.qnt_estoque);
-            break;
-
-        case 5:
-            printf("\nDigite o novo peso do produto: ");
-            scanf("%d", &produto.peso);
-            break;
-
-        case 6:
-            printf("\nDigite o novo fornecedor do produto: ");
-            scanf("%s", produto.nome_fornec);
-            break;
-
-        default:
-            break;
-        }
-
-        if (opcao <= 6 && opcao >= 1)
-        {
-            modificarProduto(id, &produto, 1, arq);
-            printf("\nAlteração realizada com sucesso! \n");
-            printf("\nDeseja modificar algum campo novamente? Digite 1 para continuar.\n");
-            scanf("%d", &continua);
-        }
     }
 }
