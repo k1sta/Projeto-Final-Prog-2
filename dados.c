@@ -50,5 +50,18 @@ bool inserirNaFila(FILA *f, tProduto prod)
         f->fim->prox = novo;
     novo->quantidade = 1;
     f->fim = novo;
+    free(novo);
     return true;
+}
+
+bool excluirFila(FILA *f)
+{
+    No* aux = f->inicio;
+    while(aux != NULL){
+        No* apagar = aux;
+        aux = aux->prox;
+        free(apagar);
+    }
+    free(f);
+    return;
 }

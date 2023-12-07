@@ -93,6 +93,8 @@ void ordena_estoque(FILE *arq)
 
     remove("estoque_ordenado.dat");
 
+    free(prod);
+
     //rename("produtos.dat", "produtosAUX.dat");
     //rename("produtos2.dat", "produtos.dat");
     //remove("produtosAUX.dat");

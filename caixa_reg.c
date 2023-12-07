@@ -126,6 +126,7 @@ void caixaRegistradora(FILE *arq)
             puts("Compra finalizada!\n");
             delay(1000);
             notaFiscal(carrinho, total);
+            excluirFila(carrinho);
             return;
         }
 

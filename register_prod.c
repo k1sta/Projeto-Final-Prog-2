@@ -69,6 +69,7 @@ int registroProdutos(FILE *arq)
             break;
 
         default: //return
+            free(produtos);
             return 0;
             break;
         }

@@ -43,6 +43,8 @@ void exibirCarrinho(FILA *f);
 
 bool inserirNaFila(FILA *f, tProduto prod);
 
+bool excluirFila(FILA *f);
+
 //------------------------------------------------------------------
 
 //Funções principais

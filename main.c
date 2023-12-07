@@ -77,6 +77,7 @@ void menu()
                 apagar[i] = id;
             }
             removerProdutos(apagar, qtd, estoque);
+            free(apagar);
             break;
         case 4: //buscar produto
             printf("ID do produto: ");
