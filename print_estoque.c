@@ -47,7 +47,7 @@ bool criar_csv(FILE *arq)
     while (fread(&produto, sizeof(tProduto), 1, arq) == 1)
     {
 
-        fprintf(csv, "\n%s,%s,%s,%d,%f,%d,%d",
+        fprintf(csv, "\n%s,%s,%s,%d,%.2f,%d,%d",
                 produto.nome_prod, produto.categoria, produto.nome_fornec,
                 produto.qnt_estoque, produto.preco, produto.id_prod, produto.peso);
     }

@@ -85,7 +85,7 @@ void lerCSV(char* nome, tProduto* prod);
 
 bool cadastrarProduto(tProduto *produto, int flag, FILE *arq);
 
-void bubbleSort(FILE *arq);
+void ordena_estoque(FILE *arq);
 
 //-------------------------------------------------------------------------------
 

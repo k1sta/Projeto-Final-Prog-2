@@ -5,14 +5,14 @@
 #include "universal.h"
 
 
-void bubbleSort(FILE *arq)
+void ordena_estoque(FILE *arq)
 {
     rewind(arq);
     int tam = numProd(arq);
     tProduto *prod = malloc(sizeof(tProduto) * tam);
     int resposta;
 
-    FILE *arq2 = fopen("produtos2.dat", "wb");
+    FILE *arq2 = fopen("estoque_ordenado.dat", "wb+");
     if (arq2 == NULL)
     {
         puts("Erro ao alocar o arquivo.");
@@ -21,7 +21,7 @@ void bubbleSort(FILE *arq)
 
     fread(prod, sizeof(tProduto), tam, arq);
 
-    printf("\nGostaria de ordenar por:\n%s[1]%s ID\n%s[2]%s Preco\n%s[3]%s Quantidade no estoque", BCYN, SEMCOR, BCYN, SEMCOR, BCYN, SEMCOR);
+    printf("\nGostaria de visualizar o estoque ordenado por:\n%s[1]%s ID\n%s[2]%s Preco\n%s[3]%s Quantidade no estoque", BCYN, SEMCOR, BCYN, SEMCOR, BCYN, SEMCOR);
 
     printf("\nInput: ");
     scanf("%d", &resposta);
@@ -76,10 +76,24 @@ void bubbleSort(FILE *arq)
     rewind(arq);
     fwrite(&tam, sizeof(int), 1, arq2);
     fwrite(prod, sizeof(tProduto), tam, arq2);
+
+    printarEstoque(arq2);
+
+    printf("\nPara gerar um csv do estoque ordenado, digite %s[1]%s.", BCYN, SEMCOR);
+    printf("\nCaso contrario, digite outro numero para voltar diretamente ao menu.\n");
+    scanf("%d", &resposta);
+
+    if(resposta==1){
+        criar_csv(arq2);
+    }
+
     fclose(arq2);
     fclose(arq);
-    rename("produtos.dat", "produtosAUX.dat");
-    rename("produtos2.dat", "produtos.dat");
-    remove("produtosAUX.dat");
+
+    remove("estoque_ordenado.dat");
+
+    //rename("produtos.dat", "produtosAUX.dat");
+    //rename("produtos2.dat", "produtos.dat");
+    //remove("produtosAUX.dat");
     arq = fopen("produtos.dat", "rb+");
 }

@@ -1,4 +1,4 @@
-//gcc dados.c busca_prod.c caixa_reg.c compra_prod.c edit_prod.c func_secundarias.c print_estoque.c register_prod.c remove_prod.c main.c -o main.exe
+//gcc dados.c busca_prod.c caixa_reg.c compra_prod.c edit_prod.c func_secundarias.c print_estoque.c register_prod.c remove_prod.c sort.c main.c -o main.exe
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,7 +46,6 @@ void menu()
         printf("%s[5]%s ADIOCIONAR quantidade\n", BCYN, SEMCOR);
         printf("%s[6]%s VISUALIZAR estoque\n", BCYN, SEMCOR);
         printf("%s[7]%s CAIXA REGISTRADORA\n", BCYN, SEMCOR);
-        printf("%s[8]%s ORDENAR o estoque\n", BCYN, SEMCOR);
         printf("%sPara SAIR, digite qualquer outro numero%s\n", BWHT, SEMCOR);
 
         printf("\nInput: ");
@@ -81,9 +80,13 @@ void menu()
             compraProdutos(0, estoque);
             break;
         case 6:
+
             printarEstoque(estoque);
-            puts("\nDeseja criar um CSV?");
-            puts("Digite 1 para ACEITAR ou qualquer outro numero para RECUSAR");
+            puts("\nO que deseja fazer?\n");
+
+            printf("%s[1]%s Deseja criar um CSV?", BCYN, SEMCOR);
+            printf("\n%s[2]%s Deseja visualizar o estoque ordenado?", BCYN, SEMCOR);
+            puts("\n\nDigite qualquer outro numero para VOLTAR.");
             printf("\nInput: ");
             scanf("%d", &resposta);
             getchar();
@@ -91,14 +94,15 @@ void menu()
             {
                 criar_csv(estoque);
             }
+            else if(resposta == 2){
+                ordena_estoque(estoque);
+            }
+
             break;
         case 7:
             caixaRegistradora(estoque);
             break;
-        case 8:
-            bubbleSort(estoque);
-            printf("Estoque ordenado! ");
-            break;
+
         default:
             exit(0);
             break;
