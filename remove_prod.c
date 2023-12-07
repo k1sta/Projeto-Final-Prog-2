@@ -10,16 +10,15 @@ bool removerProdutos(int *id, int n, int flag, FILE *arq)
 {
     FILE *arq2;
     tProduto produto;
-    int i;
+    int i, cont = 0;
     arq2 = fopen("produtos2.dat", "wb");
     if(arq2 == NULL){
         if (flag) puts("Erro ao abrir o arquivo temporário!");
         return false;
     }
-    rewind(arq);
-    fread(&i, sizeof(int), 1, arq);
-    i -= n;
-    fwrite(&i, sizeof(int), 1, arq2);
+
+    fseek(arq, sizeof(int), SEEK_SET);
+    fseek(arq2, sizeof(int), SEEK_SET);
     while(fread(&produto, sizeof(tProduto), 1, arq)){
         bool remover = false;
         for(int j = 0; j < n; j++){
@@ -30,8 +29,15 @@ bool removerProdutos(int *id, int n, int flag, FILE *arq)
         }
         if(!remover){
             fwrite(&produto, sizeof(tProduto), 1, arq2);
+            cont++;
         }
     }
+
+    rewind(arq);
+    rewind(arq2);
+    fread(&i, sizeof(int), 1, arq);
+    i = cont;
+    fwrite(&i, sizeof(int), 1, arq2);
 
     fclose(arq2);
     fclose(arq);
