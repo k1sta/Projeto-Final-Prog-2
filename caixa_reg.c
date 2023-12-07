@@ -44,7 +44,8 @@ void caixaRegistradora(FILE *arq)
         pos = buscarProduto(id, 0, arq);
         if (pos == -1)
         {
-            puts("Produto nao encontrado!");
+            puts("\nProduto nao encontrado!");
+            delay(1000);
         }
         else
         {

@@ -20,14 +20,14 @@ int main(void)
 void menu()
 {
 
-    FILE *estoque = fopen("produtos.dat", "rb+");
+    FILE *estoque = fopen("produtos.dat", "wb+");
     if (estoque == NULL)
     {
         puts("Erro ao abrir o arquivo\n");
         exit(1);
     }
 
-    // inicializarArquivo(estoque);
+    inicializarArquivo(estoque);
 
     int id;
     int qtd = 0;
@@ -43,7 +43,7 @@ void menu()
         printf("%s[2]%s EDITAR produto\n", BCYN, SEMCOR);
         printf("%s[3]%s REMOVER produto\n", BCYN, SEMCOR);
         printf("%s[4]%s BUSCAR produto\n", BCYN, SEMCOR);
-        printf("%s[5]%s ADIOCIONAR quantidade\n", BCYN, SEMCOR);
+        printf("%s[5]%s ADICIONAR quantidade\n", BCYN, SEMCOR);
         printf("%s[6]%s VISUALIZAR estoque\n", BCYN, SEMCOR);
         printf("%s[7]%s CAIXA REGISTRADORA\n", BCYN, SEMCOR);
         printf("%sPara SAIR, digite qualquer outro numero%s\n", BWHT, SEMCOR);
@@ -65,7 +65,7 @@ void menu()
             puts("");
             for (int i = 0; i < qtd; i++)
             {
-                printf("ID %d:", i + 1);
+                printf("%sID %d: %s", BWHT, i+1, SEMCOR);
                 scanf("%d", &id);
                 apagar[i] = id;
             }

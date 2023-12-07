@@ -84,6 +84,7 @@ int registroProdutos(FILE *arq)
             fseek(arq, 0, SEEK_SET);
             fwrite(&aux2, sizeof(int), 1, arq);
         }
+        puts("Produto cadastrado com sucesso!");
 
         free(produtos);
 
@@ -135,7 +136,9 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq)
 
     fseek(arq, sizeof(int) + pos * sizeof(tProduto), SEEK_SET);
     fwrite(produto, sizeof(tProduto), 1, arq);
-    puts("Produto cadastrado com sucesso!");
+
+    if(flag) puts("Produto cadastrado com sucesso!");
+
     delay(1000);
     return true;
 }
@@ -182,7 +185,6 @@ bool inputProdutoArquivo(char *nome, int n, tProduto *prod)
         fscanf(arq, "%f\n", &prod->preco);
         fscanf(arq, "%d\n", &prod->id_prod);
         fscanf(arq, "%d\n", &prod->peso);
-        printf("%s, %s, %s, %d, %f, %d, %d", prod->nome_prod, prod->categoria, prod->nome_fornec, prod->qnt_estoque, prod->preco, prod->id_prod, prod->peso);
     }
 
     fclose(arq);
