@@ -2,14 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-//#include "caixa_reg.h"
+// #include "caixa_reg.h"
 #include "universal.h"
 
 // funcao imprime um simulacro de nota fiscal por fins de teste
 // function prints a mock invoice for testing purposes
-void notaFiscal(FILA *CARRINHO, float total){
+void notaFiscal(FILA *CARRINHO, float total)
+{
     FILE *arquivo = fopen("nota_fiscal.txt", "w");
-    if (arquivo == NULL) {
+    if (arquivo == NULL)
+    {
         puts("Erro ao criar o arquivo");
         return;
     }
@@ -27,29 +29,28 @@ void notaFiscal(FILA *CARRINHO, float total){
     // Eh necessario para fazer a data e hora instantanea
     time_t agora;
     struct tm *info_tempo;
-    char data[11]; 
+    char data[11];
     char hora[9];
     time(&agora);
     info_tempo = localtime(&agora);
     strftime(data, sizeof(data), "%d/%m/%Y", info_tempo); // Formata a data
     strftime(hora, sizeof(hora), "%H:%M:%S", info_tempo); // Formata a hora
 
-
-    fprintf(arquivo,"%-58s\n", "========================================================");
+    fprintf(arquivo, "%-58s\n", "========================================================");
     fprintf(arquivo, "                     NOTA FISCAL\n");
-    fprintf(arquivo,"%-58s\n", "========================================================");
+    fprintf(arquivo, "%-58s\n", "========================================================");
     fprintf(arquivo, "Loja: Exemplo de Loja\n");
     fprintf(arquivo, "Endereço: Rua de Exemplo, 123 - Cidade, Estado\n");
     fprintf(arquivo, "CNPJ: 00.000.000/0000-00\n");
     fprintf(arquivo, "Telefone: (00) 0000-0000\n");
-    fprintf(arquivo,"%-58s\n", "--------------------------------------------------------");
+    fprintf(arquivo, "%-58s\n", "--------------------------------------------------------");
     fprintf(arquivo, "Data: %s   Hora: %s\n", data, hora);
-    fprintf(arquivo,"%-58s\n", "--------------------------------------------------------");
-    fprintf(arquivo,"%-23s | %-5s | %-10s ", "Descricao dos Produtos", "Quantidade", "Preco\n");
-    fprintf(arquivo,"%-58s\n", "--------------------------------------------------------");
+    fprintf(arquivo, "%-58s\n", "--------------------------------------------------------");
+    fprintf(arquivo, "%-23s | %-5s | %-10s \n", "Descricao dos Produtos", "Quantidade", "Preco");
 
     No *end = CARRINHO->inicio;
-    while (end != NULL) {
+    while (end != NULL)
+    {
         fprintf(arquivo, "%-23s | %-5d | %-10.2f\n", end->produto.nome_prod, end->quantidade, end->quantidade * end->produto.preco);
         end = end->prox;
     }
@@ -57,18 +58,25 @@ void notaFiscal(FILA *CARRINHO, float total){
     fprintf(arquivo, "--------------------------------------------------------\n");
     fprintf(arquivo, "Total a Pagar:                                 R$ %.2f\n", total);
     fprintf(arquivo, "--------------------------------------------------------\n");
-    if (pagamento == 1) {
+    if (pagamento == 1)
+    {
         printf("Deseja parcelar em quantas vezes? ");
         scanf("%d", &parcelas);
         fprintf(arquivo, "Forma de Pagamento: Cartao de Credito\n");
-        fprintf(arquivo, "Parcelas: %dx de R$ %.2f sem juros\n", parcelas, total/parcelas);
-    } else if (pagamento == 2) {
+        fprintf(arquivo, "Parcelas: %dx de R$ %.2f sem juros\n", parcelas, total / parcelas);
+    }
+    else if (pagamento == 2)
+    {
         fprintf(arquivo, "Forma de Pagamento: Cartao de Debito\n");
-    } else if (pagamento == 3) {
+    }
+    else if (pagamento == 3)
+    {
         fprintf(arquivo, "Forma de Pagamento: PIX\n");
-    } else if (pagamento == 4) {
+    }
+    else if (pagamento == 4)
+    {
         fprintf(arquivo, "Forma de Pagamento: Dinheiro\n");
-    } 
+    }
     fprintf(arquivo, "========================================================\n");
     fprintf(arquivo, "Obrigado por comprar na nossa loja!\n");
     fprintf(arquivo, "Volte sempre!\n");
@@ -76,9 +84,6 @@ void notaFiscal(FILA *CARRINHO, float total){
 
     fclose(arquivo); // Fecha o arquivo
     printf("Nota fiscal gerada com sucesso no arquivo nota_fiscal.txt!\n");
-
-
-
 }
 
 // funcao responsavel por fazer o sistema de caixa da loja
@@ -161,6 +166,4 @@ void caixaRegistradora(FILE *arq)
             total += produto.preco;
         }
     }
-    
-
 }
