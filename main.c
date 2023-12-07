@@ -76,7 +76,7 @@ void menu()
                 scanf("%d", &id);
                 apagar[i] = id;
             }
-            removerProdutos(apagar, qtd, 0, estoque);
+            removerProdutos(apagar, qtd, estoque);
             break;
         case 4: //buscar produto
             printf("ID do produto: ");

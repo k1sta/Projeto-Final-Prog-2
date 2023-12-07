@@ -71,7 +71,7 @@ bool criar_csv(FILE* arq);
 
 //
 
-bool removerProdutos(int *id, int n, int flag, FILE *arq);
+bool removerProdutos(int *id, int n, FILE *arq);
 
 //
 

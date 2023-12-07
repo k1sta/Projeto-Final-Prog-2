@@ -7,16 +7,16 @@
 
 // essa funcao recebe um array de id`s para serem removidos
 // this function receives an array of id`s to be removed
-bool removerProdutos(int *id, int n, int flag, FILE *arq)
+bool removerProdutos(int *id, int n, FILE *arq)
 {
     FILE *arq2;
     tProduto produto;
-    int i, cont = 0;
+    int i, cont = 0, *id2 = (int *)calloc (n, sizeof(int));
 
     //abre um arquivo para escrita
     arq2 = fopen("produtos2.dat", "wb");
     if(arq2 == NULL){
-        if (flag) puts("Erro ao abrir o arquivo temporário!");
+        puts("Erro ao abrir o arquivo temporário!");
         return false;
     }
 
@@ -30,6 +30,7 @@ bool removerProdutos(int *id, int n, int flag, FILE *arq)
         for(int j = 0; j < n; j++){
             //se o id do produto lido esta no array para remocao, remover vira true
             if(produto.id_prod == id[j]){
+                id2[j] = 1;
                 remover = true;
                 break;
             }
@@ -57,6 +58,12 @@ bool removerProdutos(int *id, int n, int flag, FILE *arq)
 
     //exclui o arquivo antigo
     remove("produtosAUX.dat");
+
+    for(int j = 0; j < n; j++){
+        if(id2[j] == 0){
+            printf("ID %d nao encontrado!\n", id[j]);
+        }
+    }
 
     //reabre o arquivo no espaço de memoria passado por referencia
     arq = fopen("produtos.dat", "rb+");
