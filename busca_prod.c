@@ -5,25 +5,28 @@
 //#include "busca_prod.h"
 #include "universal.h"
 
-// essa funcao recebe um id e imprime as informacoes do produto com esse id, alem de retornar a posicao dele no arquivo
-// esse algoritmo foi feito a partir do algoritmo de busca binaria
-//  FUNCIONA
+// essa funcao recebe um id como parametro e retorna a posicao do produto no arquivo (baseado em busca binaria e inicio == 0)
+// existe um parametro flag que, se for 1, imprime uma mensagem de erro
+// this function receives an id as a parameter and returns the position of the product in the file (based on binary search and start == 0)
+// there is a flag parameter that, if it is 1, prints an error message
 int buscarProduto(int id, int flag, FILE *arq)
 {
     tProduto produto;
     int esq = 0, dir, meio;
-    rewind(arq);
 
+    //le o numero de produtos no arquivo e calcula o meio
+    rewind(arq);
     fread(&dir, sizeof(int), 1, arq);
     meio = dir / 2;
 
+    //busca binaria
     while (esq <= dir)
     {
         fseek(arq, sizeof(int) + (meio * sizeof(tProduto)), SEEK_SET);
         fread(&produto, sizeof(tProduto), 1, arq);
         if (produto.id_prod == id)
-        {
-            if (flag)
+        { 
+            if (flag) //se o usuario "pediu" para iprimir
             {
                 printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
                 printf("%s%-4s | %-15s | %-15s | %-15s | %-15s | %-15s | %-10s%s\n", BWHT, "ID", "Nome do produto", "Categoria", "Fornecedor", "Qtd Estoque", "Preco unitario", "Peso", SEMCOR);
@@ -43,6 +46,8 @@ int buscarProduto(int id, int flag, FILE *arq)
         }
         meio = (esq + dir) / 2;
     }
+
+    //caso nao encontre o produto
     if (flag)
         puts("Produto não encontrado!");
     return -1;

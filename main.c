@@ -1,4 +1,10 @@
-//gcc dados.c busca_prod.c caixa_reg.c compra_prod.c edit_prod.c func_secundarias.c print_estoque.c register_prod.c remove_prod.c sort.c main.c -o main.exe
+/*******************************************************************************************************************************************************
+
+comando de compilacao:
+gcc dados.c busca_prod.c caixa_reg.c compra_prod.c edit_prod.c func_secundarias.c print_estoque.c register_prod.c remove_prod.c sort.c main.c -o main.exe
+
+********************************************************************************************************************************************************/
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,7 +13,7 @@
 #include "universal.h"
 //#include "arqlib.h"
 
-
+//assinaturas de algumas funcoes implementadas aqui
 void menu();
 void printInicio();
 
@@ -17,6 +23,7 @@ int main(void)
     return 0;
 }
 
+// menu principal
 void menu()
 {
 
@@ -32,12 +39,12 @@ void menu()
     int id;
     int qtd = 0;
 
-    puts("");
-    printInicio();
-    puts("");
     while (1)
     {
         int resposta = 0;
+        puts("");
+        printInicio();
+        puts("");
         printf("%sO que gostaria de fazer? Escolha sua resposta de acordo com as instrucoes a seguir:%s\n", BWHT, SEMCOR);
         printf("%s[1]%s CADASTRAR produto\n", BCYN, SEMCOR);
         printf("%s[2]%s EDITAR produto\n", BCYN, SEMCOR);
@@ -52,13 +59,13 @@ void menu()
         scanf("%d", &resposta);
         switch (resposta)
         {
-        case 1:
+        case 1: //cadastrar produto
             registroProdutos(estoque);
             break;
-        case 2:
+        case 2: //editar produto
             editarProduto(estoque);
             break;
-        case 3:
+        case 3: //remover produto
             printf("Quantos produtos deseja remover? ");
             scanf("%d", &qtd);
             int *apagar = (int *)malloc(sizeof(int) * qtd);
@@ -71,16 +78,15 @@ void menu()
             }
             removerProdutos(apagar, qtd, 0, estoque);
             break;
-        case 4:
+        case 4: //buscar produto
             printf("ID do produto: ");
             scanf("%d", &id);
             buscarProduto(id, 1, estoque);
             break;
-        case 5:
+        case 5: //adicionar quantidade
             compraProdutos(0, estoque);
             break;
-        case 6:
-
+        case 6: //visualizar estoque
             printarEstoque(estoque);
             puts("\nO que deseja fazer?\n");
 
@@ -99,11 +105,11 @@ void menu()
             }
 
             break;
-        case 7:
+        case 7: //caixa registradora
             caixaRegistradora(estoque);
             break;
 
-        default:
+        default: //sair
             exit(0);
             break;
         }
@@ -113,6 +119,8 @@ void menu()
     }
 }
 
+
+//funcao para imprimir o GESTAO DE ESTOQUE.
 void printInicio()
 {
     puts("===============================================================================================================================================================");

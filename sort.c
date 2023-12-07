@@ -4,7 +4,8 @@
 #include <stdbool.h>
 #include "universal.h"
 
-
+// essa funcao ordena o estoque por preco, id ou quantidade em estoque baseado no input do usuario
+// this function sorts the stock by price, id or quantity in stock based on user input
 void ordena_estoque(FILE *arq)
 {
     rewind(arq);
@@ -27,7 +28,7 @@ void ordena_estoque(FILE *arq)
     scanf("%d", &resposta);
     switch (resposta)
     {
-    case 1:
+    case 1: // id
         for (int i = tam - 1; i > 0; i--)
         {
             for (int j = 0; j < i; j++)
@@ -42,7 +43,7 @@ void ordena_estoque(FILE *arq)
             }
         }
         break;
-    case 2:
+    case 2: // preco
         for (int i = tam - 1; i > 0; i--)
         {
             for (int j = 0; j < i; j++)
@@ -57,7 +58,7 @@ void ordena_estoque(FILE *arq)
             }
         }
         break;
-    case 3:
+    case 3: // quantidade em estoque
         for (int i = tam - 1; i > 0; i--)
         {
             for (int j = 0; j < i; j++)

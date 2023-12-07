@@ -4,12 +4,16 @@
 #include <stdbool.h>
 #include "universal.h"
 
+//essa funcao incializa uma estrutura de fila
+//this function initializes a queue structure
 void inicializarFila(FILA *f)
 {
     f->inicio = NULL;
     f->fim = NULL;
 }
 
+//exibe tudo da fila (como a fila eh implementada no carrinho, utilizamos para exibir o carrinho)
+//displays everything in the queue (as the queue is implemented in the cart, we use it to display the cart)
 void exibirCarrinho(FILA *f)
 {
     No *end = f->inicio;
@@ -21,6 +25,8 @@ void exibirCarrinho(FILA *f)
     printf("\"\n");
 }
 
+// essa funcao insere um tProduto na fila
+// this function inserts a tProduct in the queue
 bool inserirNaFila(FILA *f, tProduto prod)
 {
     No* novo = (No*)malloc(sizeof(No));

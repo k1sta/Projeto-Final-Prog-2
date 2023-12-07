@@ -6,18 +6,19 @@
 
 #include "universal.h"
 
-// ERRO. Executa para sempre quando tenta inputar 2 produtos seguidos pelo teclado.
-//  NAO SEI SE FUNCIONA ????
+// Essa funcao e responsavel por criar um menu para a insercao de produtos no estoque
+// Ela utiliza de outras funcoes de mais "baixo nivel"
+// This function is responsible for creating a menu for inserting products into the stock
+// It uses other functions of a lower level
 int registroProdutos(FILE *arq)
 {
-    int escolha = 1, n, escolhaAnt = 0, aux;
+    int n, aux, cont = 0;
     tProduto *produtos;
     char nome[50];
 
-    while (escolha == 1 || escolha == 2 || escolha == 3)
+    while (1)
     {
-        n = 1;
-
+        //users choice
         printf("\e[1;1H\e[2J"); // Limpa o console
         printf("%sQuer adicionar por teclado ou arquivo?%s\n", BWHT, SEMCOR);
         printf("%s[1]%s Teclado\n", BCYN, SEMCOR);
@@ -29,7 +30,8 @@ int registroProdutos(FILE *arq)
 
         switch (aux)
         {
-        case 1:
+        case 1: //keyboard
+            n = 1;
             produtos = (tProduto *)malloc(sizeof(tProduto));
             if (!produtos)
             {
@@ -38,7 +40,7 @@ int registroProdutos(FILE *arq)
             }
             *produtos = inputProdutoTeclado();
             break;
-        case 2:
+        case 2: //txt file (need to check the format in documentation)
             puts("Quantos produtos deseja registrar? ");
             scanf("%d", &n);
             produtos = (tProduto *)malloc(n * sizeof(tProduto));
@@ -52,7 +54,7 @@ int registroProdutos(FILE *arq)
             getchar();
             inputProdutoArquivo(nome, n, produtos);
             break;
-        case 3:
+        case 3: //csv file (need to check the format in documentation)
             printf("%s", "Nome do arquivo: ");
             scanf(" %[^\n]", nome);
             n = qntd_produtos_csv(nome);
@@ -66,7 +68,7 @@ int registroProdutos(FILE *arq)
 
             break;
 
-        default:
+        default: //return
             return 0;
             break;
         }
@@ -74,21 +76,21 @@ int registroProdutos(FILE *arq)
         for (int i = 0; i < n; i++)
         {
             aux = cadastrarProduto(&produtos[i], 0, arq);
-            if (!aux)
-            {
+            if (!aux) //aux == 0 means that the product was not registered because of an error (id already exists)
+            {   
                 puts("ID Duplicado!");
-                break;
+                cont++;
+                continue;
             }
             int aux2 = numProd(arq);
             aux2++;
             fseek(arq, 0, SEEK_SET);
             fwrite(&aux2, sizeof(int), 1, arq);
         }
-        puts("Produto cadastrado com sucesso!");
 
-        free(produtos);
+        printf("%d produtos cadastrados com sucesso!", n - cont);
 
-        escolhaAnt = escolha;
+        free(produtos); //free the memory allocated for the array of products 
         delay(1000);
         printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
     }
@@ -96,11 +98,15 @@ int registroProdutos(FILE *arq)
     return -2;
 }
 
-// essa funcao recebe um produto e o cadastra no arquivo produtos.dat
-// existe um parametro flag que, se for 1, imprime uma mensagem de erro caso o arquivo nao seja aberto
+// essa funcao recebe um produto e o cadastra no arquivo produtos.dat atraves de uma busca binária
+// existe um parametro flag que, se for 1, imprime uma mensagem de erro
+// this function receives a product and registers it in the file produtos.dat through a binary search
+// there is a flag parameter that, if it is 1, prints an error message
 bool cadastrarProduto(tProduto *produto, int flag, FILE *arq)
 {
-    tProduto anterior;
+    tProduto anterior; //produto anterior ao que esta sendo inserido
+
+    //busca binaria, com alterações, para encontrar a posicao correta do produto a fim de manter o BD ordenado
     int baixo = 0, alto = numProd(arq) - 1, meio, pos;
     while (baixo <= alto && baixo >= 0)
     {
@@ -109,7 +115,7 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq)
         fread(&anterior, sizeof(tProduto), 1, arq);
         if (produto->id_prod == anterior.id_prod)
         {
-            puts("Erro: ID duplicado!");
+            if (flag)puts("Erro: ID duplicado!");
             return false;
         }
         else if (produto->id_prod < anterior.id_prod)
@@ -122,7 +128,9 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq)
         }
     }
 
-    pos = baixo;
+    pos = baixo; //posicao correta do produto
+
+    //"desloca os produtos para a direita" para inserir o novo produto
     fseek(arq, sizeof(int) + pos * sizeof(tProduto), SEEK_SET);
     fread(&anterior, sizeof(tProduto), 1, arq);
 
@@ -143,8 +151,8 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq)
     return true;
 }
 
-// essa funcao recebe um produto e o retorna
-//  FUNCIONA
+// essa funcao executa um menu para a criacao de um produto e retorna ele proprio
+// this function executes a menu for the creation of a product and returns it
 tProduto inputProdutoTeclado()
 {
     tProduto prod;
@@ -165,8 +173,10 @@ tProduto inputProdutoTeclado()
     return prod;
 }
 
-// essa funcao recebe o nome de um arquivo que contem n produtos
-//  FUNCIONA
+// essa funcao realiza a leitura de um arquivo txt contendo informacoes para a criacao de n produtos
+// ela retorna um array de produtos
+// this function reads a txt file containing information for the creation of n products
+// it returns an array of products
 bool inputProdutoArquivo(char *nome, int n, tProduto *prod)
 {
     FILE *arq = fopen(nome, "r");
@@ -191,7 +201,10 @@ bool inputProdutoArquivo(char *nome, int n, tProduto *prod)
     return true;
 }
 
-// FUNCIONA
+// essa funcao le um csv em um formato especifico para a criacao de novos tProdutos
+// ela retorna um array de tProdutos
+// this function reads a csv in a specific format for the creation of new tProdutos
+// it returns an array of tProdutos
 void lerCSV(char *nome, tProduto *prod)
 {
     FILE *csv = fopen(nome, "r");

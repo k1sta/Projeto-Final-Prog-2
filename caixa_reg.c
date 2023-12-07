@@ -5,7 +5,8 @@
 //#include "caixa_reg.h"
 #include "universal.h"
 
-
+// funcao imprime um simulacro de nota fiscal por fins de teste
+// function prints a mock invoice for testing purposes
 void notaFiscal(FILA *CARRINHO, float total){
     FILE *arquivo = fopen("nota_fiscal.txt", "w");
     if (arquivo == NULL) {
@@ -80,15 +81,19 @@ void notaFiscal(FILA *CARRINHO, float total){
 
 }
 
-// funcao de caixa
-// FUNCIONA
+// funcao responsavel por fazer o sistema de caixa da loja
+// ela reduz a quantidade do estoque assim que o produto eh "escaneado"
+// vale ressaltar que não há a checagem da quantidade no estoque pois não é possível vender mais produtos do que há no estoque
+// function responsible for making the store's cash register system
+// it reduces the quantity of the stock as soon as the product is "scanned"
+// it is worth mentioning that there is no check of the quantity in the stock because it is not possible to sell more products than there are in the stock
 void caixaRegistradora(FILE *arq)
 {
     int id = 0, pos;
-    FILA *carrinho = (FILA *)malloc(sizeof(FILA));
     float total = 0;
     tProduto produto;
 
+    FILA *carrinho = (FILA *)malloc(sizeof(FILA));
     if (!carrinho)
     {
         puts("Erro ao alocar memoria!");
@@ -108,6 +113,7 @@ void caixaRegistradora(FILE *arq)
         printf("Input: ");
         scanf("%d", &id);
 
+        //fecha a compra
         if (id == -1)
         {
             printf("\e[1;1H\e[2J"); // Limpa o console
@@ -118,31 +124,36 @@ void caixaRegistradora(FILE *arq)
             return;
         }
 
+        //acha o produto no arquivo
         pos = buscarProduto(id, 0, arq);
-        if (pos == -1)
+        if (pos == -1) // se o produto nao for encontrado
         {
             puts("Produto nao encontrado!");
             delay(1000);
         }
         else
-        {
+        {   
+            // acha o produto na DB e reduz a quantidade em 1
             fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
             fread(&produto, sizeof(tProduto), 1, arq);
             produto.qnt_estoque--;
             fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
             fwrite(&produto, sizeof(tProduto), 1, arq);
-
+            
+            // verifica se o produto ja esta no carrinho
             No *aux = carrinho->inicio;
             while (aux != NULL)
             {
                 if (aux->produto.id_prod == id)
-                {
+                {  
+                    //se está, aumenta a quantidade em 1
                     aux->quantidade++;
                     break;
                 }
                 aux = aux->prox;
             }
 
+            // se nao estiver, insere o produto no carrinho
             if (!aux)
             {
                 inserirNaFila(carrinho, produto);

@@ -5,6 +5,8 @@
 //#include "edit_prod.h"
 #include "universal.h"
 
+// essa funcao cria um menu para a edicao de um produto na DB
+// this function creates a menu for editing a product in the DB
 void editarProduto(FILE *arq)
 {
     int id;
@@ -13,16 +15,20 @@ void editarProduto(FILE *arq)
     printf("Insira o ID do produto: ");
     scanf("%d", &id);
 
+    //retorna o tProduto baseado no id inserido
     produto = catchProduto(id, arq);
 
+    //se o produto nao for encontrado
     if (produto.id_prod == -1)
     {
         printf("ID inválido. \n");
         return;
     }
 
+    //imprime o produto
     printProduto(produto);
 
+    //menu de edicao
     int opcao = 1, continua = 1;
     printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
     while (continua == 1)
@@ -76,7 +82,8 @@ void editarProduto(FILE *arq)
         default:
             break;
         }
-
+        
+        //modifica o produto no arquivo
         if (opcao <= 6 && opcao >= 1)
         {
             modificarProduto(id, &produto, 1, arq);
@@ -88,8 +95,7 @@ void editarProduto(FILE *arq)
 }
 
 // essa funcao recebe o id de um produto + o produto modificado e o modifica no arquivo produtos.dat
-//  talvez nao seja a melhor solucao enviando um tProduto como parâmetro
-//  FUNCIONA
+// this function receives the id of a product + the modified product and modifies it in the file produtos.dat
 bool modificarProduto(int id, tProduto *produto, int flag, FILE *arq)
 {
     int pos;

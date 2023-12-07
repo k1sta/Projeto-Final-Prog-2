@@ -5,8 +5,8 @@
 //#include "print_estoque.h"
 #include "universal.h"
 
-// funcao para printar o estoque em um arq bin (entrando com o arquivo ja aberto)
-// FUNCIONA
+// funcao para printar o estoque de um arq bin (entrando com o arquivo ja aberto)
+// function to print the stock of a bin file (entering with the file already open)
 void printarEstoque(FILE *arq)
 {
     rewind(arq);
@@ -23,7 +23,8 @@ void printarEstoque(FILE *arq)
     }
 }
 
-// FUNCIONA
+// funcao para criar um arquivo .csv a partir do estoque em arq bin (entrando com o arquivo ja aberto)
+// function to create a .csv file from the stock in bin file (entering with the file already open)
 bool criar_csv(FILE *arq)
 {
     FILE *csv;
