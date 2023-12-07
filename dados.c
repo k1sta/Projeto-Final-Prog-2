@@ -50,7 +50,6 @@ bool inserirNaFila(FILA *f, tProduto prod)
         f->fim->prox = novo;
     novo->quantidade = 1;
     f->fim = novo;
-    free(novo);
     return true;
 }
 
