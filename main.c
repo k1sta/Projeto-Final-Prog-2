@@ -80,8 +80,9 @@ void menu()
             free(apagar);
             break;
         case 4: //buscar produto
-            printf("ID do produto: ");
+            printf("\nID do produto: ");
             scanf("%d", &id);
+            puts(" ");
             buscarProduto(id, 1, estoque);
             break;
         case 5: //adicionar quantidade
@@ -90,7 +91,6 @@ void menu()
         case 6: //visualizar estoque
             printarEstoque(estoque);
             puts("\nO que deseja fazer?\n");
-
             printf("%s[1]%s Deseja criar um CSV?", BCYN, SEMCOR);
             printf("\n%s[2]%s Deseja visualizar o estoque ordenado?", BCYN, SEMCOR);
             puts("\n\nDigite qualquer outro numero para VOLTAR.");

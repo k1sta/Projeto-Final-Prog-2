@@ -67,6 +67,9 @@ bool removerProdutos(int *id, int n, FILE *arq)
 
     free(id2);
 
+    printf("%d produto(s) removido(s) com sucesso!\n", n);
+    delay(1000);
+
     //reabre o arquivo no espaço de memoria passado por referencia
     arq = fopen("produtos.dat", "rb+");
     return true;

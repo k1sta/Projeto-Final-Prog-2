@@ -1,5 +1,5 @@
 nome,categoria,fornecedor,qntd,preco,id,peso
-arroz,comida,tio_joao,100,6.00,12,1000
 sabao,limpeza,dove,150,1.00,39,50
 esponja,limpeza,bombril,50,2.00,391,200
+arroz,comida,tio_joao,100,10.00,12,2000
 armario,casa,tockstok,2,1200.00,1238,80000

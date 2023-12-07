@@ -12,7 +12,7 @@ void editarProduto(FILE *arq)
     int id;
     tProduto produto;
 
-    printf("Insira o ID do produto: ");
+    printf("\nInsira o ID do produto: ");
     scanf("%d", &id);
 
     //retorna o tProduto baseado no id inserido
@@ -21,16 +21,17 @@ void editarProduto(FILE *arq)
     //se o produto nao for encontrado
     if (produto.id_prod == -1)
     {
-        printf("ID inválido. \n");
+        printf("\nID inválido. \n");
+        delay(1000);
         return;
     }
 
     //menu de edicao
     int opcao = 1, continua = 1;
-    printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
     while (continua == 1)
     {
         continua = 0;
+        printf("\e[1;1H\e[2J"); // Limpa o console
         printProduto(produto);
         puts("");
         printf("%sQuais informacoes deseja alterar?%s\n", BWHT, SEMCOR);
@@ -44,6 +45,7 @@ void editarProduto(FILE *arq)
         printf("\nInput: ");
 
         scanf("%d", &opcao);
+        getchar();
 
         switch (opcao)
         {
@@ -87,6 +89,7 @@ void editarProduto(FILE *arq)
         //modifica o produto no arquivo
         if (opcao <= 6 && opcao >= 1)
         {
+            puts("");
             modificarProduto(id, &produto, 1, arq);
             printf("\nDeseja modificar algum campo novamente? Digite 1 para continuar.\n");
             scanf("%d", &continua);
@@ -101,7 +104,7 @@ bool modificarProduto(int id, tProduto *produto, int flag, FILE *arq)
     int pos;
     rewind(arq);
     int n = numProd(arq);
-    pos = buscarProduto(id, flag, arq);
+    pos = buscarProduto(id, 0, arq);
     if (pos == -2)
     {
         return false;

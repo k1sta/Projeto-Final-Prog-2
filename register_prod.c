@@ -25,7 +25,7 @@ int registroProdutos(FILE *arq)
         printf("%s[2]%s Arquivo TXT\n", BCYN, SEMCOR);
         printf("%s[3]%s Arquivo CSV\n", BCYN, SEMCOR);
         printf("%sPara VOLTAR, digite qualquer outro numero%s\n", BWHT, SEMCOR);
-        printf("Input: ");
+        printf("%s", "Input: ");
         scanf("%d", &aux);
 
         switch (aux)
@@ -35,33 +35,34 @@ int registroProdutos(FILE *arq)
             produtos = (tProduto *)malloc(sizeof(tProduto));
             if (!produtos)
             {
-                puts("Erro ao alocar memoria!");
+                puts("\nErro ao alocar memoria!");
                 return -1;
             }
             *produtos = inputProdutoTeclado();
             break;
         case 2: //txt file (need to check the format in documentation)
-            puts("Quantos produtos deseja registrar? ");
+            puts("\nQuantos produtos deseja registrar?");
+            printf("%s", "Input: ");
             scanf("%d", &n);
             produtos = (tProduto *)malloc(n * sizeof(tProduto));
             if (!produtos)
             {
-                puts("Erro ao alocar memoria!");
+                puts("\nErro ao alocar memoria!");
                 return -1;
             }
-            printf("%s", "Nome do arquivo: ");
+            printf("%s", "\nNome do arquivo: ");
             scanf(" %[^\n]", nome);
             getchar();
             inputProdutoArquivo(nome, n, produtos);
             break;
         case 3: //csv file (need to check the format in documentation)
-            printf("%s", "Nome do arquivo: ");
+            printf("%s", "\nNome do arquivo: ");
             scanf(" %[^\n]", nome);
             n = qntd_produtos_csv(nome);
             produtos = (tProduto *)calloc(n, sizeof(tProduto));
             if (!produtos)
             {
-                puts("Erro ao alocar memoria!");
+                puts("\nErro ao alocar memoria!");
                 return -1;
             }
             lerCSV(nome, produtos);
@@ -88,11 +89,10 @@ int registroProdutos(FILE *arq)
             fwrite(&aux2, sizeof(int), 1, arq);
         }
 
-        printf("%d produtos cadastrados com sucesso!", n - cont);
-
         free(produtos); //free the memory allocated for the array of products 
-        delay(1000);
-        printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
+
+        printf("\n%d produto(s) cadastrado(s) com sucesso!\n", n - cont);
+        delay(2000);
     }
 
     return -2;
@@ -147,7 +147,6 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq)
 
     if(flag) puts("Produto cadastrado com sucesso!");
 
-    delay(1000);
     return true;
 }
 
@@ -156,7 +155,7 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq)
 tProduto inputProdutoTeclado()
 {
     tProduto prod;
-    printf("%s", "Nome do produto: ");
+    printf("%s", "\nNome do produto: ");
     scanf(" %[^\n]", prod.nome_prod);
     printf("%s", "Categoria: ");
     scanf(" %[^\n]", prod.categoria);
