@@ -1,7 +1,7 @@
 /*******************************************************************************************************************************************************
 
 comando de compilacao:
-gcc dados.c busca_prod.c caixa_reg.c compra_prod.c edit_prod.c func_secundarias.c print_estoque.c register_prod.c remove_prod.c sort.c main.c -o main.exe
+gcc dados.c busca_prod.c caixa_reg.c compra_prod.c edit_prod.c func_secundarias.c print_estoque.c register_prod.c remove_prod.c main.c -o main.exe
 
 ********************************************************************************************************************************************************/
 
