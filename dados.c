@@ -63,5 +63,5 @@ bool excluirFila(FILA *f)
         free(apagar);
     }
     free(f);
-    return;
+    return true;
 }
