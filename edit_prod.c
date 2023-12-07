@@ -25,15 +25,13 @@ void editarProduto(FILE *arq)
         return;
     }
 
-    //imprime o produto
-    printProduto(produto);
-
     //menu de edicao
     int opcao = 1, continua = 1;
     printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
     while (continua == 1)
     {
         continua = 0;
+        printProduto(produto);
         puts("");
         printf("%sQuais informacoes deseja alterar?%s\n", BWHT, SEMCOR);
         printf("%s[1]%s Nome do produto\n", BCYN, SEMCOR);
@@ -51,12 +49,14 @@ void editarProduto(FILE *arq)
         {
         case 1:
             printf("\nDigite o novo nome do produto: ");
-            scanf("%s", produto.nome_prod);
+            scanf("%[^\n]", produto.nome_prod);
+            getchar();
             break;
 
         case 2:
             printf("\nDigite a nova categoria do produto: ");
-            scanf("%s", produto.categoria);
+            scanf("%[^\n]", produto.categoria);
+            getchar();
             break;
 
         case 3:
@@ -76,7 +76,8 @@ void editarProduto(FILE *arq)
 
         case 6:
             printf("\nDigite o novo fornecedor do produto: ");
-            scanf("%s", produto.nome_fornec);
+            scanf("%[^\n]", produto.nome_fornec);
+            getchar();
             break;
 
         default:
@@ -87,7 +88,6 @@ void editarProduto(FILE *arq)
         if (opcao <= 6 && opcao >= 1)
         {
             modificarProduto(id, &produto, 1, arq);
-            printf("\nAlteração realizada com sucesso! \n");
             printf("\nDeseja modificar algum campo novamente? Digite 1 para continuar.\n");
             scanf("%d", &continua);
         }
