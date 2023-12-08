@@ -11,7 +11,7 @@ bool removerProdutos(int *id, int n, FILE *arq)
 {
     FILE *arq2;
     tProduto produto;
-    int i, cont = 0, *id2 = (int *)calloc (n, sizeof(int));
+    int i, cont = 0, contExcluidos = 0, *id2 = (int *)calloc (n, sizeof(int));
 
 
     //abre um arquivo para escrita
@@ -22,17 +22,17 @@ bool removerProdutos(int *id, int n, FILE *arq)
     }
 
     //posiciona o ponteiro no inicio dos produtos
-    rewind(arq);
-    int tam = numProd(arq);
+    fseek(arq, sizeof(int), SEEK_SET);
     fseek(arq2, sizeof(int), SEEK_SET);
 
     //le o produto do arquivo
     while(fread(&produto, sizeof(tProduto), 1, arq)){
         bool remover = false;
-        for(int j = 0; j < tam; j++){
+        for(int j = 0; j < n; j++){
             //se o id do produto lido esta no array para remocao, remover vira true
             if(produto.id_prod == id[j]){
                 id2[j] = 1;
+                contExcluidos++;
                 remover = true;
                 break;
             }
@@ -40,6 +40,7 @@ bool removerProdutos(int *id, int n, FILE *arq)
 
         //caso remover seja true, ele nao escreve o produto em questao no segundo arquivo
         if(!remover){
+            cont++;
             fwrite(&produto, sizeof(tProduto), 1, arq2);
         }
     }
@@ -48,7 +49,7 @@ bool removerProdutos(int *id, int n, FILE *arq)
     rewind(arq);
     rewind(arq2);
     fread(&i, sizeof(int), 1, arq);
-    i -= n;
+    i = cont;
     fwrite(&i, sizeof(int), 1, arq2);
 
     //fecha os dois arquivos e renomeia o segundo para o primeiro.
@@ -68,7 +69,7 @@ bool removerProdutos(int *id, int n, FILE *arq)
 
     free(id2);
 
-    printf("%d produto(s) removido(s) com sucesso!\n", n);
+    printf("%d produto(s) removido(s) com sucesso!\n", contExcluidos);
     delay(1000);
 
     //reabre o arquivo no espaço de memoria passado por referencia
