@@ -49,6 +49,6 @@ int buscarProduto(int id, int flag, FILE *arq)
 
     //caso nao encontre o produto
     if (flag)
-        puts("Produto não encontrado!");
+        puts("Produto nao encontrado!");
     return -1;
 }

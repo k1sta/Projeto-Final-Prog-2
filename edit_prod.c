@@ -21,7 +21,7 @@ void editarProduto(FILE *arq)
     //se o produto nao for encontrado
     if (produto.id_prod == -1)
     {
-        printf("\nID inválido. \n");
+        printf("\nID invalido. \n");
         delay(1000);
         return;
     }
@@ -62,7 +62,7 @@ void editarProduto(FILE *arq)
             break;
 
         case 3:
-            printf("\nDigite o novo preço do produto: ");
+            printf("\nDigite o novo preco do produto: ");
             scanf("%f", &produto.preco);
             break;
 

@@ -1,6 +1,6 @@
-Arroz
-Alimento
-Tio Joao
+arroz
+alimento
+tio_joao
 37
 6.9
 10
