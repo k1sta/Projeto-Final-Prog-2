@@ -57,7 +57,7 @@ void caixaRegistradora(FILE *arq);
 
 //
 
-int compraProdutos(int flag, FILE *arq);
+int compraProdutos(FILE *arq);
 
 //
 

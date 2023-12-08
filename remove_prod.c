@@ -31,6 +31,7 @@ bool removerProdutos(int *id, int n, FILE *arq)
             //se o id do produto lido esta no array para remocao, remover vira true
             if(produto.id_prod == id[j]){
                 id2[j] = 1;
+                cont++;
                 remover = true;
                 break;
             }
@@ -39,7 +40,6 @@ bool removerProdutos(int *id, int n, FILE *arq)
         //caso remover seja true, ele nao escreve o produto em questao no segundo arquivo
         if(!remover){
             fwrite(&produto, sizeof(tProduto), 1, arq2);
-            cont++;
         }
     }
 
@@ -67,7 +67,7 @@ bool removerProdutos(int *id, int n, FILE *arq)
 
     free(id2);
 
-    printf("%d produto(s) removido(s) com sucesso!\n", n);
+    printf("%d produto(s) removido(s) com sucesso!\n", cont);
     delay(1000);
 
     //reabre o arquivo no espaço de memoria passado por referencia

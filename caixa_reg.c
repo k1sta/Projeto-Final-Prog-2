@@ -54,7 +54,7 @@ void notaFiscal(FILA *CARRINHO, float total)
         fprintf(arquivo, "%-23s | %-5d | %-10.2f\n", end->produto.nome_prod, end->quantidade, end->quantidade * end->produto.preco);
         end = end->prox;
     }
-    printf("\"\n");
+    printf("\n");
     fprintf(arquivo, "--------------------------------------------------------\n");
     fprintf(arquivo, "Total a Pagar:                                 R$ %.2f\n", total);
     fprintf(arquivo, "--------------------------------------------------------\n");
@@ -112,8 +112,7 @@ void caixaRegistradora(FILE *arq)
         exibirCarrinho(carrinho);
         puts(" ");
         printf("Total: R$%.2f\n", total);
-        puts(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
-        puts(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+        printf("\n%s==================================================================%s \n\n", BWHT, SEMCOR);
         puts("Digite o ID do produto ou -1 para fechar a compra\n");
         printf("Input: ");
         scanf("%d", &id);

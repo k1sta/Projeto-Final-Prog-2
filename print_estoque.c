@@ -19,7 +19,7 @@ void printarEstoque(FILE *arq)
     for (int i = 0; i < n; i++)
     {
         fread(&produto, sizeof(tProduto), 1, arq);
-        printf("%-4d | %-15s | %-15s | %-15s | %-15d | %-15f | %-10d \n", produto.id_prod, produto.nome_prod, produto.categoria, produto.nome_fornec, produto.qnt_estoque, produto.preco, produto.peso);
+        printf("%-4d | %-15s | %-15s | %-15s | %-15d | %-15.2f | %-10d \n", produto.id_prod, produto.nome_prod, produto.categoria, produto.nome_fornec, produto.qnt_estoque, produto.preco, produto.peso);
     }
 }
 

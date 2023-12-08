@@ -6,7 +6,7 @@
 #include "universal.h"
 
 // essa funcao recebe um id como parametro e retorna a posicao do produto no arquivo (baseado em busca binaria e inicio == 0)
-int compraProdutos(int flag, FILE *arq)
+int compraProdutos(FILE *arq)
 {
     tProduto produto;
     int id, n;
@@ -21,7 +21,11 @@ int compraProdutos(int flag, FILE *arq)
         {
             puts("\nDigite a quantidade comprada: ");
             scanf("%d", &n);
-
+            if(n < 0){
+                puts("\nQuantidade invalida!");
+                delay(1000);
+                continue;
+            }
             //encontra a pos do produto no arquivo
             int pos = buscarProduto(id, 0, arq);
 

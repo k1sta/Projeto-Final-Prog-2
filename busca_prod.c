@@ -29,9 +29,7 @@ int buscarProduto(int id, int flag, FILE *arq)
             if (flag) //se o usuario "pediu" para iprimir
             {
                 printf("\e[1;1H\e[2J"); // Limpa o console, mas nao permite ver algumas mensagens de erro
-                printf("%s%-4s | %-15s | %-15s | %-15s | %-15s | %-15s | %-10s%s\n", BWHT, "ID", "Nome do produto", "Categoria", "Fornecedor", "Qtd Estoque", "Preco unitario", "Peso", SEMCOR);
-                printf("-----|-----------------|-----------------|-----------------|-----------------|-----------------|------------\n");
-                printf("%-4d | %-15s | %-15s | %-15s | %-15d | %-15f | %-10d \n", produto.id_prod, produto.nome_prod, produto.categoria, produto.nome_fornec, produto.qnt_estoque, produto.preco, produto.peso);
+                printProduto(produto);
                 delay(1000);
             }
             return meio;

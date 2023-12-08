@@ -22,7 +22,7 @@ void exibirCarrinho(FILA *f)
         printf("%-4d | %-15s | %-15.2f | %-5d | %-10d | %-10.2f\n", end->produto.id_prod, end->produto.nome_prod, end->produto.preco, end->produto.peso, end->quantidade, end->quantidade * end->produto.preco);
         end = end->prox;
     }
-    printf("\"\n");
+    puts(" ");
 }
 
 // essa funcao insere um tProduto na fila
