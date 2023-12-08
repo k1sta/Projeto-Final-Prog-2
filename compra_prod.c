@@ -14,7 +14,8 @@ int compraProdutos(int flag, FILE *arq)
     do
     {   
         printf("\e[1;1H\e[2J"); // Limpa o console
-        puts("\nDigite o ID do produto comprado (-1 para sair): ");
+        printf("\n%sAdicione estoque%s", BWHT, SEMCOR);
+        printf("\n%sDigite o ID do produto comprado (-1 para sair): %s", BWHT, SEMCOR);
         scanf("%d", &id);
         if (id != -1)
         {
@@ -26,8 +27,8 @@ int compraProdutos(int flag, FILE *arq)
 
             if (pos == -1) // se o produto nao for encontrado
             {
-                if (flag)
-                    puts("\nProduto nao encontrado!");
+                puts("\nProduto nao encontrado!");
+                delay(1000);
                 return -2;
             }
 
@@ -38,7 +39,7 @@ int compraProdutos(int flag, FILE *arq)
             fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
             fwrite(&produto, sizeof(tProduto), 1, arq);
 
-            puts("\nCompra realizada com sucesso!");
+            printf("\n%sCompra realizada com sucesso!%s", BWHT, SEMCOR);
         }
     } while (id != -1);
 
