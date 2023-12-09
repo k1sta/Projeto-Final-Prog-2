@@ -27,10 +27,13 @@ void notaFiscal(FILA *CARRINHO, float total)
     printf("\nInput: ");
     scanf("%s", aux);
     getchar();
-    }while(testeInputInt(aux));
     pagamento = atoi(aux);
-
-    getchar();
+    if(pagamento > 4 || pagamento < 1){
+        printf("Opcao invalida\n");
+        delay(500);
+    }
+    }while((pagamento < 1 || pagamento > 4) || !testeInputInt(aux));
+    //pagamento = atoi(aux);
 
     // Eh necessario para fazer a data e hora instantanea
     time_t agora;
