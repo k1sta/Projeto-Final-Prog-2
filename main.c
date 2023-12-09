@@ -37,6 +37,7 @@ void menu()
 
     int id;
     int qtd = 0;
+    char aux[20];
 
     while (1)
     {
@@ -67,7 +68,8 @@ void menu()
         case 3: //remover produto
             do{
             printf("\nQuantos produtos deseja remover? ");
-            scanf("%d", &qtd);
+            scanf("%s", aux);
+            qtd = atoi(aux);
             if(qtd <= 0) puts("Quantidade invalida!");
             }while(qtd <= 0);
 
@@ -76,7 +78,8 @@ void menu()
             for (int i = 0; i < qtd; i++)
             {
                 printf("%sID %d: %s", BWHT, i+1, SEMCOR);
-                scanf("%d", &id);
+                scanf("%s", aux);
+                id = atoi(aux);
                 apagar[i] = id;
             }
             removerProdutos(apagar, qtd, estoque);
@@ -84,11 +87,12 @@ void menu()
             break;
         case 4: //buscar produto
             printf("\nID do produto: ");
-            scanf("%d", &id);
+            scanf("%s", aux);
+            id = atoi(aux);
             puts(" ");
             buscarProduto(id, 1, estoque);
             puts("\nDigite qualquer numero para voltar ao menu principal: ");
-            scanf("%d", &resposta);
+            scanf("%s", aux);
             break;
         case 5: //adicionar quantidade
             compraProdutos(estoque);
@@ -100,7 +104,8 @@ void menu()
             printf("\n%s[2]%s Deseja visualizar o estoque ordenado?", BCYN, SEMCOR);
             puts("\n\nDigite qualquer outro numero para VOLTAR.");
             printf("\nInput: ");
-            scanf("%d", &resposta);
+            scanf("%s", aux);
+            resposta = atoi(aux);
             getchar();
             if (resposta == 1)
             {

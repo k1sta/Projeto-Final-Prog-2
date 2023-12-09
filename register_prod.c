@@ -13,7 +13,7 @@ int registroProdutos(FILE *arq)
 {
     int n, qnt, aux, cont = 0;
     tProduto *produtos;
-    char nome[50];
+    char nome[50], inputAux[20];
 
     while (1)
     {
@@ -25,7 +25,8 @@ int registroProdutos(FILE *arq)
         printf("%s[3]%s Arquivo CSV\n", BCYN, SEMCOR);
         printf("%sPara VOLTAR, digite qualquer outro numero%s\n", BWHT, SEMCOR);
         printf("%s", "Input: ");
-        scanf("%d", &aux);
+        scanf("%s", inputAux);
+        aux = atoi(inputAux);
 
         switch (aux)
         {
@@ -43,7 +44,8 @@ int registroProdutos(FILE *arq)
             do{
             puts("\nQuantos produtos deseja registrar?");
             printf("%s", "Input: ");
-            scanf("%d", &n);
+            scanf("%s", inputAux);
+            n = atoi(inputAux);
             if (n <= 0)
                 puts("Quantidade invalida!");
             }while(n <= 0);
@@ -215,28 +217,32 @@ tProduto inputProdutoTeclado()
     do
     {
         printf("%s", "\nQuantidade em estoque: ");
-        scanf("%d", &prod.qnt_estoque);
+        scanf("%s", aux);
+        prod.qnt_estoque = atoi(aux);
         if (prod.qnt_estoque < 0)
             puts("Quantidade invalida!");
     } while (prod.qnt_estoque < 0);
     do
     {
         printf("%s", "\nPreco: ");
-        scanf("%f", &prod.preco);
+        scanf("%s", aux);
+        prod.preco = atof(aux);
         if (prod.preco <= 0)
             puts("Valor invalido!");
     } while (prod.preco <= 0);
     do
     {
         printf("%s", "\nID: ");
-        scanf("%d", &prod.id_prod);
+        scanf("%s", aux);
+        prod.id_prod = atoi(aux);
         if (prod.id_prod <= 0)
             puts("ID invalido!");
     } while (prod.id_prod <= 0);
     do
     {
         printf("%s", "\nPeso (em gramas): ");
-        scanf("%d", &prod.peso);
+        scanf("%s", aux);
+        prod.peso = atoi(aux);
         if (prod.peso <= 0)
             puts("Peso invalido!");
     } while (prod.peso <= 0);

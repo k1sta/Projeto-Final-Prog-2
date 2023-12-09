@@ -7,7 +7,9 @@
 // funcao imprime um simulacro de nota fiscal por fins de teste
 // function prints a mock invoice for testing purposes
 void notaFiscal(FILA *CARRINHO, float total)
-{
+{   
+    char aux[20];
+
     FILE *arquivo = fopen("nota_fiscal.txt", "w");
     if (arquivo == NULL)
     {
@@ -22,7 +24,8 @@ void notaFiscal(FILA *CARRINHO, float total)
     printf("%s[3]%s PIX\n", BCYN, SEMCOR);
     printf("%s[4]%s Dinheiro\n", BCYN, SEMCOR);
     printf("\nInput: ");
-    scanf("%d", &pagamento);
+    scanf("%s", aux);
+    pagamento = atoi(aux);
     getchar();
 
     // Eh necessario para fazer a data e hora instantanea
@@ -60,7 +63,8 @@ void notaFiscal(FILA *CARRINHO, float total)
     if (pagamento == 1)
     {
         printf("Deseja parcelar em quantas vezes? ");
-        scanf("%d", &parcelas);
+        scanf("%s", aux);
+        parcelas = atoi(aux);
         fprintf(arquivo, "Forma de Pagamento: Cartao de Credito\n");
         fprintf(arquivo, "Parcelas: %dx de R$ %.2f sem juros\n", parcelas, total / parcelas);
     }
@@ -95,6 +99,7 @@ void caixaRegistradora(FILE *arq)
 {
     int id = 0, pos;
     float total = 0;
+    char aux[20];
     tProduto produto;
 
     FILA *carrinho = (FILA *)malloc(sizeof(FILA));
@@ -114,7 +119,8 @@ void caixaRegistradora(FILE *arq)
         printf("\n%s==================================================================%s \n\n", BWHT, SEMCOR);
         puts("Digite o ID do produto ou -1 para fechar a compra\n");
         printf("Input: ");
-        scanf("%d", &id);
+        scanf("%s", aux);
+        id = atoi(aux);
 
         //fecha a compra
         if (id == -1)

@@ -10,10 +10,11 @@ void editarProduto(FILE *arq)
 {
     int id, n;
     tProduto produto;
-    char aux[100];
+    char aux[100], inputAux[20];
 
     printf("\nInsira o ID do produto: ");
-    scanf("%d", &id);
+    scanf("%s", inputAux);
+    id = atoi(inputAux);
 
     //retorna o tProduto baseado no id inserido
     produto = catchProduto(id, arq);
@@ -44,7 +45,8 @@ void editarProduto(FILE *arq)
         printf("%sPara VOLTAR, digite qualquer outro numero%s\n", BWHT, SEMCOR);
         printf("\nInput: ");
 
-        scanf("%d", &opcao);
+        scanf("%s", inputAux);
+        opcao = atoi(inputAux);
         getchar();
 
         switch (opcao)
@@ -95,7 +97,8 @@ void editarProduto(FILE *arq)
             do
             {
                 printf("%s", "\nDigite a nova quantidade do produto: ");
-                scanf("%d", &produto.qnt_estoque);
+                scanf("%s", inputAux);
+                produto.qnt_estoque = atoi(inputAux);
                 if (produto.qnt_estoque < 0)
                     puts("Quantidade invalida!");
             } while (produto.qnt_estoque < 0);
@@ -105,7 +108,8 @@ void editarProduto(FILE *arq)
             do
             {
                 printf("%s", "\nDigite o novo preco do produto: ");
-                scanf("%f", &produto.preco);
+                scanf("%s", inputAux);
+                produto.preco = atof(inputAux);
                 if (produto.preco <= 0)
                     puts("Valor invalido!");
             } while (produto.preco <= 0);
@@ -115,7 +119,8 @@ void editarProduto(FILE *arq)
             do
             {
                 printf("%s", "\nDigite o novo peso do produto: ");
-                scanf("%d", &produto.peso);
+                scanf("%s", inputAux);
+                produto.peso = atoi(inputAux);
                 if (produto.peso < 0)
                     puts("Quantidade invalida!");
             } while (produto.peso < 0);
@@ -131,7 +136,8 @@ void editarProduto(FILE *arq)
             puts("");
             modificarProduto(id, &produto, 1, arq);
             printf("\nDeseja modificar algum campo novamente? Digite 1 para continuar.\n");
-            scanf("%d", &continua);
+            scanf("%s", inputAux);
+            continua = atoi(inputAux);
         }
     }
 }
