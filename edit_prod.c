@@ -80,7 +80,7 @@ void editarProduto(FILE *arq)
                     puts("Nome muito grande!");
                 else
                     strcpy(produto.categoria, aux);
-            } while (n >= 50);
+            } while (n >= 25);
             break;
 
         case 3:

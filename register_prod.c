@@ -202,7 +202,7 @@ tProduto inputProdutoTeclado()
         scanf(" %[^\n]", aux);
         getchar();
         n = strlen(aux);
-        if (n >= 50)
+        if (n >= 25)
             puts("Nome muito grande!");
         else
             strcpy(prod.categoria, aux);

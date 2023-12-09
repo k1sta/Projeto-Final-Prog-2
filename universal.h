@@ -16,7 +16,7 @@
 typedef struct
 {
     char nome_prod[50];
-    char categoria[15];
+    char categoria[25];
     char nome_fornec[50];
     int qnt_estoque;
     float preco;

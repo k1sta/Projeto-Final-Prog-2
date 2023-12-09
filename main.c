@@ -26,7 +26,7 @@ int main(void)
 void menu()
 {
 
-    FILE *estoque = fopen("produtos.dat", "rb+");
+    FILE *estoque = fopen("produtos.dat", "wb+");
     if (estoque == NULL)
     {
         estoque = fopen("produtos.dat", "wb+");
@@ -36,6 +36,8 @@ void menu()
         }
         inicializarArquivo(estoque);
     }
+
+    inicializarArquivo(estoque);
 
     int id;
     int qtd = 0;
@@ -71,9 +73,9 @@ void menu()
             printf("\nQuantos produtos deseja remover? ");
             scanf("%s", aux);
             getchar();
-            if(qtd <= 0) puts("Quantidade invalida!");
-            }while(qtd <= 0 || testeInputInt(aux));
             qtd = atoi(aux);
+            if(qtd <= 0) puts("Quantidade invalida!");
+            }while(qtd <= 0 || !testeInputInt(aux));
 
             int *apagar = (int *)malloc(sizeof(int) * qtd);
             puts("");
@@ -134,6 +136,7 @@ void menu()
             break;
 
         default: //sair
+            fclose(estoque);
             exit(0);
             break;
         }
