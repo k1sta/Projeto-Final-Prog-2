@@ -152,22 +152,57 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq)
 // essa funcao executa um menu para a criacao de um produto e retorna ele proprio
 // this function executes a menu for the creation of a product and returns it
 tProduto inputProdutoTeclado()
-{
+{   
+    char aux[100];
+    int n;
+    float n2;
     tProduto prod;
-    printf("%s", "\nNome do produto: ");
-    scanf(" %[^\n]", prod.nome_prod);
-    printf("%s", "Categoria: ");
-    scanf(" %[^\n]", prod.categoria);
-    printf("%s", "Nome do fornecedor: ");
-    scanf(" %[^\n]", prod.nome_fornec);
-    printf("%s", "Quantidade em estoque: ");
-    scanf("%d", &prod.qnt_estoque);
-    printf("%s", "Preco: ");
-    scanf("%f", &prod.preco);
-    printf("%s", "ID: ");
-    scanf("%d", &prod.id_prod);
-    printf("%s", "Peso (em gramas): ");
-    scanf("%d", &prod.peso);
+    do{
+        printf("%s", "\nNome do produto: ");
+        scanf(" %[^\n]", aux);
+        n = strlen(aux);
+        if(n >= 50) puts("Nome muito grande!");
+        else strcpy(prod.nome_prod, aux);
+    }while (n >= 50);
+    do{
+        printf("%s", "\nCategoria: ");
+        scanf(" %[^\n]", aux);
+        n = strlen(aux);
+        if(n >= 50) puts("Nome muito grande!");
+        else strcpy(prod.categoria, aux);
+    }while (n >= 50);
+    do{
+        printf("%s", "\nNome do fornecedor: ");
+        scanf(" %[^\n]", aux);
+        n = strlen(aux);
+        if(n >= 50) puts("Nome muito grande!");
+        else strcpy(prod.nome_fornec, aux);
+    }while (n >= 50);
+    do{
+        printf("%s", "\nQuantidade em estoque: ");
+        scanf("%d", &n);
+        if(n < 0) puts("Quantidade invalida!");
+        else prod.qnt_estoque = n;
+    }while (n < 0);
+    do{
+        printf("%s", "\nPreco: ");
+        scanf("%f", &n2);
+        if(n2 <= 0) puts("Valor invalido!");
+        else prod.preco = n2;
+    }while (n2 <= 0);
+    do{
+        printf("%s", "\nID: ");
+        scanf("%d", &n);
+        if(n <= 0) puts("ID invalido!");
+        else prod.id_prod = n;
+    }while (n <= 0);
+    do{
+        printf("%s", "\nPeso (em gramas): ");
+        scanf("%d", &n);
+        if(n <= 0) puts("Peso invalido!");
+        else prod.peso = n;
+    }while (n <= 0);
+
     return prod;
 }
 
