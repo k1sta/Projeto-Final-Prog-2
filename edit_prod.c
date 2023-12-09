@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-//#include "edit_prod.h"
 #include "universal.h"
 
 // essa funcao cria um menu para a edicao de um produto na DB

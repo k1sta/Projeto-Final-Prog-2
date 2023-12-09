@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-//#include "func_secundarias.h"
 #include <time.h>
 #include "universal.h"
 
@@ -17,7 +16,6 @@ void delay(int milliseconds)
         now = clock();
 }
 
-// FUNCIONA
 int inicializarArquivo(FILE *arq)
 {
     rewind(arq); // ponteiro do produtos.dat no inicio
@@ -27,7 +25,6 @@ int inicializarArquivo(FILE *arq)
 }
 
 // essa funcao retorna o numero de produtos cadastrados no arquivo produtos.dat
-//  FUNCIONA
 int numProd(FILE *arq)
 {
     rewind(arq);
@@ -36,7 +33,6 @@ int numProd(FILE *arq)
     return n;
 }
 
-// FUNCIONA
 int qntd_produtos_csv(char *nome)
 {
     int prod = 0;
@@ -76,7 +72,6 @@ tProduto catchProduto(int id, FILE *arq)
     return produto;
 }
 
-// FUNCIONA
 void printProduto(tProduto produto)
 {
     puts("");

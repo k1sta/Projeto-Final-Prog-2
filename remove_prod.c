@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-//#include "remove_prod.h"
 #include "universal.h"
 
 // essa funcao recebe um array de id`s para serem removidos

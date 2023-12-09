@@ -11,7 +11,6 @@ gcc dados.c busca_prod.c caixa_reg.c compra_prod.c edit_prod.c func_secundarias.
 #include <string.h>
 #include <stdbool.h>
 #include "universal.h"
-//#include "arqlib.h"
 
 //assinaturas de algumas funcoes implementadas aqui
 void menu();

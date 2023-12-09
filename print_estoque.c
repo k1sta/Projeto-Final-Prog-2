@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-//#include "print_estoque.h"
 #include "universal.h"
 
 // funcao para printar o estoque de um arq bin (entrando com o arquivo ja aberto)
@@ -149,8 +148,5 @@ void ordena_estoque(FILE *arq)
 
     free(prod);
 
-    //rename("produtos.dat", "produtosAUX.dat");
-    //rename("produtos2.dat", "produtos.dat");
-    //remove("produtosAUX.dat");
     arq = fopen("produtos.dat", "rb+");
 }

@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-// #include "caixa_reg.h"
 #include "universal.h"
 
 // funcao imprime um simulacro de nota fiscal por fins de teste
