@@ -67,16 +67,6 @@ int registroProdutos(FILE *arq)
             inputProdutoArquivo(nome, n, produtos);
             break;
         case 3: //csv file (need to check the format in documentation)
-            printf("%s", "\nNome do arquivo: ");
-            scanf(" %[^\n]", nome);
-            n = qntd_produtos_csv(nome);
-            produtos = (tProduto *)calloc(n, sizeof(tProduto));
-            if (!produtos)
-            {
-                puts("\nErro ao alocar memoria!");
-                return -1;
-            }
-
             do
             {
                 printf("%s", "\nNome do arquivo: ");
@@ -88,6 +78,14 @@ int registroProdutos(FILE *arq)
                 else
                     puts("Formato invalido!");
             } while (1);
+
+            n = qntd_produtos_csv(nome);
+            produtos = (tProduto *)calloc(n, sizeof(tProduto));
+            if (!produtos)
+            {
+                puts("\nErro ao alocar memoria!");
+                return -1;
+            }
 
             lerCSV(nome, produtos);
 

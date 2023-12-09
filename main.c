@@ -70,7 +70,7 @@ void menu()
             scanf("%d", &qtd);
             if(qtd <= 0) puts("Quantidade invalida!");
             }while(qtd <= 0);
-            
+
             int *apagar = (int *)malloc(sizeof(int) * qtd);
             puts("");
             for (int i = 0; i < qtd; i++)
