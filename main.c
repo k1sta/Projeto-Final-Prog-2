@@ -26,7 +26,7 @@ int main(void)
 void menu()
 {
 
-    FILE *estoque = fopen("produtos.dat", "wb+");
+    FILE *estoque = fopen("produtos.dat", "rb+");
     if (estoque == NULL)
     {
         estoque = fopen("produtos.dat", "wb+");
@@ -36,8 +36,6 @@ void menu()
         }
         inicializarArquivo(estoque);
     }
-
-    inicializarArquivo(estoque);
 
     int id;
     int qtd = 0;
