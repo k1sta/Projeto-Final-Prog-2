@@ -42,7 +42,6 @@ void menu()
     while (1)
     {
         int resposta = 0;
-        puts("");
         printInicio();
         puts("");
         printf("%sO que gostaria de fazer? Escolha sua resposta de acordo com as instrucoes a seguir:%s\n", BWHT, SEMCOR);
@@ -69,16 +68,20 @@ void menu()
             do{
             printf("\nQuantos produtos deseja remover? ");
             scanf("%s", aux);
-            qtd = atoi(aux);
+            getchar();
             if(qtd <= 0) puts("Quantidade invalida!");
-            }while(qtd <= 0);
+            }while(qtd <= 0 || testeInputInt(aux));
+            qtd = atoi(aux);
 
             int *apagar = (int *)malloc(sizeof(int) * qtd);
             puts("");
             for (int i = 0; i < qtd; i++)
             {
+                do{
                 printf("%sID %d: %s", BWHT, i+1, SEMCOR);
                 scanf("%s", aux);
+                getchar();
+                }while(!testeInputInt(aux));
                 id = atoi(aux);
                 apagar[i] = id;
             }
@@ -86,13 +89,18 @@ void menu()
             free(apagar);
             break;
         case 4: //buscar produto
+            do{
             printf("\nID do produto: ");
             scanf("%s", aux);
+            getchar();
+            }while(!testeInputInt(aux));
             id = atoi(aux);
             puts(" ");
             buscarProduto(id, 1, estoque);
+
             puts("\nDigite qualquer numero para voltar ao menu principal: ");
             scanf("%s", aux);
+            getchar();
             break;
         case 5: //adicionar quantidade
             compraProdutos(estoque);
@@ -103,10 +111,12 @@ void menu()
             printf("%s[1]%s Deseja criar um CSV?", BCYN, SEMCOR);
             printf("\n%s[2]%s Deseja visualizar o estoque ordenado?", BCYN, SEMCOR);
             puts("\n\nDigite qualquer outro numero para VOLTAR.");
+            do{
             printf("\nInput: ");
             scanf("%s", aux);
-            resposta = atoi(aux);
             getchar();
+            }while(!testeInputInt(aux));
+            resposta = atoi(aux);
             if (resposta == 1)
             {
                 criar_csv(estoque);

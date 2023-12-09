@@ -12,8 +12,11 @@ void editarProduto(FILE *arq)
     tProduto produto;
     char aux[100], inputAux[20];
 
+    do{
     printf("\nInsira o ID do produto: ");
     scanf("%s", inputAux);
+    getchar();
+    }while(!testeInputInt(inputAux));
     id = atoi(inputAux);
 
     //retorna o tProduto baseado no id inserido
@@ -43,11 +46,12 @@ void editarProduto(FILE *arq)
         printf("%s[5]%s Preco\n", BCYN, SEMCOR);
         printf("%s[6]%s Peso\n", BCYN, SEMCOR);
         printf("%sPara VOLTAR, digite qualquer outro numero%s\n", BWHT, SEMCOR);
+        do{
         printf("\nInput: ");
-
         scanf("%s", inputAux);
-        opcao = atoi(inputAux);
         getchar();
+        }while(!testeInputInt(inputAux));
+        opcao = atoi(inputAux);
 
         switch (opcao)
         {
@@ -98,10 +102,11 @@ void editarProduto(FILE *arq)
             {
                 printf("%s", "\nDigite a nova quantidade do produto: ");
                 scanf("%s", inputAux);
+                getchar();
                 produto.qnt_estoque = atoi(inputAux);
                 if (produto.qnt_estoque < 0)
                     puts("Quantidade invalida!");
-            } while (produto.qnt_estoque < 0);
+            } while (produto.qnt_estoque < 0 || !testeInputInt(inputAux));
             break;
 
         case 5:
@@ -109,10 +114,11 @@ void editarProduto(FILE *arq)
             {
                 printf("%s", "\nDigite o novo preco do produto: ");
                 scanf("%s", inputAux);
+                getchar();
                 produto.preco = atof(inputAux);
                 if (produto.preco <= 0)
                     puts("Valor invalido!");
-            } while (produto.preco <= 0);
+            } while (produto.preco <= 0 || !testeInputFloat(inputAux));
             break;
 
         case 6:
@@ -120,10 +126,11 @@ void editarProduto(FILE *arq)
             {
                 printf("%s", "\nDigite o novo peso do produto: ");
                 scanf("%s", inputAux);
+                getchar();
                 produto.peso = atoi(inputAux);
                 if (produto.peso < 0)
                     puts("Quantidade invalida!");
-            } while (produto.peso < 0);
+            } while (produto.peso < 0 || !testeInputInt(inputAux));
             break;
 
         default:
@@ -137,6 +144,7 @@ void editarProduto(FILE *arq)
             modificarProduto(id, &produto, 1, arq);
             printf("\nDeseja modificar algum campo novamente? Digite 1 para continuar.\n");
             scanf("%s", inputAux);
+            getchar();
             continua = atoi(inputAux);
         }
     }

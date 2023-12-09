@@ -24,8 +24,11 @@ int registroProdutos(FILE *arq)
         printf("%s[2]%s Arquivo TXT\n", BCYN, SEMCOR);
         printf("%s[3]%s Arquivo CSV\n", BCYN, SEMCOR);
         printf("%sPara VOLTAR, digite qualquer outro numero%s\n", BWHT, SEMCOR);
+        do{
         printf("%s", "Input: ");
         scanf("%s", inputAux);
+        getchar();
+        }while(!testeInputInt(inputAux));
         aux = atoi(inputAux);
 
         switch (aux)
@@ -45,10 +48,11 @@ int registroProdutos(FILE *arq)
             puts("\nQuantos produtos deseja registrar?");
             printf("%s", "Input: ");
             scanf("%s", inputAux);
+            getchar();
             n = atoi(inputAux);
             if (n <= 0)
                 puts("Quantidade invalida!");
-            }while(n <= 0);
+            }while(n <= 0 || !testeInputInt(inputAux));
             produtos = (tProduto *)malloc(n * sizeof(tProduto));
             if (!produtos)
             {
@@ -218,36 +222,39 @@ tProduto inputProdutoTeclado()
     {
         printf("%s", "\nQuantidade em estoque: ");
         scanf("%s", aux);
+        getchar();
         prod.qnt_estoque = atoi(aux);
         if (prod.qnt_estoque < 0)
             puts("Quantidade invalida!");
-    } while (prod.qnt_estoque < 0);
+    } while (prod.qnt_estoque < 0 || !testeInputInt(aux));
     do
     {
         printf("%s", "\nPreco: ");
         scanf("%s", aux);
+        getchar();
         prod.preco = atof(aux);
         if (prod.preco <= 0)
             puts("Valor invalido!");
-    } while (prod.preco <= 0);
+    } while (prod.preco <= 0 || !testeInputFloat(aux));
     do
     {
         printf("%s", "\nID: ");
         scanf("%s", aux);
+        getchar();
         prod.id_prod = atoi(aux);
         if (prod.id_prod <= 0)
             puts("ID invalido!");
-    } while (prod.id_prod <= 0);
+    } while (prod.id_prod <= 0 || !testeInputInt(aux));
     do
     {
         printf("%s", "\nPeso (em gramas): ");
         scanf("%s", aux);
+        getchar();
         prod.peso = atoi(aux);
         if (prod.peso <= 0)
             puts("Peso invalido!");
-    } while (prod.peso <= 0);
+    } while (prod.peso <= 0 || !testeInputInt(aux));
 
-    getchar();
     return prod;
 }
 

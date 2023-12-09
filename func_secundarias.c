@@ -79,3 +79,25 @@ void printProduto(tProduto produto)
     printf("-----|-----------------|-----------------|-----------------|-----------------|-----------------|------------\n");
     printf("%-4d | %-15s | %-15s | %-15s | %-15d | %-15.2f | %-10d \n", produto.id_prod, produto.nome_prod, produto.categoria, produto.nome_fornec, produto.qnt_estoque, produto.preco, produto.peso);
 }
+
+bool testeInputInt(char* str){
+    int n = strlen(str);
+    for(int i = 0; i < n; i++){
+        if(str[i] < '0' || str[i] > '9'){
+            printf("Entrada invalida!\n");
+            return false;
+        }
+    }
+    return true;
+}
+
+bool testeInputFloat(char* str){
+    int n = strlen(str);
+    for(int i = 0; i < n; i++){
+        if((str[i] < '0' || str[i] > '9') && str[i] != '.'){
+            printf("Entrada invalida!\n");
+            return false;
+        }
+    }
+    return true;
+}

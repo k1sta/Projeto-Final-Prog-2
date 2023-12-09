@@ -17,11 +17,21 @@ int compraProdutos(FILE *arq)
         printf("\n%sAdicione estoque%s", BWHT, SEMCOR);
         printf("\n%sDigite o ID do produto comprado (-1 para sair): %s", BWHT, SEMCOR);
         scanf("%s", aux);
+        getchar();
+        if(!testeInputInt(aux)){
+            delay(1000);
+            continue;
+        }
         id = atoi(aux);
         if (id != -1)
         {
             puts("\nDigite a quantidade comprada: ");
             scanf("%s", aux);
+            getchar();
+            if(!testeInputInt(aux)){
+                delay(1000);
+                continue;
+            }
             n = atoi(aux);
             if(n < 0){
                 puts("\nQuantidade invalida!");

@@ -105,4 +105,8 @@ tProduto catchProduto(int id, FILE *arq);
 
 void printProduto(tProduto produto);
 
+bool testeInputInt(char* str);
+
+bool testeInputFloat(char* str);
+
 #endif

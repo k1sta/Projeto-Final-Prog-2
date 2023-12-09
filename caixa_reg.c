@@ -23,9 +23,13 @@ void notaFiscal(FILA *CARRINHO, float total)
     printf("%s[2]%s Cartao de Debito\n", BCYN, SEMCOR);
     printf("%s[3]%s PIX\n", BCYN, SEMCOR);
     printf("%s[4]%s Dinheiro\n", BCYN, SEMCOR);
+    do{
     printf("\nInput: ");
     scanf("%s", aux);
+    getchar();
+    }while(testeInputInt(aux));
     pagamento = atoi(aux);
+
     getchar();
 
     // Eh necessario para fazer a data e hora instantanea
@@ -62,8 +66,11 @@ void notaFiscal(FILA *CARRINHO, float total)
     fprintf(arquivo, "--------------------------------------------------------\n");
     if (pagamento == 1)
     {
+        do{
         printf("Deseja parcelar em quantas vezes? ");
         scanf("%s", aux);
+        getchar();
+        }while(parcelas <= 0 && testeInputInt(aux) && parcelas > 12);
         parcelas = atoi(aux);
         fprintf(arquivo, "Forma de Pagamento: Cartao de Credito\n");
         fprintf(arquivo, "Parcelas: %dx de R$ %.2f sem juros\n", parcelas, total / parcelas);
@@ -118,8 +125,11 @@ void caixaRegistradora(FILE *arq)
         printf("Total: R$%.2f\n", total);
         printf("\n%s==================================================================%s \n\n", BWHT, SEMCOR);
         puts("Digite o ID do produto ou -1 para fechar a compra\n");
+        do{
         printf("Input: ");
         scanf("%s", aux);
+        getchar();
+        }while(!testeInputInt(aux));
         id = atoi(aux);
 
         //fecha a compra

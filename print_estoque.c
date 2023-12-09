@@ -65,6 +65,7 @@ void ordena_estoque(FILE *arq)
     int tam = numProd(arq);
     tProduto *prod = malloc(sizeof(tProduto) * tam);
     int resposta;
+    char aux[20];
 
     FILE *arq2 = fopen("estoque_ordenado.dat", "wb+");
     if (arq2 == NULL)
@@ -76,9 +77,13 @@ void ordena_estoque(FILE *arq)
     fread(prod, sizeof(tProduto), tam, arq);
 
     printf("\nGostaria de visualizar o estoque ordenado por:\n%s[1]%s ID\n%s[2]%s Preco\n%s[3]%s Quantidade no estoque", BCYN, SEMCOR, BCYN, SEMCOR, BCYN, SEMCOR);
-
+    do{
     printf("\nInput: ");
-    scanf("%d", &resposta);
+    scanf("%s", aux);
+    getchar();
+    }while(!testeInputInt(aux));
+    resposta = atoi(aux);
+
     switch (resposta)
     {
     case 1: // id
@@ -135,8 +140,11 @@ void ordena_estoque(FILE *arq)
 
     printf("\nPara gerar um csv do estoque ordenado, digite %s[1]%s.", BCYN, SEMCOR);
     printf("\nCaso contrario, digite outro numero para voltar diretamente ao menu.\n");
-    scanf("%d", &resposta);
-
+    do{
+    scanf("%s", aux);
+    getchar();
+    }while(!testeInputInt(aux));
+    
     if(resposta==1){
         criar_csv(arq2);
     }

@@ -1,7 +1,6 @@
 nome,categoria,fornecedor,qntd,preco,id,peso
-arroz,alimento,tio_joao,537,6.90,10,5000
+feijao,comida,jusbrasil,100,10.00,11,2000
 esponja,limpeza,bombril,50,2.00,12,200
 armario,casa,tockstok,2,1200.00,13,80000
 sabao,limpeza,dove,150,1.00,14,50
 ovos,comida,mantiqueira,20,15.00,15,800
-Lapis,Papelaria,Castell,100,2.20,22,15
