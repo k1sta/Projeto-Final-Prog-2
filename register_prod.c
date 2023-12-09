@@ -11,7 +11,7 @@
 // It uses other functions of a lower level
 int registroProdutos(FILE *arq)
 {
-    int n, aux, cont = 0;
+    int n, qnt, aux, cont = 0;
     tProduto *produtos;
     char nome[50];
 
@@ -40,18 +40,30 @@ int registroProdutos(FILE *arq)
             *produtos = inputProdutoTeclado();
             break;
         case 2: //txt file (need to check the format in documentation)
+            do{
             puts("\nQuantos produtos deseja registrar?");
             printf("%s", "Input: ");
             scanf("%d", &n);
+            if (n <= 0)
+                puts("Quantidade invalida!");
+            }while(n <= 0);
             produtos = (tProduto *)malloc(n * sizeof(tProduto));
             if (!produtos)
             {
                 puts("\nErro ao alocar memoria!");
                 return -1;
             }
-            printf("%s", "\nNome do arquivo: ");
-            scanf(" %[^\n]", nome);
-            getchar();
+            do
+            {
+                printf("%s", "\nNome do arquivo: ");
+                scanf(" %[^\n]", nome);
+                getchar();
+                qnt = strlen(nome);
+                if (nome[qnt - 1] == 't' && nome[qnt - 2] == 'x' && nome[qnt - 3] == 't' && nome[qnt - 4] == '.')
+                    break;
+                else
+                    puts("Formato invalido!");
+            } while (1);
             inputProdutoArquivo(nome, n, produtos);
             break;
         case 3: //csv file (need to check the format in documentation)
@@ -64,6 +76,19 @@ int registroProdutos(FILE *arq)
                 puts("\nErro ao alocar memoria!");
                 return -1;
             }
+
+            do
+            {
+                printf("%s", "\nNome do arquivo: ");
+                scanf(" %[^\n]", nome);
+                getchar();
+                n = strlen(nome);
+                if (nome[n - 1] == 'v' && nome[n - 2] == 's' && nome[n - 3] == 'c' && nome[n - 4] == '.')
+                    break;
+                else
+                    puts("Formato invalido!");
+            } while (1);
+
             lerCSV(nome, produtos);
 
             break;
