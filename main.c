@@ -26,14 +26,16 @@ int main(void)
 void menu()
 {
 
-    FILE *estoque = fopen("produtos.dat", "wb+");
+    FILE *estoque = fopen("produtos.dat", "rb+");
     if (estoque == NULL)
     {
-        puts("Erro ao abrir o arquivo\n");
-        exit(1);
+        estoque = fopen("produtos.dat", "wb+");
+        if(estoque == NULL){
+            puts("Erro ao abrir o arquivo!");
+            exit(1);
+        }
+        inicializarArquivo(estoque);
     }
-
-    inicializarArquivo(estoque);
 
     int id;
     int qtd = 0;
@@ -117,6 +119,7 @@ void menu()
             getchar();
             }while(!testeInputInt(aux));
             resposta = atoi(aux);
+
             if (resposta == 1)
             {
                 criar_csv(estoque);
