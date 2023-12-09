@@ -8,8 +8,9 @@
 // this function creates a menu for editing a product in the DB
 void editarProduto(FILE *arq)
 {
-    int id;
+    int id, n;
     tProduto produto;
+    char aux[100];
 
     printf("\nInsira o ID do produto: ");
     scanf("%d", &id);
@@ -36,10 +37,10 @@ void editarProduto(FILE *arq)
         printf("%sQuais informacoes deseja alterar?%s\n", BWHT, SEMCOR);
         printf("%s[1]%s Nome do produto\n", BCYN, SEMCOR);
         printf("%s[2]%s Categoria\n", BCYN, SEMCOR);
-        printf("%s[3]%s Preco\n", BCYN, SEMCOR);
+        printf("%s[3]%s Fornecedor\n", BCYN, SEMCOR);
         printf("%s[4]%s Quantidade\n", BCYN, SEMCOR);
-        printf("%s[5]%s Peso\n", BCYN, SEMCOR);
-        printf("%s[6]%s Fornecedor\n", BCYN, SEMCOR);
+        printf("%s[5]%s Preco\n", BCYN, SEMCOR);
+        printf("%s[6]%s Peso\n", BCYN, SEMCOR);
         printf("%sPara VOLTAR, digite qualquer outro numero%s\n", BWHT, SEMCOR);
         printf("\nInput: ");
 
@@ -49,36 +50,75 @@ void editarProduto(FILE *arq)
         switch (opcao)
         {
         case 1:
-            printf("\nDigite o novo nome do produto: ");
-            scanf("%[^\n]", produto.nome_prod);
-            getchar();
+            do
+            {
+                printf("%s", "\nDigite o novo nome do produto: ");
+                scanf(" %[^\n]", aux);
+                getchar();
+                n = strlen(aux);
+                if (n >= 50)
+                    puts("Nome muito grande!");
+                else
+                    strcpy(produto.nome_prod, aux);
+            } while (n >= 50);
             break;
 
         case 2:
-            printf("\nDigite a nova categoria do produto: ");
-            scanf("%[^\n]", produto.categoria);
-            getchar();
+            do
+            {
+                printf("%s", "\nDigite a nova categoria do produto: ");
+                scanf(" %[^\n]", aux);
+                getchar();
+                n = strlen(aux);
+                if (n >= 50)
+                    puts("Nome muito grande!");
+                else
+                    strcpy(produto.categoria, aux);
+            } while (n >= 50);
             break;
 
         case 3:
-            printf("\nDigite o novo preco do produto: ");
-            scanf("%f", &produto.preco);
+            do
+            {
+                printf("%s", "\nDigite o novo fornecedor do produto: ");
+                scanf(" %[^\n]", aux);
+                getchar();
+                n = strlen(aux);
+                if (n >= 50)
+                    puts("Nome muito grande!");
+                else
+                    strcpy(produto.nome_fornec, aux);
+            } while (n >= 50);
             break;
 
         case 4:
-            printf("\nDigite a nova quantidade do produto: ");
-            scanf("%d", &produto.qnt_estoque);
+            do
+            {
+                printf("%s", "\nDigite a nova quantidade do produto: ");
+                scanf("%d", &produto.qnt_estoque);
+                if (produto.qnt_estoque < 0)
+                    puts("Quantidade invalida!");
+            } while (produto.qnt_estoque < 0);
             break;
 
         case 5:
-            printf("\nDigite o novo peso do produto: ");
-            scanf("%d", &produto.peso);
+            do
+            {
+                printf("%s", "\nDigite o novo preco do produto: ");
+                scanf("%f", &produto.preco);
+                if (produto.preco <= 0)
+                    puts("Valor invalido!");
+            } while (produto.preco <= 0);
             break;
 
         case 6:
-            printf("\nDigite o novo fornecedor do produto: ");
-            scanf("%[^\n]", produto.nome_fornec);
-            getchar();
+            do
+            {
+                printf("%s", "\nDigite o novo peso do produto: ");
+                scanf("%d", &produto.peso);
+                if (produto.peso < 0)
+                    puts("Quantidade invalida!");
+            } while (produto.peso < 0);
             break;
 
         default:

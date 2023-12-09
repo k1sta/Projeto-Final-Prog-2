@@ -155,54 +155,70 @@ tProduto inputProdutoTeclado()
 {   
     char aux[100];
     int n;
-    float n2;
     tProduto prod;
-    do{
+    do
+    {
         printf("%s", "\nNome do produto: ");
         scanf(" %[^\n]", aux);
+        getchar();
         n = strlen(aux);
-        if(n >= 50) puts("Nome muito grande!");
-        else strcpy(prod.nome_prod, aux);
-    }while (n >= 50);
-    do{
+        if (n >= 50)
+            puts("Nome muito grande!");
+        else
+            strcpy(prod.nome_prod, aux);
+    } while (n >= 50);
+    do
+    {
         printf("%s", "\nCategoria: ");
         scanf(" %[^\n]", aux);
+        getchar();
         n = strlen(aux);
-        if(n >= 50) puts("Nome muito grande!");
-        else strcpy(prod.categoria, aux);
-    }while (n >= 50);
-    do{
+        if (n >= 50)
+            puts("Nome muito grande!");
+        else
+            strcpy(prod.categoria, aux);
+    } while (n >= 50);
+    do
+    {
         printf("%s", "\nNome do fornecedor: ");
         scanf(" %[^\n]", aux);
+        getchar();
         n = strlen(aux);
-        if(n >= 50) puts("Nome muito grande!");
-        else strcpy(prod.nome_fornec, aux);
-    }while (n >= 50);
-    do{
+        if (n >= 50)
+            puts("Nome muito grande!");
+        else
+            strcpy(prod.nome_fornec, aux);
+    } while (n >= 50);
+    do
+    {
         printf("%s", "\nQuantidade em estoque: ");
-        scanf("%d", &n);
-        if(n < 0) puts("Quantidade invalida!");
-        else prod.qnt_estoque = n;
-    }while (n < 0);
-    do{
+        scanf("%d", &prod.qnt_estoque);
+        if (prod.qnt_estoque < 0)
+            puts("Quantidade invalida!");
+    } while (prod.qnt_estoque < 0);
+    do
+    {
         printf("%s", "\nPreco: ");
-        scanf("%f", &n2);
-        if(n2 <= 0) puts("Valor invalido!");
-        else prod.preco = n2;
-    }while (n2 <= 0);
-    do{
+        scanf("%f", &prod.preco);
+        if (prod.preco <= 0)
+            puts("Valor invalido!");
+    } while (prod.preco <= 0);
+    do
+    {
         printf("%s", "\nID: ");
-        scanf("%d", &n);
-        if(n <= 0) puts("ID invalido!");
-        else prod.id_prod = n;
-    }while (n <= 0);
-    do{
+        scanf("%d", &prod.id_prod);
+        if (prod.id_prod <= 0)
+            puts("ID invalido!");
+    } while (prod.id_prod <= 0);
+    do
+    {
         printf("%s", "\nPeso (em gramas): ");
-        scanf("%d", &n);
-        if(n <= 0) puts("Peso invalido!");
-        else prod.peso = n;
-    }while (n <= 0);
+        scanf("%d", &prod.peso);
+        if (prod.peso <= 0)
+            puts("Peso invalido!");
+    } while (prod.peso <= 0);
 
+    getchar();
     return prod;
 }
 
