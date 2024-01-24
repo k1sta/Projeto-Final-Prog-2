@@ -1,5 +1,7 @@
 # Projeto-Final-Prog-2
 
+ATENÇÂO: Esse readme não foi atualizado ainda! O projeto será continuado e atualizado.
+
 Este repositório contém o trabalho final da disciplina ICP141 - Programação de Computadores II elaborado por:
 - Pedro Kury Kitagawa
 - Bruno Veras Schulz
