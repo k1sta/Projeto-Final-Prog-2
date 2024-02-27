@@ -95,8 +95,6 @@ void ordena_estoque(FILE *arq);
 
 void delay(int milliseconds);
 
-int inicializarArquivo(FILE *arq);
-
 int numProd(FILE *arq);
 
 int qntd_produtos_csv(char* nome);

@@ -16,21 +16,13 @@ void delay(int milliseconds)
         now = clock();
 }
 
-int inicializarArquivo(FILE *arq)
-{
-    rewind(arq); // ponteiro do produtos.dat no inicio
-    int n = 0;
-    fwrite(&n, sizeof(int), 1, arq);
-    return n;
-}
-
 // essa funcao retorna o numero de produtos cadastrados no arquivo produtos.dat
 int numProd(FILE *arq)
 {
+    fseek(arq, 0L, SEEK_END);
+    int sz = ftell(arq);
     rewind(arq);
-    int n = 0;
-    fread(&n, sizeof(int), 1, arq);
-    return n;
+    return sz/sizeof(tProduto);
 }
 
 int qntd_produtos_csv(char *nome)
@@ -66,7 +58,7 @@ tProduto catchProduto(int id, FILE *arq)
     }
     else
     {
-        fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+        fseek(arq, (pos * sizeof(tProduto)), SEEK_SET);
         fread(&produto, sizeof(tProduto), 1, arq);
     }
     return produto;

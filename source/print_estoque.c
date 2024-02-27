@@ -38,11 +38,8 @@ bool criar_csv(FILE *arq)
 
     fprintf(csv, "nome,categoria,fornecedor,qntd,preco,id,peso");
 
-    fseek(arq, 0, SEEK_SET); // ponteiro do produtos.dat no inicio
-
     rewind(arq);
-    int aux;
-    fread(&aux, sizeof(aux), 1, arq); // pegar a qntd de elementos no inicio do dat
+    int aux = numProd(arq);// pegar a qntd de elementos do dat
 
     while (fread(&produto, sizeof(tProduto), 1, arq) == 1)
     {
@@ -133,7 +130,6 @@ void ordena_estoque(FILE *arq)
         break;
     }
     rewind(arq);
-    fwrite(&tam, sizeof(int), 1, arq2);
     fwrite(prod, sizeof(tProduto), tam, arq2);
 
     printarEstoque(arq2);

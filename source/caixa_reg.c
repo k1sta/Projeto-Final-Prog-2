@@ -157,10 +157,10 @@ void caixaRegistradora(FILE *arq)
         else
         {   
             // acha o produto na DB e reduz a quantidade em 1
-            fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+            fseek(arq, (pos * sizeof(tProduto)), SEEK_SET);
             fread(&produto, sizeof(tProduto), 1, arq);
             produto.qnt_estoque--;
-            fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+            fseek(arq, (pos * sizeof(tProduto)), SEEK_SET);
             fwrite(&produto, sizeof(tProduto), 1, arq);
             
             // verifica se o produto ja esta no carrinho

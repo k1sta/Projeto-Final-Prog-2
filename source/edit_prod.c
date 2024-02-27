@@ -162,7 +162,7 @@ bool modificarProduto(int id, tProduto *produto, int flag, FILE *arq)
     {
         return false;
     }
-    fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+    fseek(arq, (pos * sizeof(tProduto)), SEEK_SET);
     fwrite(produto, sizeof(tProduto), 1, arq);
     if (flag)
         puts("Produto modificado com sucesso!");
