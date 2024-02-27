@@ -11,17 +11,17 @@
 int buscarProduto(int id, int flag, FILE *arq)
 {
     tProduto produto;
-    int esq = 0, dir, meio;
+    int esq = 0, dir = numProd(arq), meio;
 
     //le o numero de produtos no arquivo e calcula o meio
     rewind(arq);
-    fread(&dir, sizeof(int), 1, arq);
+
     meio = dir / 2;
 
     //busca binaria
     while (esq <= dir)
     {
-        fseek(arq, sizeof(int) + (meio * sizeof(tProduto)), SEEK_SET);
+        fseek(arq, (meio * sizeof(tProduto)), SEEK_SET);
         fread(&produto, sizeof(tProduto), 1, arq);
         if (produto.id_prod == id)
         { 

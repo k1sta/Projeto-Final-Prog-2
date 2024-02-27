@@ -49,10 +49,10 @@ int compraProdutos(FILE *arq)
             }
 
             // acha o produto na DB e aumenta a quantidade em n
-            fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+            fseek(arq, (pos * sizeof(tProduto)), SEEK_SET);
             fread(&produto, sizeof(tProduto), 1, arq);
             produto.qnt_estoque += n;
-            fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+            fseek(arq, (pos * sizeof(tProduto)), SEEK_SET);
             fwrite(&produto, sizeof(tProduto), 1, arq);
 
             printf("\n%sCompra realizada com sucesso!%s", BWHT, SEMCOR);

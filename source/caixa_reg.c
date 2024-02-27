@@ -33,7 +33,6 @@ void notaFiscal(FILA *CARRINHO, float total)
         delay(500);
     }
     }while((pagamento < 1 || pagamento > 4) || !testeInputInt(aux));
-    //pagamento = atoi(aux);
 
     // Eh necessario para fazer a data e hora instantanea
     time_t agora;
@@ -73,7 +72,7 @@ void notaFiscal(FILA *CARRINHO, float total)
         printf("Deseja parcelar em quantas vezes? ");
         scanf("%s", aux);
         getchar();
-        }while(parcelas <= 0 && testeInputInt(aux) && parcelas > 12);
+        }while(testeInputInt(aux));
         parcelas = atoi(aux);
         fprintf(arquivo, "Forma de Pagamento: Cartao de Credito\n");
         fprintf(arquivo, "Parcelas: %dx de R$ %.2f sem juros\n", parcelas, total / parcelas);
@@ -157,10 +156,10 @@ void caixaRegistradora(FILE *arq)
         else
         {   
             // acha o produto na DB e reduz a quantidade em 1
-            fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+            fseek(arq, (pos * sizeof(tProduto)), SEEK_SET);
             fread(&produto, sizeof(tProduto), 1, arq);
             produto.qnt_estoque--;
-            fseek(arq, sizeof(int) + (pos * sizeof(tProduto)), SEEK_SET);
+            fseek(arq, (pos * sizeof(tProduto)), SEEK_SET);
             fwrite(&produto, sizeof(tProduto), 1, arq);
             
             // verifica se o produto ja esta no carrinho

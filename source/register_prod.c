@@ -21,7 +21,7 @@ int registroProdutos(FILE *arq)
         printf("\e[1;1H\e[2J"); // Limpa o console
         printf("%sQuer adicionar por teclado ou arquivo?%s\n", BWHT, SEMCOR);
         printf("%s[1]%s Teclado\n", BCYN, SEMCOR);
-        printf("%s[2]%s Arquivo TXT\n", BCYN, SEMCOR);
+        printf("%s[2]%s Arquivo TXT (broken)\n", BCYN, SEMCOR);
         printf("%s[3]%s Arquivo CSV\n", BCYN, SEMCOR);
         printf("%sPara VOLTAR, digite qualquer outro numero%s\n", BWHT, SEMCOR);
         do{
@@ -111,10 +111,6 @@ int registroProdutos(FILE *arq)
                 cont++;
                 continue;
             }
-            int aux2 = numProd(arq);
-            aux2++;
-            fseek(arq, 0, SEEK_SET);
-            fwrite(&aux2, sizeof(int), 1, arq);
         }
 
         free(produtos); //free the memory allocated for the array of products 
@@ -139,7 +135,7 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq)
     while (baixo <= alto && baixo >= 0)
     {
         meio = (baixo + alto) / 2;
-        fseek(arq, sizeof(int) + meio * sizeof(tProduto), SEEK_SET);
+        fseek(arq, meio * sizeof(tProduto), SEEK_SET);
         fread(&anterior, sizeof(tProduto), 1, arq);
         if (produto->id_prod == anterior.id_prod)
         {
@@ -159,18 +155,18 @@ bool cadastrarProduto(tProduto *produto, int flag, FILE *arq)
     pos = baixo; //posicao correta do produto
 
     //"desloca os produtos para a direita" para inserir o novo produto
-    fseek(arq, sizeof(int) + pos * sizeof(tProduto), SEEK_SET);
+    fseek(arq, pos * sizeof(tProduto), SEEK_SET);
     fread(&anterior, sizeof(tProduto), 1, arq);
 
     for (int i = numProd(arq); i > pos; i--)
     {
-        fseek(arq, sizeof(int) + (i - 1) * sizeof(tProduto), SEEK_SET);
+        fseek(arq, (i - 1) * sizeof(tProduto), SEEK_SET);
         fread(&anterior, sizeof(tProduto), 1, arq);
-        fseek(arq, sizeof(int) + i * sizeof(tProduto), SEEK_SET);
+        fseek(arq, i * sizeof(tProduto), SEEK_SET);
         fwrite(&anterior, sizeof(tProduto), 1, arq);
     }
 
-    fseek(arq, sizeof(int) + pos * sizeof(tProduto), SEEK_SET);
+    fseek(arq, pos * sizeof(tProduto), SEEK_SET);
     fwrite(produto, sizeof(tProduto), 1, arq);
 
     if(flag) puts("Produto cadastrado com sucesso!");

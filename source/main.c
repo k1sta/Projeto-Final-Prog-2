@@ -34,7 +34,6 @@ void menu()
             puts("Erro ao abrir o arquivo!");
             exit(1);
         }
-        inicializarArquivo(estoque);
     }
 
     int id;

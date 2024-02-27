@@ -10,7 +10,7 @@ bool removerProdutos(int *id, int n, FILE *arq)
 {
     FILE *arq2;
     tProduto produto;
-    int i, cont = 0, contExcluidos = 0, *id2 = (int *)calloc (n, sizeof(int));
+    int cont = 0, contExcluidos = 0, *id2 = (int *)calloc (n, sizeof(int));
 
 
     //abre um arquivo para escrita
@@ -21,8 +21,8 @@ bool removerProdutos(int *id, int n, FILE *arq)
     }
 
     //posiciona o ponteiro no inicio dos produtos
-    fseek(arq, sizeof(int), SEEK_SET);
-    fseek(arq2, sizeof(int), SEEK_SET);
+    rewind(arq);
+    rewind(arq2);
 
     //le o produto do arquivo
     while(fread(&produto, sizeof(tProduto), 1, arq)){
@@ -43,13 +43,6 @@ bool removerProdutos(int *id, int n, FILE *arq)
             fwrite(&produto, sizeof(tProduto), 1, arq2);
         }
     }
-
-    //atualiza o numero de produtos no arquivo 2
-    rewind(arq);
-    rewind(arq2);
-    fread(&i, sizeof(int), 1, arq);
-    i = cont;
-    fwrite(&i, sizeof(int), 1, arq2);
 
     //fecha os dois arquivos e renomeia o segundo para o primeiro.
     fclose(arq2);
