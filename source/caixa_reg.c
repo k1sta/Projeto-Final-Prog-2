@@ -68,12 +68,27 @@ void notaFiscal(FILA *CARRINHO, float total)
     fprintf(arquivo, "--------------------------------------------------------\n");
     if (pagamento == 1)
     {
+        puts("Deseja parcelar em quantas vezes?");
+        for(int i = 0; i < 12; i++){
+            printf("%dx de R$ %.2f sem juros\n", i+1, total/(i+1) );
+        }
+
+        //input checking
+        bool flag;
         do{
-        printf("Deseja parcelar em quantas vezes? ");
-        scanf("%s", aux);
-        getchar();
-        }while(testeInputInt(aux));
-        parcelas = atoi(aux);
+            flag = false;
+            do{
+            printf("%s", "\nINPUT: ");
+            scanf("%s", aux);
+            getchar();
+            }while(!testeInputInt(aux));
+            parcelas = atoi(aux);
+            if(parcelas <= 0 && parcelas > 12){
+                flag = true;
+                puts("Escolha um número válido de parcelas\n");
+            }
+        }while(flag);
+
         fprintf(arquivo, "Forma de Pagamento: Cartao de Credito\n");
         fprintf(arquivo, "Parcelas: %dx de R$ %.2f sem juros\n", parcelas, total / parcelas);
     }
