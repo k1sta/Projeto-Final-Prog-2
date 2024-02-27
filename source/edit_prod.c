@@ -156,7 +156,6 @@ bool modificarProduto(int id, tProduto *produto, int flag, FILE *arq)
 {
     int pos;
     rewind(arq);
-    int n = numProd(arq);
     pos = buscarProduto(id, 0, arq);
     if (pos == -2)
     {

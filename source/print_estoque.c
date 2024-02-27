@@ -39,7 +39,6 @@ bool criar_csv(FILE *arq)
     fprintf(csv, "nome,categoria,fornecedor,qntd,preco,id,peso");
 
     rewind(arq);
-    int aux = numProd(arq);// pegar a qntd de elementos do dat
 
     while (fread(&produto, sizeof(tProduto), 1, arq) == 1)
     {

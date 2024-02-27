@@ -43,7 +43,7 @@ void exibirCarrinho(FILA *f);
 
 bool inserirNaFila(FILA *f, tProduto prod);
 
-bool excluirFila(FILA *f);
+void excluirFila(FILA *f);
 
 //------------------------------------------------------------------
 
@@ -94,6 +94,8 @@ void ordena_estoque(FILE *arq);
 //Funções secundárias
 
 void delay(int milliseconds);
+
+int inicializarArquivo(FILE *arq);
 
 int numProd(FILE *arq);
 

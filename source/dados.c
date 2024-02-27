@@ -53,7 +53,7 @@ bool inserirNaFila(FILA *f, tProduto prod)
     return true;
 }
 
-bool excluirFila(FILA *f)
+void excluirFila(FILA *f)
 {
     No* aux = f->inicio;
     while(aux != NULL){
@@ -62,4 +62,5 @@ bool excluirFila(FILA *f)
         free(apagar);
     }
     free(f);
+    return;
 }

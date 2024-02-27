@@ -10,7 +10,7 @@ bool removerProdutos(int *id, int n, FILE *arq)
 {
     FILE *arq2;
     tProduto produto;
-    int i, cont = 0, contExcluidos = 0, *id2 = (int *)calloc (n, sizeof(int));
+    int cont = 0, contExcluidos = 0, *id2 = (int *)calloc (n, sizeof(int));
 
 
     //abre um arquivo para escrita

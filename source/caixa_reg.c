@@ -33,7 +33,6 @@ void notaFiscal(FILA *CARRINHO, float total)
         delay(500);
     }
     }while((pagamento < 1 || pagamento > 4) || !testeInputInt(aux));
-    //pagamento = atoi(aux);
 
     // Eh necessario para fazer a data e hora instantanea
     time_t agora;
@@ -73,7 +72,7 @@ void notaFiscal(FILA *CARRINHO, float total)
         printf("Deseja parcelar em quantas vezes? ");
         scanf("%s", aux);
         getchar();
-        }while(parcelas <= 0 && testeInputInt(aux) && parcelas > 12);
+        }while(testeInputInt(aux));
         parcelas = atoi(aux);
         fprintf(arquivo, "Forma de Pagamento: Cartao de Credito\n");
         fprintf(arquivo, "Parcelas: %dx de R$ %.2f sem juros\n", parcelas, total / parcelas);
