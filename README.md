@@ -1,6 +1,6 @@
 # Projeto-Final-Prog-2
 
-🚨 ATENÇÃO: A branch que você está navegando abriga a versão LEGADO do nosso trabalho. Esta versão foi a que foi entregue por conta do prazo. Para ver o código com otimizações e correções atuais, veja a branch principal!
+🚨 ATENÇÃO: A branch que você está navegando abriga a versão LEGADO do nosso trabalho. Esta versão foi entregue por conta do prazo do trabalho. Para ver o código com otimizações e correções atuais, veja a branch principal!
 
 Este repositório contém o trabalho final da disciplina ICP141 - Programação de Computadores II elaborado por:
 - [Pedro Kury Kitagawa](https://github.com/k1sta)
